@@ -1,1160 +1,1787 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
 <meta charset="UTF-8">
 
 <meta
-  name="viewport"
-  content="width=device-width,
-           initial-scale=1.0,
-           viewport-fit=cover"
+    name="viewport"
+    content="width=device-width,
+             initial-scale=1.0,
+             maximum-scale=1.0,
+             viewport-fit=cover"
 >
 
-<title>列車情報｜普通 行橋行</title>
+<meta
+    name="theme-color"
+    content="#101114"
+>
+
+<title>Train Destination</title>
+
 
 <style>
+
+/* ==================================================
+   RESET
+================================================== */
+
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 html,
 body {
-  margin: 0;
-  padding: 0;
 
-  min-height: 100%;
+    margin: 0;
+    padding: 0;
 
-  background: #000;
-  color: #fff;
+    width: 100%;
+    min-height: 100%;
 
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Display",
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
+    overflow-x: hidden;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+
+    color: white;
+
 }
+
+
+/* ==================================================
+   BACKGROUND
+================================================== */
 
 body {
-  min-height: 100vh;
+
+    min-height: 100vh;
+
+    background:
+
+        radial-gradient(
+            circle at 20% 10%,
+            rgba(255,255,255,0.16),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 85% 30%,
+            rgba(120,170,255,0.13),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 50% 90%,
+            rgba(255,255,255,0.08),
+            transparent 40%
+        ),
+
+        linear-gradient(
+            145deg,
+            #090a0d,
+            #17191e,
+            #08090c
+        );
+
 }
+
+
+/* ==================================================
+   APP
+================================================== */
 
 .app {
-  width: 100%;
-  max-width: 650px;
 
-  min-height: 100vh;
+    width: 100%;
+    max-width: 650px;
 
-  margin: auto;
+    min-height: 100vh;
 
-  padding:
-    calc(28px + env(safe-area-inset-top))
-    24px
-    calc(28px + env(safe-area-inset-bottom))
-    24px;
+    margin: 0 auto;
 
-  display: flex;
-  flex-direction: column;
+    padding:
+
+        calc(
+            25px +
+            env(safe-area-inset-top)
+        )
+
+        20px
+
+        calc(
+            25px +
+            env(safe-area-inset-bottom)
+        );
+
 }
 
-/* =========================
-   ヘッダー
-========================= */
+
+/* ==================================================
+   LIQUID GLASS
+================================================== */
+
+.glass {
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.16),
+            rgba(255,255,255,0.055)
+        );
+
+    border:
+
+        1px solid
+        rgba(255,255,255,0.20);
+
+    box-shadow:
+
+        inset
+        0 1px 0
+        rgba(255,255,255,0.25),
+
+        inset
+        0 -1px 0
+        rgba(255,255,255,0.04),
+
+        0 18px 50px
+        rgba(0,0,0,0.30);
+
+    backdrop-filter:
+        blur(28px)
+        saturate(150%);
+
+    -webkit-backdrop-filter:
+        blur(28px)
+        saturate(150%);
+
+}
+
+
+/* ==================================================
+   HEADER
+================================================== */
 
 .header {
-  margin-bottom: 42px;
+
+    padding: 24px;
+
+    border-radius: 30px;
+
+    margin-bottom: 16px;
+
 }
+
 
 .train-type {
-  font-size: 17px;
-  color: rgba(255,255,255,.55);
-  margin-bottom: 5px;
+
+    font-size: 14px;
+
+    color:
+        rgba(255,255,255,0.60);
+
+    margin-bottom: 6px;
+
 }
+
 
 .destination {
-  font-size: 32px;
-  font-weight: 700;
-  letter-spacing: -1px;
+
+    font-size: 34px;
+
+    font-weight: 750;
+
+    letter-spacing: -1.2px;
+
 }
 
 
-/* =========================
-   速度
-========================= */
+/* ==================================================
+   SPEED
+================================================== */
 
-.speed-label {
-  font-size: 15px;
-  color: rgba(255,255,255,.5);
-  margin-bottom: 6px;
+.speed-card {
+
+    padding: 25px;
+
+    border-radius: 30px;
+
 }
+
+
+.label {
+
+    font-size: 14px;
+
+    color:
+        rgba(255,255,255,0.52);
+
+    margin-bottom: 7px;
+
+}
+
 
 .speed-row {
-  display: flex;
-  align-items: baseline;
+
+    display: flex;
+
+    align-items: baseline;
+
 }
+
 
 .speed {
-  font-size: 72px;
-  line-height: .95;
-  font-weight: 700;
-  letter-spacing: -4px;
-  font-variant-numeric: tabular-nums;
-}
 
-.speed-unit {
-  font-size: 20px;
-  margin-left: 8px;
-  color: rgba(255,255,255,.55);
-}
+    font-size: 76px;
 
+    line-height: .9;
 
-/* =========================
-   列車位置
-========================= */
+    font-weight: 750;
 
-.position-section {
-  margin-top: 58px;
-}
+    letter-spacing: -5px;
 
-.position-title {
-  font-size: 15px;
-  color: rgba(255,255,255,.5);
-  margin-bottom: 16px;
+    font-variant-numeric:
+        tabular-nums;
+
 }
 
 
-/* =========================
-   駅名
-========================= */
+.unit {
+
+    margin-left: 9px;
+
+    font-size: 18px;
+
+    color:
+        rgba(255,255,255,0.55);
+
+}
+
+
+/* ==================================================
+   POSITION CARD
+================================================== */
+
+.position-card {
+
+    margin-top: 16px;
+
+    padding: 25px;
+
+    border-radius: 30px;
+
+}
+
 
 .station-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
-  margin-bottom: 11px;
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
 }
+
 
 .station {
-  font-size: 19px;
-  font-weight: 650;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
 }
 
-.station.to {
-  text-align: right;
+
+.station.right {
+
+    text-align: right;
+
 }
 
 
-/* =========================
-   進行バー
-========================= */
+/* ==================================================
+   PROGRESS
+================================================== */
 
-.progress-wrapper {
-  width: 100%;
-  height: 20px;
-  position: relative;
+.progress {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 22px;
+
+    margin-top: 18px;
+
+    border-radius: 999px;
+
+    overflow: hidden;
+
+    background:
+
+        rgba(
+            255,
+            255,
+            255,
+            0.10
+        );
+
+    border:
+
+        1px solid
+        rgba(255,255,255,0.13);
+
 }
 
-.progress-background {
-  position: absolute;
-
-  left: 0;
-  top: 0;
-
-  width: 100%;
-  height: 20px;
-
-  border-radius: 999px;
-
-  background: rgba(255,255,255,.14);
-
-  overflow: hidden;
-}
 
 .progress-fill {
-  position: absolute;
 
-  left: 0;
-  top: 0;
+    position: absolute;
 
-  width: 0%;
-  height: 20px;
+    left: 0;
+    top: 0;
 
-  border-radius: 999px;
+    width: 0%;
 
-  background:
-    linear-gradient(
-      90deg,
-      rgba(255,255,255,.55),
-      rgba(255,255,255,1)
-    );
+    height: 100%;
 
-  transition: width .8s linear;
+    border-radius: 999px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.48),
+            rgba(255,255,255,0.98)
+        );
+
+    box-shadow:
+
+        0 0 16px
+        rgba(255,255,255,0.30);
+
+    transition:
+
+        width .7s ease-out;
+
 }
 
 
-/* =========================
-   距離
-========================= */
+/* ==================================================
+   DISTANCE
+================================================== */
 
-.distance-text {
-  margin-top: 15px;
+.distance {
 
-  text-align: right;
+    margin-top: 15px;
 
-  font-size: 16px;
+    text-align: right;
 
-  color: rgba(255,255,255,.72);
+    font-size: 16px;
 
-  font-variant-numeric: tabular-nums;
+    color:
+        rgba(255,255,255,0.72);
+
+    font-variant-numeric:
+        tabular-nums;
+
 }
 
 
-/* =========================
-   情報カード
-========================= */
+/* ==================================================
+   CURRENT SECTION
+================================================== */
 
-.info-card {
-  margin-top: 48px;
+.section-card {
 
-  padding: 21px;
+    margin-top: 16px;
 
-  border-radius: 23px;
+    padding: 24px;
 
-  background: rgba(255,255,255,.075);
-}
+    border-radius: 30px;
 
-.info-label {
-  font-size: 14px;
-  color: rgba(255,255,255,.45);
-
-  margin-bottom: 6px;
-}
-
-.info-main {
-  font-size: 25px;
-  font-weight: 700;
-}
-
-.info-sub {
-  margin-top: 10px;
-
-  font-size: 15px;
-
-  color: rgba(255,255,255,.55);
 }
 
 
-/* =========================
-   GPS
-========================= */
+.section-title {
 
-.gps-area {
-  margin-top: auto;
-  padding-top: 40px;
+    font-size: 13px;
+
+    color:
+        rgba(255,255,255,0.48);
+
+    margin-bottom: 7px;
+
 }
 
-.gps-status {
-  font-size: 13px;
 
-  color: rgba(255,255,255,.38);
+.section-name {
 
-  text-align: center;
+    font-size: 25px;
 
-  line-height: 1.5;
+    font-weight: 720;
+
+    letter-spacing: -.5px;
+
 }
+
+
+.next {
+
+    margin-top: 9px;
+
+    font-size: 15px;
+
+    color:
+        rgba(255,255,255,0.55);
+
+}
+
+
+/* ==================================================
+   GPS STATUS
+================================================== */
+
+.gps-card {
+
+    margin-top: 16px;
+
+    padding: 17px 20px;
+
+    border-radius: 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+
+.gps-left {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.gps-dot {
+
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #777;
+
+    box-shadow:
+        0 0 10px
+        rgba(255,255,255,.3);
+
+}
+
+
+.gps-dot.active {
+
+    background: white;
+
+    box-shadow:
+        0 0 13px
+        rgba(255,255,255,.8);
+
+}
+
+
+.gps-text {
+
+    font-size: 14px;
+
+    color:
+        rgba(255,255,255,.65);
+
+}
+
+
+.accuracy {
+
+    font-size: 13px;
+
+    color:
+        rgba(255,255,255,.42);
+
+    font-variant-numeric:
+        tabular-nums;
+
+}
+
+
+/* ==================================================
+   BUTTON
+================================================== */
 
 .gps-button {
-  width: 100%;
 
-  margin-top: 14px;
+    width: 100%;
 
-  padding: 15px;
+    margin-top: 12px;
 
-  border: none;
+    padding: 16px;
 
-  border-radius: 17px;
+    border: none;
 
-  background: #fff;
-  color: #000;
+    border-radius: 22px;
 
-  font-size: 16px;
-  font-weight: 650;
+    font-size: 16px;
+
+    font-weight: 650;
+
+    color: #111;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.98),
+            rgba(255,255,255,.78)
+        );
+
+    box-shadow:
+
+        0 10px 30px
+        rgba(0,0,0,.25);
+
 }
+
 
 .gps-button:active {
-  transform: scale(.98);
-  opacity: .8;
+
+    transform: scale(.985);
+
 }
 
 
-/* =========================
-   到着
-========================= */
+/* ==================================================
+   ARRIVAL
+================================================== */
 
-.arrived {
-  font-size: 28px;
-  font-weight: 700;
+.arrival {
+
+    display: none;
+
+    margin-top: 16px;
+
+    padding: 28px;
+
+    border-radius: 30px;
+
+    text-align: center;
+
 }
 
 
-/* =========================
-   小さい画面
-========================= */
+.arrival.show {
 
-@media (max-width: 380px) {
+    display: block;
 
-  .app {
-    padding-left: 18px;
-    padding-right: 18px;
-  }
-
-  .speed {
-    font-size: 62px;
-  }
-
-  .destination {
-    font-size: 28px;
-  }
-
-  .station {
-    font-size: 17px;
-  }
 }
+
+
+.arrival-title {
+
+    font-size: 14px;
+
+    color:
+        rgba(255,255,255,.55);
+
+}
+
+
+.arrival-name {
+
+    margin-top: 5px;
+
+    font-size: 32px;
+
+    font-weight: 750;
+
+}
+
+
+/* ==================================================
+   SMALL SCREEN
+================================================== */
+
+@media (
+    max-width: 380px
+) {
+
+    .speed {
+
+        font-size: 64px;
+
+    }
+
+
+    .destination {
+
+        font-size: 29px;
+
+    }
+
+
+    .station {
+
+        font-size: 17px;
+
+    }
+
+}
+
 </style>
+
 </head>
 
 
 <body>
 
+
 <div class="app">
 
-  <!-- ヘッダー -->
 
-  <div class="header">
+    <!-- =========================
+         HEADER
+    ========================== -->
 
-    <div class="train-type">
-      普通列車
-    </div>
+    <div class="header glass">
 
-    <div class="destination">
-      行橋行
-    </div>
+        <div class="train-type">
 
-  </div>
+            普通列車
 
-
-  <!-- 速度 -->
-
-  <div>
-
-    <div class="speed-label">
-      速度
-    </div>
-
-    <div class="speed-row">
-
-      <span
-        id="speed"
-        class="speed"
-      >
-        --
-      </span>
-
-      <span class="speed-unit">
-        km/h
-      </span>
-
-    </div>
-
-  </div>
+        </div>
 
 
-  <!-- 列車位置 -->
+        <div class="destination">
 
-  <div class="position-section">
+            行橋行
 
-    <div class="position-title">
-      列車位置
-    </div>
-
-
-    <div class="station-row">
-
-      <div
-        id="fromStation"
-        class="station"
-      >
-        豊前善光寺
-      </div>
-
-      <div
-        id="toStation"
-        class="station to"
-      >
-        天津
-      </div>
+        </div>
 
     </div>
 
 
-    <!-- Apple Music風の進行バー -->
 
-    <div class="progress-wrapper">
+    <!-- =========================
+         SPEED
+    ========================== -->
 
-      <div class="progress-background">
+    <div class="speed-card glass">
+
+        <div class="label">
+
+            速度
+
+        </div>
+
+
+        <div class="speed-row">
+
+            <span
+                id="speed"
+                class="speed"
+            >
+                --
+            </span>
+
+
+            <span class="unit">
+
+                km/h
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         POSITION
+    ========================== -->
+
+    <div class="position-card glass">
+
+        <div class="label">
+
+            列車位置
+
+        </div>
+
+
+        <div class="station-row">
+
+            <div
+                id="fromStation"
+                class="station"
+            >
+
+                豊前善光寺
+
+            </div>
+
+
+            <div
+                id="toStation"
+                class="station right"
+            >
+
+                天津
+
+            </div>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div
+                id="progressFill"
+                class="progress-fill"
+            ></div>
+
+        </div>
+
 
         <div
-          id="progressFill"
-          class="progress-fill"
-        ></div>
+            id="distance"
+            class="distance"
+        >
 
-      </div>
+            GPS取得中...
+
+        </div>
 
     </div>
 
 
-    <div
-      id="distanceText"
-      class="distance-text"
-    >
-      GPS取得中...
+
+    <!-- =========================
+         SECTION
+    ========================== -->
+
+    <div class="section-card glass">
+
+        <div class="section-title">
+
+            現在走行区間
+
+        </div>
+
+
+        <div
+            id="sectionName"
+            class="section-name"
+        >
+
+            豊前善光寺 → 天津
+
+        </div>
+
+
+        <div
+            id="next"
+            class="next"
+        >
+
+            次は「天津」です
+
+        </div>
+
     </div>
 
-  </div>
 
 
-  <!-- 現在区間 -->
+    <!-- =========================
+         GPS
+    ========================== -->
 
-  <div class="info-card">
+    <div class="gps-card glass">
 
-    <div class="info-label">
-      現在走行区間
+        <div class="gps-left">
+
+            <div
+                id="gpsDot"
+                class="gps-dot"
+            ></div>
+
+
+            <div
+                id="gpsText"
+                class="gps-text"
+            >
+
+                GPS待機中
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="accuracy"
+            class="accuracy"
+        >
+
+            -- m
+
+        </div>
+
     </div>
 
-    <div
-      id="sectionName"
-      class="info-main"
-    >
-      豊前善光寺 → 天津
-    </div>
 
-    <div
-      id="nextInfo"
-      class="info-sub"
-    >
-      次は「天津」です
-    </div>
-
-  </div>
-
-
-  <!-- GPS -->
-
-  <div class="gps-area">
-
-    <div
-      id="gpsStatus"
-      class="gps-status"
-    >
-      GPSを待っています
-    </div>
 
     <button
-      class="gps-button"
-      onclick="startGPS()"
+        class="gps-button"
+        onclick="startGPS()"
     >
-      GPSを開始
+
+        GPSを開始
+
     </button>
 
-  </div>
+
+
+    <!-- =========================
+         ARRIVAL
+    ========================== -->
+
+    <div
+        id="arrival"
+        class="arrival glass"
+    >
+
+        <div class="arrival-title">
+
+            終点到着
+
+        </div>
+
+
+        <div class="arrival-name">
+
+            行橋
+
+        </div>
+
+    </div>
+
 
 </div>
 
 
+
 <script>
 
-/*
-==================================================
-  普通列車
-  豊前善光寺 → 行橋
+/* ==================================================
+   駅データ
 
-  正しい駅順
-==================================================
+   豊前善光寺
+   ↓
+   天津
+   ↓
+   今津
+   ↓
+   東中津
+   ↓
+   中津
+   ↓
+   吉富
+   ↓
+   三毛門
+   ↓
+   宇島
+   ↓
+   豊前松江
+   ↓
+   椎田
+   ↓
+   築城
+   ↓
+   新田原
+   ↓
+   南行橋
+   ↓
+   行橋
+================================================== */
+
+
+/*
+   ※駅座標はGPS判定用。
+   実際の駅位置に合わせて調整可能。
 */
 
 const stations = [
 
-  {
-    name: "豊前善光寺",
-    lat: 33.5697,
-    lon: 131.4240
-  },
+    {
+        name: "豊前善光寺",
+        lat: 33.569700,
+        lon: 131.424000
+    },
 
-  {
-    name: "天津",
-    lat: 33.5605,
-    lon: 131.3675
-  },
+    {
+        name: "天津",
+        lat: 33.560500,
+        lon: 131.367500
+    },
 
-  {
-    name: "今津",
-    lat: 33.5750,
-    lon: 131.3200
-  },
+    {
+        name: "今津",
+        lat: 33.575000,
+        lon: 131.320000
+    },
 
-  {
-    name: "東中津",
-    lat: 33.6000,
-    lon: 131.2500
-  },
+    {
+        name: "東中津",
+        lat: 33.600000,
+        lon: 131.250000
+    },
 
-  {
-    name: "中津",
-    lat: 33.5991,
-    lon: 131.1909
-  },
+    {
+        name: "中津",
+        lat: 33.599100,
+        lon: 131.190900
+    },
 
-  {
-    name: "吉富",
-    lat: 33.6020,
-    lon: 131.1750
-  },
+    {
+        name: "吉富",
+        lat: 33.602000,
+        lon: 131.175000
+    },
 
-  {
-    name: "三毛門",
-    lat: 33.6200,
-    lon: 131.1500
-  },
+    {
+        name: "三毛門",
+        lat: 33.620000,
+        lon: 131.150000
+    },
 
-  {
-    name: "宇島",
-    lat: 33.6120,
-    lon: 131.1300
-  },
+    {
+        name: "宇島",
+        lat: 33.612000,
+        lon: 131.130000
+    },
 
-  {
-    name: "豊前松江",
-    lat: 33.6480,
-    lon: 131.1050
-  },
+    {
+        name: "豊前松江",
+        lat: 33.648000,
+        lon: 131.105000
+    },
 
-  {
-    name: "椎田",
-    lat: 33.6700,
-    lon: 131.0550
-  },
+    {
+        name: "椎田",
+        lat: 33.670000,
+        lon: 131.055000
+    },
 
-  {
-    name: "築城",
-    lat: 33.6730,
-    lon: 131.0300
-  },
+    {
+        name: "築城",
+        lat: 33.673000,
+        lon: 131.030000
+    },
 
-  {
-    name: "新田原",
-    lat: 33.6950,
-    lon: 130.9900
-  },
+    {
+        name: "新田原",
+        lat: 33.695000,
+        lon: 130.990000
+    },
 
-  {
-    name: "南行橋",
-    lat: 33.7160,
-    lon: 130.9700
-  },
+    {
+        name: "南行橋",
+        lat: 33.716000,
+        lon: 130.970000
+    },
 
-  {
-    name: "行橋",
-    lat: 33.7308,
-    lon: 130.9588
-  }
+    {
+        name: "行橋",
+        lat: 33.730800,
+        lon: 130.958800
+    }
 
 ];
 
 
-/*
-==================================================
-  GPS監視
-==================================================
-*/
+/* ==================================================
+   GPS
+================================================== */
 
 let watchId = null;
 
 
 /*
-==================================================
-  2地点間の距離
-==================================================
+   現在の区間
+
+   これを固定することで、
+   GPSの一瞬のズレで
+   駅間が飛ぶのを防ぐ。
 */
 
-function getDistance(
-  lat1,
-  lon1,
-  lat2,
-  lon2
-) {
-
-  const R = 6371000;
-
-  const rad =
-    Math.PI / 180;
-
-  const dLat =
-    (lat2 - lat1) * rad;
-
-  const dLon =
-    (lon2 - lon1) * rad;
-
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-
-    Math.cos(lat1 * rad) *
-    Math.cos(lat2 * rad) *
-
-    Math.sin(dLon / 2) ** 2;
-
-  const c =
-    2 *
-    Math.atan2(
-      Math.sqrt(a),
-      Math.sqrt(1 - a)
-    );
-
-  return R * c;
-}
+let currentSection = 0;
 
 
 /*
-==================================================
-  駅からの距離
-==================================================
+   最後のGPS位置
 */
 
-function distanceToStation(
-  lat,
-  lon,
-  station
+let lastPosition = null;
+
+
+/*
+   GPS精度の最低条件
+
+   accuracyがこの数値より悪い場合、
+   位置更新を無視する。
+*/
+
+const MAX_ACCURACY = 60;
+
+
+/*
+   駅到着判定距離
+*/
+
+const STATION_RADIUS = 120;
+
+
+/* ==================================================
+   距離計算
+================================================== */
+
+function distance(
+    lat1,
+    lon1,
+    lat2,
+    lon2
 ) {
 
-  return getDistance(
-    lat,
-    lon,
-    station.lat,
-    station.lon
-  );
+    const R = 6371000;
+
+    const rad =
+        Math.PI / 180;
+
+
+    const dLat =
+        (lat2 - lat1) * rad;
+
+
+    const dLon =
+        (lon2 - lon1) * rad;
+
+
+    const a =
+
+        Math.sin(dLat / 2) ** 2 +
+
+        Math.cos(lat1 * rad) *
+        Math.cos(lat2 * rad) *
+
+        Math.sin(dLon / 2) ** 2;
+
+
+    const c =
+
+        2 *
+        Math.atan2(
+            Math.sqrt(a),
+            Math.sqrt(1 - a)
+        );
+
+
+    return R * c;
 
 }
 
 
-/*
-==================================================
-  GPS開始
-==================================================
-*/
+/* ==================================================
+   GPS開始
+================================================== */
 
 function startGPS() {
 
-  if (!navigator.geolocation) {
 
-    document.getElementById(
-      "gpsStatus"
-    ).textContent =
-      "この端末ではGPSを利用できません";
+    if (!navigator.geolocation) {
 
-    return;
-  }
+        setGPSStatus(
+            "GPS非対応",
+            false
+        );
 
-
-  if (watchId !== null) {
-    return;
-  }
-
-
-  document.getElementById(
-    "gpsStatus"
-  ).textContent =
-    "GPS取得中...";
-
-
-  watchId =
-    navigator.geolocation.watchPosition(
-
-      updateGPS,
-
-      gpsError,
-
-      {
-        enableHighAccuracy: true,
-
-        maximumAge: 1000,
-
-        timeout: 10000
-      }
-
-    );
-
-}
-
-
-/*
-==================================================
-  GPS更新
-==================================================
-*/
-
-function updateGPS(position) {
-
-  const lat =
-    position.coords.latitude;
-
-  const lon =
-    position.coords.longitude;
-
-
-  /*
-    速度
-  */
-
-  let speed =
-    position.coords.speed;
-
-
-  if (
-    speed !== null &&
-    speed !== undefined &&
-    !isNaN(speed)
-  ) {
-
-    speed =
-      Math.max(
-        0,
-        speed * 3.6
-      );
-
-  } else {
-
-    speed = 0;
-
-  }
-
-
-  document.getElementById(
-    "speed"
-  ).textContent =
-    Math.round(speed);
-
-
-  /*
-    現在どの駅間にいるか
-  */
-
-  let currentSection = -1;
-
-
-  /*
-    各駅間を調べる
-
-    駅A → 駅Bの距離と、
-    現在地からA・Bまでの距離を使って
-    一番近い区間を判定する。
-  */
-
-  let bestScore = Infinity;
-
-
-  for (
-    let i = 0;
-    i < stations.length - 1;
-    i++
-  ) {
-
-    const a =
-      stations[i];
-
-    const b =
-      stations[i + 1];
-
-
-    const distanceA =
-      distanceToStation(
-        lat,
-        lon,
-        a
-      );
-
-    const distanceB =
-      distanceToStation(
-        lat,
-        lon,
-        b
-      );
-
-
-    const sectionDistance =
-      getDistance(
-        a.lat,
-        a.lon,
-        b.lat,
-        b.lon
-      );
-
-
-    /*
-      駅Aから現在地まで
-      ＋
-      現在地から駅Bまで
-    */
-
-    const score =
-      Math.abs(
-        (
-          distanceA +
-          distanceB
-        ) -
-        sectionDistance
-      );
-
-
-    if (
-      score < bestScore
-    ) {
-
-      bestScore = score;
-
-      currentSection = i;
+        return;
 
     }
 
-  }
+
+    if (watchId !== null) {
+
+        return;
+
+    }
 
 
-  /*
-    行橋到着判定
-  */
-
-  const distanceToGoal =
-    distanceToStation(
-      lat,
-      lon,
-      stations[
-        stations.length - 1
-      ]
+    setGPSStatus(
+        "GPS取得中...",
+        false
     );
 
 
-  if (
-    distanceToGoal < 150
-  ) {
+    watchId =
 
-    showArrival();
+        navigator.geolocation.watchPosition(
 
-    return;
-  }
+            updateGPS,
 
+            gpsError,
 
-  /*
-    区間が見つからない場合
-  */
+            {
 
-  if (
-    currentSection < 0
-  ) {
+                /*
+                   iPhoneの高精度GPS
+                */
 
-    return;
-  }
+                enableHighAccuracy: true,
 
+                /*
+                   古い位置をなるべく使わない
+                */
 
-  /*
-    現在の駅
-  */
+                maximumAge: 0,
 
-  const from =
-    stations[
-      currentSection
-    ];
+                /*
+                   取得タイムアウト
+                */
 
+                timeout: 15000
 
-  /*
-    次の駅
-  */
+            }
 
-  const to =
-    stations[
-      currentSection + 1
-    ];
-
-
-  /*
-    駅間全体の距離
-  */
-
-  const totalDistance =
-    getDistance(
-      from.lat,
-      from.lon,
-      to.lat,
-      to.lon
-    );
-
-
-  /*
-    次駅までの距離
-  */
-
-  const remaining =
-    getDistance(
-      lat,
-      lon,
-      to.lat,
-      to.lon
-    );
-
-
-  /*
-    駅間の進行率
-
-    0 = 出発駅
-    1 = 次駅
-  */
-
-  let progress =
-    1 -
-    (
-      remaining /
-      totalDistance
-    );
-
-
-  progress =
-    Math.max(
-      0,
-      Math.min(
-        1,
-        progress
-      )
-    );
-
-
-  /*
-    駅名更新
-  */
-
-  document.getElementById(
-    "fromStation"
-  ).textContent =
-    from.name;
-
-
-  document.getElementById(
-    "toStation"
-  ).textContent =
-    to.name;
-
-
-  /*
-    バー更新
-  */
-
-  document.getElementById(
-    "progressFill"
-  ).style.width =
-    (
-      progress * 100
-    ) + "%";
-
-
-  /*
-    距離表示
-  */
-
-  let km =
-    remaining / 1000;
-
-
-  if (
-    km < 0.1
-  ) {
-
-    document.getElementById(
-      "distanceText"
-    ).textContent =
-      to.name +
-      " まもなく";
-
-  } else {
-
-    document.getElementById(
-      "distanceText"
-    ).textContent =
-      to.name +
-      "まであと " +
-      km.toFixed(1) +
-      " km";
-
-  }
-
-
-  /*
-    現在区間
-  */
-
-  document.getElementById(
-    "sectionName"
-  ).textContent =
-    from.name +
-    " → " +
-    to.name;
-
-
-  /*
-    次駅
-  */
-
-  document.getElementById(
-    "nextInfo"
-  ).textContent =
-    "次は「" +
-    to.name +
-    "」です";
-
-
-  /*
-    GPS状態
-  */
-
-  document.getElementById(
-    "gpsStatus"
-  ).textContent =
-    "GPS接続中";
+        );
 
 }
 
 
-/*
-==================================================
-  行橋到着
-==================================================
-*/
+/* ==================================================
+   GPS更新
+================================================== */
+
+function updateGPS(
+    position
+) {
+
+
+    const coords =
+        position.coords;
+
+
+    const lat =
+        coords.latitude;
+
+
+    const lon =
+        coords.longitude;
+
+
+    const accuracy =
+        coords.accuracy;
+
+
+    /*
+       GPS精度表示
+    */
+
+    document.getElementById(
+        "accuracy"
+    ).textContent =
+
+        Math.round(
+            accuracy
+        ) + " m";
+
+
+    /*
+       精度が悪すぎる場合
+    */
+
+    if (
+        accuracy >
+        MAX_ACCURACY
+    ) {
+
+        setGPSStatus(
+            "GPS精度が低下しています",
+            false
+        );
+
+        return;
+
+    }
+
+
+    /*
+       GPS速度
+    */
+
+    let speed =
+        coords.speed;
+
+
+    if (
+        speed !== null &&
+        speed !== undefined &&
+        !Number.isNaN(speed)
+    ) {
+
+        speed =
+            Math.max(
+                0,
+                speed * 3.6
+            );
+
+    }
+
+    else {
+
+        /*
+           speedが取れない場合、
+           前回位置から計算
+        */
+
+        speed =
+            calculateSpeed(
+                lat,
+                lon,
+                position.timestamp
+            );
+
+    }
+
+
+    document.getElementById(
+        "speed"
+    ).textContent =
+
+        Math.round(
+            speed
+        );
+
+
+    /*
+       現在の次駅
+    */
+
+    const nextStation =
+        stations[
+            currentSection + 1
+        ];
+
+
+    /*
+       次駅までの距離
+    */
+
+    const remaining =
+        distance(
+            lat,
+            lon,
+            nextStation.lat,
+            nextStation.lon
+        );
+
+
+    /*
+       次駅に到着したか
+    */
+
+    if (
+        remaining <=
+        STATION_RADIUS
+    ) {
+
+        /*
+           次の区間へ
+        */
+
+        if (
+            currentSection <
+            stations.length - 2
+        ) {
+
+            currentSection++;
+
+            updateStationUI();
+
+        }
+
+        else {
+
+            showArrival();
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+       現在区間
+    */
+
+    const from =
+        stations[
+            currentSection
+        ];
+
+
+    const to =
+        stations[
+            currentSection + 1
+        ];
+
+
+    /*
+       区間全体
+    */
+
+    const total =
+        distance(
+            from.lat,
+            from.lon,
+            to.lat,
+            to.lon
+        );
+
+
+    /*
+       現在位置から次駅
+    */
+
+    const remain =
+        distance(
+            lat,
+            lon,
+            to.lat,
+            to.lon
+        );
+
+
+    /*
+       進行率
+    */
+
+    let progress =
+
+        1 -
+        (
+            remain /
+            total
+        );
+
+
+    progress =
+
+        Math.max(
+            0,
+            Math.min(
+                1,
+                progress
+            )
+        );
+
+
+    /*
+       バー
+    */
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+
+        (
+            progress * 100
+        ) + "%";
+
+
+    /*
+       距離
+    */
+
+    if (
+        remain < 100
+    ) {
+
+        document.getElementById(
+            "distance"
+        ).textContent =
+
+            to.name +
+            " まもなく";
+
+    }
+
+    else {
+
+        document.getElementById(
+            "distance"
+        ).textContent =
+
+            to.name +
+            "まであと " +
+            (
+                remain / 1000
+            ).toFixed(1) +
+            " km";
+
+    }
+
+
+    /*
+       GPS状態
+    */
+
+    setGPSStatus(
+        "GPS接続中",
+        true
+    );
+
+
+    /*
+       最後の位置
+    */
+
+    lastPosition = {
+
+        lat: lat,
+
+        lon: lon,
+
+        time:
+            position.timestamp
+
+    };
+
+}
+
+
+/* ==================================================
+   速度計算
+================================================== */
+
+function calculateSpeed(
+    lat,
+    lon,
+    timestamp
+) {
+
+
+    if (
+        !lastPosition
+    ) {
+
+        return 0;
+
+    }
+
+
+    const d =
+        distance(
+            lastPosition.lat,
+            lastPosition.lon,
+            lat,
+            lon
+        );
+
+
+    const dt =
+        (
+            timestamp -
+            lastPosition.time
+        ) / 1000;
+
+
+    if (
+        dt <= 0
+    ) {
+
+        return 0;
+
+    }
+
+
+    return (
+        d / dt
+    ) * 3.6;
+
+}
+
+
+/* ==================================================
+   駅表示
+================================================== */
+
+function updateStationUI() {
+
+
+    const from =
+        stations[
+            currentSection
+        ];
+
+
+    const to =
+        stations[
+            currentSection + 1
+        ];
+
+
+    document.getElementById(
+        "fromStation"
+    ).textContent =
+
+        from.name;
+
+
+    document.getElementById(
+        "toStation"
+    ).textContent =
+
+        to.name;
+
+
+    document.getElementById(
+        "sectionName"
+    ).textContent =
+
+        from.name +
+        " → " +
+        to.name;
+
+
+    document.getElementById(
+        "next"
+    ).textContent =
+
+        "次は「" +
+        to.name +
+        "」です";
+
+
+    /*
+       駅に着いたので
+       バーを0%へ戻す
+    */
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+        "0%";
+
+}
+
+
+/* ==================================================
+   GPSステータス
+================================================== */
+
+function setGPSStatus(
+    text,
+    active
+) {
+
+
+    document.getElementById(
+        "gpsText"
+    ).textContent =
+        text;
+
+
+    const dot =
+        document.getElementById(
+            "gpsDot"
+        );
+
+
+    if (active) {
+
+        dot.classList.add(
+            "active"
+        );
+
+    }
+
+    else {
+
+        dot.classList.remove(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   到着
+================================================== */
 
 function showArrival() {
 
-  document.getElementById(
-    "speed"
-  ).textContent =
-    "0";
+
+    document.getElementById(
+        "speed"
+    ).textContent =
+        "0";
 
 
-  document.getElementById(
-    "fromStation"
-  ).textContent =
-    "行橋";
+    document.getElementById(
+        "fromStation"
+    ).textContent =
+        "行橋";
 
 
-  document.getElementById(
-    "toStation"
-  ).textContent =
-    "";
+    document.getElementById(
+        "toStation"
+    ).textContent =
+        "";
 
 
-  document.getElementById(
-    "progressFill"
-  ).style.width =
-    "100%";
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+        "100%";
 
 
-  document.getElementById(
-    "distanceText"
-  ).textContent =
-    "行橋 到着";
+    document.getElementById(
+        "distance"
+    ).textContent =
+        "行橋 到着";
 
 
-  document.getElementById(
-    "sectionName"
-  ).textContent =
-    "行橋";
+    document.getElementById(
+        "sectionName"
+    ).textContent =
+        "行橋";
 
 
-  document.getElementById(
-    "nextInfo"
-  ).textContent =
-    "終点です";
+    document.getElementById(
+        "next"
+    ).textContent =
+        "終点です";
 
 
-  document.getElementById(
-    "gpsStatus"
-  ).textContent =
-    "行橋に到着しました";
-
-}
-
-
-/*
-==================================================
-  GPSエラー
-==================================================
-*/
-
-function gpsError(error) {
-
-  let message =
-    "GPSを取得できません";
+    document.getElementById(
+        "arrival"
+    ).classList.add(
+        "show"
+    );
 
 
-  if (
-    error.code === 1
-  ) {
-
-    message =
-      "位置情報の使用を許可してください";
-
-  }
-
-
-  if (
-    error.code === 2
-  ) {
-
-    message =
-      "現在地を取得できません";
-
-  }
-
-
-  if (
-    error.code === 3
-  ) {
-
-    message =
-      "GPS取得がタイムアウトしました";
-
-  }
-
-
-  document.getElementById(
-    "gpsStatus"
-  ).textContent =
-    message;
+    setGPSStatus(
+        "行橋に到着",
+        true
+    );
 
 }
 
 
+/* ==================================================
+   GPSエラー
+================================================== */
+
+function gpsError(
+    error
+) {
+
+
+    let message =
+        "GPSエラー";
+
+
+    if (
+        error.code === 1
+    ) {
+
+        message =
+            "位置情報の使用を許可してください";
+
+    }
+
+
+    if (
+        error.code === 2
+    ) {
+
+        message =
+            "現在地を取得できません";
+
+    }
+
+
+    if (
+        error.code === 3
+    ) {
+
+        message =
+            "GPS取得がタイムアウトしました";
+
+    }
+
+
+    setGPSStatus(
+        message,
+        false
+    );
+
+}
+
+
+/* ==================================================
+   初期表示
+================================================== */
+
+updateStationUI();
+
+
 /*
-==================================================
-  ページ読み込み時
-==================================================
+   ページ読み込み時に
+   GPS開始
 */
 
 window.addEventListener(
-  "load",
-  () => {
+    "load",
+    () => {
 
-    startGPS();
+        startGPS();
 
-  }
+    }
 );
 
 </script>
 
 </body>
+
 </html>
