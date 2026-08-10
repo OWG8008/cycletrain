@@ -17,17 +17,18 @@ href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 
 <style>
 
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body{
-  margin:0;
-  background:#080b10;
-  color:white;
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
-  overflow:hidden;
+body {
+  margin: 0;
+  background: #080b10;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont,
+               "Helvetica Neue", sans-serif;
+  overflow: hidden;
 }
 
 
@@ -35,54 +36,93 @@ body{
    設定画面
 ========================= */
 
-#setup{
-  height:100vh;
-  padding:30px 22px;
+#setup {
+  height: 100vh;
+  padding: 30px 22px;
+  overflow-y: auto;
 }
 
-.logo{
-  text-align:center;
-  font-size:32px;
-  font-weight:800;
-  margin:30px 0 45px;
+.logo {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+  margin: 25px 0 40px;
 }
 
-label{
-  display:block;
-  color:#aaa;
-  margin:20px 0 8px;
+label {
+  display: block;
+  color: #aaa;
+  margin: 20px 0 8px;
 }
 
 select,
-input{
-  width:100%;
-  height:56px;
-  padding:0 16px;
+input {
+  width: 100%;
+  height: 55px;
+  padding: 0 15px;
 
-  border-radius:15px;
-  border:1px solid #363d48;
+  border-radius: 15px;
+  border: 1px solid #363d48;
 
-  background:#171c24;
-  color:white;
+  background: #171c24;
+  color: white;
 
-  font-size:18px;
-  outline:none;
+  font-size: 18px;
+  outline: none;
 }
 
-.startButton{
-  width:100%;
-  height:60px;
+.startButton,
+.addButton {
+  width: 100%;
+  height: 56px;
 
-  margin-top:30px;
+  margin-top: 18px;
 
-  border:0;
-  border-radius:17px;
+  border: none;
+  border-radius: 16px;
 
-  background:#238636;
-  color:white;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
 
-  font-size:19px;
-  font-weight:bold;
+.startButton {
+  background: #238636;
+}
+
+.addButton {
+  background: #303740;
+}
+
+.routeList {
+  margin-top: 15px;
+}
+
+.routeItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 12px;
+  margin-bottom: 8px;
+
+  background: #171c24;
+  border-radius: 12px;
+
+  font-size: 15px;
+}
+
+.routeNumber {
+  color: #aaa;
+  margin-right: 8px;
+}
+
+.removeButton {
+  border: none;
+  background: #522;
+  color: white;
+  border-radius: 8px;
+  padding: 7px 10px;
 }
 
 
@@ -90,32 +130,30 @@ input{
    運転画面
 ========================= */
 
-#drive{
-  display:none;
-  height:100vh;
-  position:relative;
+#drive {
+  display: none;
+  height: 100vh;
+  position: relative;
 }
 
 
 /* 幕 */
 
-#board{
+#board {
+  height: 75px;
 
-  height:75px;
+  background: #050505;
+  border-bottom: 3px solid #30343a;
 
-  background:#050505;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  border-bottom:3px solid #30343a;
+  font-size: 24px;
+  font-weight: 800;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:24px;
-  font-weight:800;
-
-  white-space:nowrap;
-  overflow:hidden;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 
@@ -123,34 +161,31 @@ input{
    地図
 ========================= */
 
-#map{
-
-  width:100%;
-
-  height:calc(100vh - 275px);
-
+#map {
+  width: 100%;
+  height: calc(100vh - 275px);
 }
 
 
-/* 距離表示 */
+/* =========================
+   距離
+========================= */
 
-#distanceBox{
+#distanceBox {
+  position: absolute;
 
-  position:absolute;
+  top: 85px;
+  left: 10px;
 
-  top:85px;
-  left:10px;
+  z-index: 1000;
 
-  z-index:1000;
+  padding: 9px 12px;
 
-  padding:9px 12px;
+  border-radius: 10px;
 
-  border-radius:10px;
+  background: rgba(0,0,0,.78);
 
-  background:rgba(0,0,0,.78);
-
-  font-size:14px;
-
+  font-size: 14px;
 }
 
 
@@ -158,36 +193,29 @@ input{
    速度
 ========================= */
 
-#speedBox{
+#speedBox {
+  position: absolute;
 
-  position:absolute;
+  bottom: 115px;
+  left: 0;
 
-  bottom:115px;
-  left:0;
+  width: 100%;
 
-  width:100%;
+  text-align: center;
 
-  text-align:center;
+  z-index: 1000;
 
-  z-index:1000;
-
-  pointer-events:none;
+  pointer-events: none;
 }
 
-#speed{
-
-  font-size:52px;
-
-  font-weight:800;
-
+#speed {
+  font-size: 52px;
+  font-weight: 800;
 }
 
-.kmh{
-
-  color:#aaa;
-
-  font-size:15px;
-
+.kmh {
+  color: #aaa;
+  font-size: 15px;
 }
 
 
@@ -195,31 +223,25 @@ input{
    終了ボタン
 ========================= */
 
-#finishButton{
+#finishButton {
+  position: absolute;
 
-  position:absolute;
+  left: 20px;
+  bottom: 20px;
 
-  left:20px;
-  bottom:20px;
+  width: calc(100% - 40px);
+  height: 65px;
 
-  width:calc(100% - 40px);
+  border: none;
+  border-radius: 18px;
 
-  height:65px;
+  background: #252b34;
+  color: white;
 
-  border:0;
+  font-size: 20px;
+  font-weight: bold;
 
-  border-radius:18px;
-
-  background:#252b34;
-
-  color:white;
-
-  font-size:20px;
-
-  font-weight:bold;
-
-  z-index:2000;
-
+  z-index: 2000;
 }
 
 
@@ -227,105 +249,81 @@ input{
    ATS
 ========================= */
 
-#ats{
+#ats {
+  display: none;
 
-  display:none;
+  position: absolute;
 
-  position:absolute;
+  left: 20px;
+  bottom: 20px;
 
-  left:20px;
-  bottom:20px;
+  width: calc(100% - 40px);
 
-  width:calc(100% - 40px);
-
-  z-index:3000;
-
+  z-index: 3000;
 }
 
-.atsWarning{
+.atsWarning {
+  text-align: center;
 
-  text-align:center;
+  color: #ff453a;
 
-  color:#ff453a;
+  font-size: 18px;
+  font-weight: bold;
 
-  font-size:18px;
-
-  font-weight:bold;
-
-  margin-bottom:8px;
-
+  margin-bottom: 8px;
 }
 
-.slider{
+.slider {
+  position: relative;
 
-  position:relative;
+  height: 65px;
 
-  height:65px;
+  border-radius: 18px;
 
-  border-radius:18px;
+  background: #252b34;
 
-  background:#252b34;
+  overflow: hidden;
 
-  overflow:hidden;
-
-  touch-action:none;
-
+  touch-action: none;
 }
 
-.sliderText{
+.sliderText {
+  position: absolute;
 
-  position:absolute;
+  width: 100%;
+  height: 100%;
 
-  width:100%;
-  height:100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  display:flex;
+  color: #aaa;
 
-  align-items:center;
-  justify-content:center;
-
-  color:#aaa;
-
-  font-size:18px;
-
+  font-size: 18px;
 }
 
-.sliderButton{
+.sliderButton {
+  position: absolute;
 
-  position:absolute;
+  left: 5px;
+  top: 5px;
 
-  left:5px;
-  top:5px;
+  width: 55px;
+  height: 55px;
 
-  width:55px;
-  height:55px;
+  border-radius: 15px;
 
-  border-radius:15px;
+  background: #ff453a;
 
-  background:#ff453a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  display:flex;
+  font-size: 25px;
 
-  align-items:center;
-  justify-content:center;
+  z-index: 10;
 
-  font-size:25px;
-
-  z-index:10;
-
-  touch-action:none;
-
-}
-
-
-/* =========================
-   目的地マーカー
-========================= */
-
-.destinationIcon{
-
-  font-size:32px;
-
+  touch-action: none;
 }
 
 </style>
@@ -336,9 +334,9 @@ input{
 <body>
 
 
-<!-- =========================
-     設定
-========================= -->
+<!-- =====================================================
+     設定画面
+===================================================== -->
 
 <div id="setup">
 
@@ -374,21 +372,33 @@ input{
 
 
   <button
+    class="addButton"
+    onclick="startRouteSetting()"
+  >
+    📍 経由地点を地図で設定
+  </button>
+
+
+  <div
+    id="routeList"
+    class="routeList"
+  >
+  </div>
+
+
+  <button
     class="startButton"
     onclick="startDrive()"
   >
-
     🚃 運転開始
-
   </button>
 
 </div>
 
 
-
-<!-- =========================
-     運転
-========================= -->
+<!-- =====================================================
+     運転画面
+===================================================== -->
 
 <div id="drive">
 
@@ -399,7 +409,7 @@ input{
 
 
   <div id="distanceBox">
-    📍 地図をタップして目的地を設定
+    📍 GPS待機中
   </div>
 
 
@@ -423,9 +433,7 @@ input{
     id="finishButton"
     onclick="finishDrive()"
   >
-
     運転終了
-
   </button>
 
 
@@ -457,26 +465,26 @@ input{
 </div>
 
 
-
 <script
 src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 </script>
 
 
-
 <script>
 
-/* =========================
-   グローバル変数
-========================= */
+/* =====================================================
+   変数
+===================================================== */
 
 let map = null;
 
 let currentMarker = null;
 
-let destinationMarker = null;
+let routeMarkers = [];
 
-let destination = null;
+let routePoints = [];
+
+let currentRouteIndex = 0;
 
 let watchID = null;
 
@@ -500,21 +508,23 @@ let alarmGain = null;
 let bellTimer = null;
 
 
-/* =========================
+/* =====================================================
    音声準備
-========================= */
+===================================================== */
 
-function prepareAudio(){
+function prepareAudio() {
 
-  if(!audioContext){
+  if (!audioContext) {
 
     audioContext =
-      new(window.AudioContext ||
-      window.webkitAudioContext)();
+      new (
+        window.AudioContext ||
+        window.webkitAudioContext
+      )();
 
   }
 
-  if(audioContext.state === "suspended"){
+  if (audioContext.state === "suspended") {
 
     audioContext.resume();
 
@@ -523,11 +533,11 @@ function prepareAudio(){
 }
 
 
-/* =========================
-   ATS ジリリ音
-========================= */
+/* =====================================================
+   ジリリリリ開始
+===================================================== */
 
-function startAlarm(){
+function startAlarm() {
 
   prepareAudio();
 
@@ -544,10 +554,8 @@ function startAlarm(){
   alarmOscillator.type =
     "square";
 
-
   alarmOscillator.frequency.value =
     700;
-
 
   alarmGain.gain.value =
     0.12;
@@ -567,19 +575,19 @@ function startAlarm(){
 }
 
 
-/* =========================
-   ATS ジリリ停止
-========================= */
+/* =====================================================
+   ジリリリリ停止
+===================================================== */
 
-function stopAlarm(){
+function stopAlarm() {
 
-  if(alarmOscillator){
+  if (alarmOscillator) {
 
-    try{
+    try {
 
       alarmOscillator.stop();
 
-    }catch(e){}
+    } catch (e) {}
 
     alarmOscillator.disconnect();
 
@@ -588,7 +596,7 @@ function stopAlarm(){
   }
 
 
-  if(alarmGain){
+  if (alarmGain) {
 
     alarmGain.disconnect();
 
@@ -599,11 +607,11 @@ function stopAlarm(){
 }
 
 
-/* =========================
+/* =====================================================
    キンコン
-========================= */
+===================================================== */
 
-function playBell(){
+function playBell() {
 
   prepareAudio();
 
@@ -611,6 +619,8 @@ function playBell(){
   const now =
     audioContext.currentTime;
 
+
+  /* キン */
 
   const osc1 =
     audioContext.createOscillator();
@@ -633,7 +643,7 @@ function playBell(){
 
   gain1.gain.exponentialRampToValueAtTime(
     0.001,
-    now + 0.18
+    now + 0.14
   );
 
 
@@ -647,11 +657,16 @@ function playBell(){
   osc1.start(now);
 
   osc1.stop(
-    now + 0.18
+    now + 0.14
   );
 
 
-  setTimeout(function(){
+  /* コン */
+
+  setTimeout(function() {
+
+    if (!audioContext) return;
+
 
     const now2 =
       audioContext.currentTime;
@@ -678,7 +693,7 @@ function playBell(){
 
     gain2.gain.exponentialRampToValueAtTime(
       0.001,
-      now2 + 0.22
+      now2 + 0.16
     );
 
 
@@ -692,19 +707,20 @@ function playBell(){
     osc2.start(now2);
 
     osc2.stop(
-      now2 + 0.22
+      now2 + 0.16
     );
 
-  },180);
+  }, 140);
 
 }
 
 
-/* =========================
+/* =====================================================
    キンコン開始
-========================= */
+   700ms間隔
+===================================================== */
 
-function startBell(){
+function startBell() {
 
   stopBell();
 
@@ -712,22 +728,22 @@ function startBell(){
 
 
   bellTimer =
-    setInterval(function(){
+    setInterval(function() {
 
       playBell();
 
-    },1300);
+    }, 700);
 
 }
 
 
-/* =========================
+/* =====================================================
    キンコン停止
-========================= */
+===================================================== */
 
-function stopBell(){
+function stopBell() {
 
-  if(bellTimer !== null){
+  if (bellTimer !== null) {
 
     clearInterval(
       bellTimer
@@ -740,11 +756,24 @@ function stopBell(){
 }
 
 
-/* =========================
-   運転開始
-========================= */
+/* =====================================================
+   経由地点設定開始
+===================================================== */
 
-function startDrive(){
+function startRouteSetting() {
+
+  alert(
+    "運転開始後の地図をタップすると、経由地点を追加できます。"
+  );
+
+}
+
+
+/* =====================================================
+   運転開始
+===================================================== */
+
+function startDrive() {
 
   const type =
     document.getElementById(
@@ -752,13 +781,13 @@ function startDrive(){
     ).value;
 
 
-  const name =
+  const destinationName =
     document.getElementById(
       "destinationName"
     ).value.trim();
 
 
-  if(!name){
+  if (!destinationName) {
 
     alert(
       "行き先を入力してください"
@@ -775,8 +804,10 @@ function startDrive(){
   document.getElementById(
     "board"
   ).textContent =
-    type + "・" +
-    name + "行き";
+    type +
+    "・" +
+    destinationName +
+    "行き";
 
 
   document.getElementById(
@@ -791,22 +822,27 @@ function startDrive(){
     "block";
 
 
-  setTimeout(function(){
+  currentRouteIndex = 0;
+
+  atsTriggered = false;
+
+
+  setTimeout(function() {
 
     initMap();
 
-  },100);
+  }, 100);
 
 }
 
 
-/* =========================
+/* =====================================================
    地図初期化
-========================= */
+===================================================== */
 
-function initMap(){
+function initMap() {
 
-  if(map){
+  if (map) {
 
     map.invalidateSize();
 
@@ -823,7 +859,7 @@ function initMap(){
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
 
-      maxZoom:19,
+      maxZoom: 19,
 
       attribution:
         "&copy; OpenStreetMap contributors"
@@ -833,16 +869,16 @@ function initMap(){
 
 
   /*
-    GPS
-  */
+   * GPS取得
+   */
 
-  if(
+  if (
     navigator.geolocation
-  ){
+  ) {
 
     navigator.geolocation.getCurrentPosition(
 
-      function(position){
+      function(position) {
 
         const lat =
           position.coords.latitude;
@@ -852,14 +888,14 @@ function initMap(){
 
 
         map.setView(
-          [lat,lng],
+          [lat, lng],
           17
         );
 
 
         currentMarker =
           L.marker(
-            [lat,lng]
+            [lat, lng]
           )
           .addTo(map)
           .bindPopup(
@@ -872,17 +908,13 @@ function initMap(){
       },
 
 
-      function(){
-
-        /*
-          GPS取得できなかった場合
-          東京駅付近を表示
-        */
+      function() {
 
         map.setView(
-          [35.681236,139.767125],
+          [35.681236, 139.767125],
           13
         );
+
 
         document.getElementById(
           "distanceBox"
@@ -894,11 +926,11 @@ function initMap(){
 
       {
 
-        enableHighAccuracy:true,
+        enableHighAccuracy: true,
 
-        timeout:10000,
+        timeout: 10000,
 
-        maximumAge:1000
+        maximumAge: 1000
 
       }
 
@@ -908,14 +940,14 @@ function initMap(){
 
 
   /*
-    地図タップ
-  */
+   * 地図タップ
+   */
 
   map.on(
     "click",
-    function(e){
+    function(e) {
 
-      setDestination(
+      addRoutePoint(
         e.latlng.lat,
         e.latlng.lng
       );
@@ -926,66 +958,88 @@ function initMap(){
 }
 
 
-/* =========================
-   目的地設定
-========================= */
+/* =====================================================
+   経由地点追加
+===================================================== */
 
-function setDestination(
+function addRoutePoint(
   lat,
   lng
-){
+) {
 
-  destination =
+  const point =
     L.latLng(
       lat,
       lng
     );
 
 
-  if(destinationMarker){
-
-    map.removeLayer(
-      destinationMarker
-    );
-
-  }
+  routePoints.push(point);
 
 
-  destinationMarker =
+  const number =
+    routePoints.length;
+
+
+  const marker =
     L.marker(
-      [lat,lng]
+      [lat, lng]
     )
     .addTo(map)
     .bindPopup(
-      "📍 目的地"
-    )
-    .openPopup();
+      "📍 経由地点 " +
+      number
+    );
+
+
+  routeMarkers.push(
+    marker
+  );
+
+
+  updateRouteInfo();
+
+
+  marker.openPopup();
+
+}
+
+
+/* =====================================================
+   経由地点情報
+===================================================== */
+
+function updateRouteInfo() {
+
+  if (routePoints.length === 0) {
+
+    document.getElementById(
+      "distanceBox"
+    ).textContent =
+      "📍 地図をタップして経由地点を追加";
+
+    return;
+
+  }
 
 
   document.getElementById(
     "distanceBox"
   ).textContent =
-    "📍 目的地設定済み";
-
-
-  /*
-    一度ATSが作動したら
-    目的地から離れても
-    再発動しない
-  */
-
-  atsTriggered = false;
+    "📍 経由地点 " +
+    routePoints.length +
+    "か所設定済み";
 
 }
 
 
-/* =========================
+/* =====================================================
    GPS
-========================= */
+===================================================== */
 
-function startGPS(){
+function startGPS() {
 
-  if(watchID !== null){
+  if (watchID !== null) {
 
     navigator.geolocation.clearWatch(
       watchID
@@ -997,7 +1051,7 @@ function startGPS(){
   watchID =
     navigator.geolocation.watchPosition(
 
-      function(position){
+      function(position) {
 
         const lat =
           position.coords.latitude;
@@ -1010,10 +1064,10 @@ function startGPS(){
           position.coords.speed;
 
 
-        if(
+        if (
           speed === null ||
           speed < 0
-        ){
+        ) {
 
           speed = 0;
 
@@ -1031,72 +1085,133 @@ function startGPS(){
 
 
         /*
-          現在地更新
-        */
+         * 現在地更新
+         */
 
-        if(currentMarker){
+        if (currentMarker) {
 
           currentMarker.setLatLng(
-            [lat,lng]
+            [lat, lng]
           );
 
         }
 
 
         /*
-          目的地までの距離
-        */
+         * 次の経由地点
+         */
 
-        if(destination){
+        if (
+          routePoints.length === 0
+        ) {
 
-          const current =
-            L.latLng(
-              lat,
-              lng
-            );
+          document.getElementById(
+            "distanceBox"
+          ).textContent =
+            "📍 経由地点を地図から設定";
+
+          return;
+
+        }
 
 
-          const distance =
-            current.distanceTo(
-              destination
-            );
+        if (
+          currentRouteIndex >=
+          routePoints.length
+        ) {
+
+          return;
+
+        }
 
 
-          if(distance >= 1000){
+        const current =
+          L.latLng(
+            lat,
+            lng
+          );
+
+
+        const target =
+          routePoints[
+            currentRouteIndex
+          ];
+
+
+        const distance =
+          current.distanceTo(
+            target
+          );
+
+
+        /*
+         * 距離表示
+         */
+
+        if (distance >= 1000) {
+
+          document.getElementById(
+            "distanceBox"
+          ).textContent =
+            "📍 次の地点まで " +
+            (distance / 1000)
+              .toFixed(2) +
+            " km";
+
+        } else {
+
+          document.getElementById(
+            "distanceBox"
+          ).textContent =
+            "📍 次の地点まで " +
+            Math.round(distance) +
+            " m";
+
+        }
+
+
+        /*
+         * 100m以内
+         *
+         * 経由地点通過
+         */
+
+        if (
+          distance <= 100
+        ) {
+
+          currentRouteIndex++;
+
+
+          if (
+            currentRouteIndex <
+            routePoints.length
+          ) {
 
             document.getElementById(
               "distanceBox"
             ).textContent =
-              "📍 目的地まで " +
-              (distance / 1000)
-                .toFixed(2) +
-              " km";
+              "✅ 経由地点通過！ " +
+              "次の地点へ";
 
-          }else{
+          } else {
 
-            document.getElementById(
-              "distanceBox"
-            ).textContent =
-              "📍 目的地まで " +
-              Math.round(distance) +
-              " m";
+            /*
+             * 最後の地点
+             *
+             * 200m以内でATS
+             */
 
-          }
+            if (
+              !atsTriggered &&
+              !atsActive
+            ) {
 
+              atsTriggered = true;
 
-          /*
-            200m
-          */
+              activateATS();
 
-          if(
-            distance <= 200 &&
-            !atsTriggered &&
-            !atsActive
-          ){
-
-            atsTriggered = true;
-
-            activateATS();
+            }
 
           }
 
@@ -1105,7 +1220,7 @@ function startGPS(){
       },
 
 
-      function(){
+      function() {
 
         document.getElementById(
           "distanceBox"
@@ -1117,11 +1232,11 @@ function startGPS(){
 
       {
 
-        enableHighAccuracy:true,
+        enableHighAccuracy: true,
 
-        maximumAge:1000,
+        maximumAge: 1000,
 
-        timeout:10000
+        timeout: 10000
 
       }
 
@@ -1130,13 +1245,13 @@ function startGPS(){
 }
 
 
-/* =========================
+/* =====================================================
    ATS作動
-========================= */
+===================================================== */
 
-function activateATS(){
+function activateATS() {
 
-  if(atsActive){
+  if (atsActive) {
 
     return;
 
@@ -1159,22 +1274,22 @@ function activateATS(){
 
 
   /*
-    ジリリリリ……
-  */
+   * ジリリリリ
+   */
 
   startAlarm();
 
 
   /*
-    振動
-  */
+   * 振動
+   */
 
-  if(
+  if (
     navigator.vibrate
-  ){
+  ) {
 
     navigator.vibrate(
-      [300,200]
+      [300, 200]
     );
 
   }
@@ -1182,13 +1297,13 @@ function activateATS(){
 }
 
 
-/* =========================
+/* =====================================================
    ATS解除
-========================= */
+===================================================== */
 
-function releaseATS(){
+function releaseATS() {
 
-  if(!atsActive){
+  if (!atsActive) {
 
     return;
 
@@ -1199,19 +1314,19 @@ function releaseATS(){
 
 
   /*
-    ジリリ停止
-  */
+   * ジリリ停止
+   */
 
   stopAlarm();
 
 
   /*
-    振動停止
-  */
+   * 振動停止
+   */
 
-  if(
+  if (
     navigator.vibrate
-  ){
+  ) {
 
     navigator.vibrate(0);
 
@@ -1231,17 +1346,17 @@ function releaseATS(){
 
 
   /*
-    キンコン開始
-  */
+   * キンコン開始
+   */
 
   startBell();
 
 }
 
 
-/* =========================
+/* =====================================================
    スライド開始
-========================= */
+===================================================== */
 
 const sliderButton =
   document.getElementById(
@@ -1251,9 +1366,9 @@ const sliderButton =
 
 sliderButton.addEventListener(
   "touchstart",
-  function(e){
+  function(e) {
 
-    if(!atsActive){
+    if (!atsActive) {
 
       return;
 
@@ -1267,15 +1382,15 @@ sliderButton.addEventListener(
 );
 
 
-/* =========================
+/* =====================================================
    スライド中
-========================= */
+===================================================== */
 
 sliderButton.addEventListener(
   "touchmove",
-  function(e){
+  function(e) {
 
-    if(!atsActive){
+    if (!atsActive) {
 
       return;
 
@@ -1290,14 +1405,14 @@ sliderButton.addEventListener(
       currentX - startX;
 
 
-    if(sliderX < 0){
+    if (sliderX < 0) {
 
       sliderX = 0;
 
     }
 
 
-    if(sliderX > 250){
+    if (sliderX > 250) {
 
       sliderX = 250;
 
@@ -1313,22 +1428,22 @@ sliderButton.addEventListener(
 );
 
 
-/* =========================
+/* =====================================================
    スライド終了
-========================= */
+===================================================== */
 
 sliderButton.addEventListener(
   "touchend",
-  function(){
+  function() {
 
-    if(!atsActive){
+    if (!atsActive) {
 
       return;
 
     }
 
 
-    if(sliderX >= 190){
+    if (sliderX >= 190) {
 
       releaseATS();
 
@@ -1337,17 +1452,16 @@ sliderButton.addEventListener(
         "translateX(250px)";
 
 
-      setTimeout(function(){
+      setTimeout(function() {
 
         sliderButton.style.transform =
           "translateX(0)";
 
         sliderX = 0;
 
-      },250);
+      }, 250);
 
-
-    }else{
+    } else {
 
       sliderButton.style.transform =
         "translateX(0)";
@@ -1360,24 +1474,24 @@ sliderButton.addEventListener(
 );
 
 
-/* =========================
+/* =====================================================
    運転終了
-========================= */
+===================================================== */
 
-function finishDrive(){
+function finishDrive() {
 
-  if(atsActive){
+  if (atsActive) {
 
     return;
 
   }
 
 
-  if(
+  if (
     !confirm(
       "運転を終了しますか？"
     )
-  ){
+  ) {
 
     return;
 
@@ -1385,8 +1499,8 @@ function finishDrive(){
 
 
   /*
-    音停止
-  */
+   * 音停止
+   */
 
   stopAlarm();
 
@@ -1394,12 +1508,12 @@ function finishDrive(){
 
 
   /*
-    振動停止
-  */
+   * 振動停止
+   */
 
-  if(
+  if (
     navigator.vibrate
-  ){
+  ) {
 
     navigator.vibrate(0);
 
@@ -1407,10 +1521,10 @@ function finishDrive(){
 
 
   /*
-    GPS停止
-  */
+   * GPS停止
+   */
 
-  if(watchID !== null){
+  if (watchID !== null) {
 
     navigator.geolocation.clearWatch(
       watchID
@@ -1422,8 +1536,8 @@ function finishDrive(){
 
 
   /*
-    画面戻る
-  */
+   * 画面を戻す
+   */
 
   document.getElementById(
     "drive"
@@ -1437,21 +1551,52 @@ function finishDrive(){
     "block";
 
 
-  document.getElementById(
-    "speed"
-  ).textContent =
-    "0";
-
-
   /*
-    ATS状態リセット
-  */
+   * リセット
+   */
 
   atsActive = false;
 
   atsTriggered = false;
 
-  destination = null;
+  currentRouteIndex = 0;
+
+  routePoints = [];
+
+
+  /*
+   * マーカー削除
+   */
+
+  routeMarkers.forEach(
+    function(marker) {
+
+      if (map) {
+
+        map.removeLayer(
+          marker
+        );
+
+      }
+
+    }
+  );
+
+
+  routeMarkers = [];
+
+
+  if (destinationMarker) {
+
+    destinationMarker = null;
+
+  }
+
+
+  document.getElementById(
+    "speed"
+  ).textContent =
+    "0";
 
 }
 
