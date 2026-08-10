@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 
 <title>cycletrain</title>
 
@@ -26,23 +26,22 @@ body {
 
 #setup {
   height: 100vh;
-  padding: 35px 22px;
+  padding: 30px 22px;
 }
 
 .logo {
   text-align: center;
   font-size: 32px;
   font-weight: 800;
-  margin-top: 20px;
+  margin-top: 25px;
   margin-bottom: 45px;
 }
 
 label {
   display: block;
-  color: #aaa;
-  font-size: 15px;
+  margin-top: 20px;
   margin-bottom: 8px;
-  margin-top: 22px;
+  color: #aaa;
 }
 
 select,
@@ -98,7 +97,9 @@ input {
   overflow: hidden;
 }
 
-/* マップ */
+/* =========================
+   マップ
+========================= */
 
 #map {
   height: calc(100vh - 285px);
@@ -113,8 +114,6 @@ input {
 
   background-size: 45px 45px;
 }
-
-/* 道っぽい線 */
 
 .road1 {
   position: absolute;
@@ -136,8 +135,6 @@ input {
   left: -20%;
 }
 
-/* 自転車 */
-
 .bike {
   position: absolute;
   left: 50%;
@@ -147,11 +144,7 @@ input {
 
   font-size: 45px;
   z-index: 5;
-
-  filter: drop-shadow(0 3px 4px #000);
 }
-
-/* 現在地 */
 
 .locationText {
   position: absolute;
@@ -173,12 +166,9 @@ input {
 
 #speedBox {
   position: absolute;
-
   bottom: 125px;
   left: 0;
-
   width: 100%;
-
   text-align: center;
 }
 
@@ -241,8 +231,6 @@ input {
   margin-bottom: 9px;
 }
 
-/* スライダー */
-
 .slider {
   position: relative;
 
@@ -303,7 +291,7 @@ input {
 <body>
 
 <!-- =========================
-     設定画面
+     設定
 ========================= -->
 
 <div id="setup">
@@ -336,7 +324,7 @@ input {
     class="startButton"
     onclick="startDrive()"
   >
-    運転開始
+    🚃 運転開始
   </button>
 
 </div>
@@ -348,14 +336,10 @@ input {
 
 <div id="drive">
 
-  <!-- 幕 -->
-
   <div id="board">
     快速・別府駅行き
   </div>
 
-
-  <!-- マップ -->
 
   <div id="map">
 
@@ -388,7 +372,7 @@ input {
   </div>
 
 
-  <!-- 終了 -->
+  <!-- 通常時 -->
 
   <button
     id="finishButton"
@@ -428,6 +412,10 @@ input {
 
 <script>
 
+/* =========================
+   変数
+========================= */
+
 let atsActive = false;
 
 let startX = 0;
@@ -436,12 +424,226 @@ let sliderX = 0;
 
 let watchID = null;
 
+let alarmInterval = null;
+
+let bellInterval = null;
+
+let audioContext = null;
+
+
+/* =========================
+   音声システム準備
+========================= */
+
+function prepareAudio() {
+
+  if (!audioContext) {
+
+    audioContext =
+      new (window.AudioContext ||
+      window.webkitAudioContext)();
+
+  }
+
+  if (audioContext.state === "suspended") {
+
+    audioContext.resume();
+
+  }
+
+}
+
+
+/* =========================
+   ジリリリ音
+========================= */
+
+function ringAlarm() {
+
+  if (!audioContext) return;
+
+  const oscillator =
+    audioContext.createOscillator();
+
+  const gain =
+    audioContext.createGain();
+
+  oscillator.type = "square";
+
+  oscillator.frequency.value = 700;
+
+  gain.gain.value = 0.12;
+
+  oscillator.connect(gain);
+
+  gain.connect(audioContext.destination);
+
+  oscillator.start();
+
+  setTimeout(function() {
+
+    oscillator.stop();
+
+  }, 350);
+
+}
+
+
+/* =========================
+   ATS警報開始
+========================= */
+
+function startAlarm() {
+
+  stopAlarm();
+
+  ringAlarm();
+
+  alarmInterval =
+    setInterval(function() {
+
+      if (atsActive) {
+
+        ringAlarm();
+
+      }
+
+    }, 450);
+
+}
+
+
+/* =========================
+   ATS警報停止
+========================= */
+
+function stopAlarm() {
+
+  if (alarmInterval !== null) {
+
+    clearInterval(alarmInterval);
+
+    alarmInterval = null;
+
+  }
+
+}
+
+
+/* =========================
+   キンコン音
+========================= */
+
+function playBell() {
+
+  if (!audioContext) return;
+
+  /* キン */
+
+  const osc1 =
+    audioContext.createOscillator();
+
+  const gain1 =
+    audioContext.createGain();
+
+  osc1.type = "sine";
+
+  osc1.frequency.value = 880;
+
+  gain1.gain.value = 0.15;
+
+  osc1.connect(gain1);
+
+  gain1.connect(audioContext.destination);
+
+  osc1.start();
+
+  setTimeout(function() {
+
+    osc1.stop();
+
+  }, 180);
+
+
+  /* コン */
+
+  setTimeout(function() {
+
+    if (!audioContext) return;
+
+    const osc2 =
+      audioContext.createOscillator();
+
+    const gain2 =
+      audioContext.createGain();
+
+    osc2.type = "sine";
+
+    osc2.frequency.value = 660;
+
+    gain2.gain.value = 0.15;
+
+    osc2.connect(gain2);
+
+    gain2.connect(audioContext.destination);
+
+    osc2.start();
+
+    setTimeout(function() {
+
+      osc2.stop();
+
+    }, 220);
+
+  }, 180);
+
+}
+
+
+/* =========================
+   キンコン開始
+========================= */
+
+function startBell() {
+
+  stopBell();
+
+  playBell();
+
+  bellInterval =
+    setInterval(function() {
+
+      playBell();
+
+    }, 1300);
+
+}
+
+
+/* =========================
+   キンコン停止
+========================= */
+
+function stopBell() {
+
+  if (bellInterval !== null) {
+
+    clearInterval(bellInterval);
+
+    bellInterval = null;
+
+  }
+
+}
+
 
 /* =========================
    運転開始
 ========================= */
 
 function startDrive() {
+
+  prepareAudio();
 
   const type =
     document.getElementById("type").value;
@@ -459,13 +661,9 @@ function startDrive() {
   }
 
 
-  /* 幕 */
-
   document.getElementById("board").textContent =
     type + "・" + destination + "行き";
 
-
-  /* 画面切り替え */
 
   document.getElementById("setup").style.display =
     "none";
@@ -474,18 +672,17 @@ function startDrive() {
     "block";
 
 
-  /* GPS開始 */
-
   startGPS();
 
 
   /*
-    ATSテスト
-
-    本番ではここを
-    「目的地まで200m」
-    の判定に変更する
-  */
+   * 今はテスト用
+   * 5秒後にATS作動
+   *
+   * 後でここを
+   * 「目的地まで200m」
+   * のGPS判定に変更する
+   */
 
   setTimeout(function() {
 
@@ -528,9 +725,8 @@ function startGPS() {
         }
 
 
-        /* m/s → km/h */
-
-        speed = speed * 3.6;
+        speed =
+          speed * 3.6;
 
 
         document.getElementById("speed").textContent =
@@ -550,6 +746,7 @@ function startGPS() {
 
       },
 
+
       {
         enableHighAccuracy: true,
         maximumAge: 1000,
@@ -567,70 +764,27 @@ function startGPS() {
 
 function activateATS() {
 
+  if (atsActive) return;
+
   atsActive = true;
 
 
   document.getElementById("finishButton").style.display =
     "none";
 
-
   document.getElementById("ats").style.display =
     "block";
 
 
-  /* ATS音 */
+  /* ジリリリ開始 */
 
-  playATS();
-
-}
-
-
-/* =========================
-   ATS音
-========================= */
-
-function playATS() {
-
-  if (!atsActive) return;
-
-
-  const audioContext =
-    new (window.AudioContext ||
-    window.webkitAudioContext)();
-
-
-  const oscillator =
-    audioContext.createOscillator();
-
-  const gain =
-    audioContext.createGain();
-
-
-  oscillator.frequency.value = 880;
-
-  gain.gain.value = 0.12;
-
-
-  oscillator.connect(gain);
-
-  gain.connect(audioContext.destination);
-
-
-  oscillator.start();
-
-
-  setTimeout(function() {
-
-    oscillator.stop();
-
-  }, 180);
-
+  startAlarm();
 
 }
 
 
 /* =========================
-   スライド開始
+   ATSスライド
 ========================= */
 
 const sliderButton =
@@ -649,10 +803,6 @@ sliderButton.addEventListener(
   }
 );
 
-
-/* =========================
-   スライド中
-========================= */
 
 sliderButton.addEventListener(
   "touchmove",
@@ -690,10 +840,6 @@ sliderButton.addEventListener(
 );
 
 
-/* =========================
-   スライド終了
-========================= */
-
 sliderButton.addEventListener(
   "touchend",
   function() {
@@ -703,9 +849,16 @@ sliderButton.addEventListener(
 
     if (sliderX >= 190) {
 
-      /* ATS解除 */
+      /*
+       * ATS解除
+       */
 
       atsActive = false;
+
+
+      /* ジリリ停止 */
+
+      stopAlarm();
 
 
       sliderButton.style.transform =
@@ -728,13 +881,19 @@ sliderButton.addEventListener(
 
         sliderX = 0;
 
+
+        /*
+         * 解除後から
+         * キンコン開始
+         */
+
+        startBell();
+
       }, 250);
 
     }
 
     else {
-
-      /* 戻す */
 
       sliderButton.style.transform =
         "translateX(0)";
@@ -760,11 +919,18 @@ function finishDrive() {
   }
 
 
-  const answer =
-    confirm("運転を終了しますか？");
+  if (!confirm("運転を終了しますか？")) {
+
+    return;
+
+  }
 
 
-  if (!answer) return;
+  /* 全音停止 */
+
+  stopAlarm();
+
+  stopBell();
 
 
   /* GPS停止 */
