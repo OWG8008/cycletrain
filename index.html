@@ -2,27 +2,38 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0, user-scalable=no">
 
 <title>cycletrain</title>
 
+<!-- Leaflet -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
 <style>
+
 * {
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   margin: 0;
   background: #080b10;
   color: white;
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-  overflow: hidden;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    sans-serif;
 }
 
-/* =========================
+/* =====================
    設定画面
-========================= */
+===================== */
 
 #setup {
   height: 100vh;
@@ -32,46 +43,50 @@ body {
 .logo {
   text-align: center;
   font-size: 32px;
-  font-weight: 800;
-  margin-top: 25px;
-  margin-bottom: 45px;
+  font-weight: bold;
+  margin: 25px 0 40px;
 }
 
 label {
   display: block;
-  margin-top: 20px;
-  margin-bottom: 8px;
+  margin: 20px 0 8px;
   color: #aaa;
 }
 
 select,
 input {
   width: 100%;
-  height: 56px;
-  padding: 0 16px;
+  height: 55px;
+  padding: 0 15px;
+
   border-radius: 15px;
   border: 1px solid #363d48;
+
   background: #171c24;
   color: white;
+
   font-size: 18px;
-  outline: none;
 }
 
 .startButton {
   width: 100%;
   height: 60px;
-  margin-top: 32px;
+
+  margin-top: 25px;
+
   border: none;
   border-radius: 17px;
+
   background: #238636;
   color: white;
+
   font-size: 19px;
   font-weight: bold;
 }
 
-/* =========================
+/* =====================
    運転画面
-========================= */
+===================== */
 
 #drive {
   display: none;
@@ -82,134 +97,125 @@ input {
 /* 幕 */
 
 #board {
-  height: 78px;
+  height: 75px;
+
   background: #050505;
-  border-bottom: 3px solid #30343a;
+  border-bottom: 3px solid #333;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 25px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: bold;
 
   white-space: nowrap;
-  overflow: hidden;
 }
 
-/* =========================
-   マップ
-========================= */
+/* 地図 */
 
 #map {
-  height: calc(100vh - 285px);
-  position: relative;
-  overflow: hidden;
-
-  background-color: #20252b;
-
-  background-image:
-    linear-gradient(#343a42 1px, transparent 1px),
-    linear-gradient(90deg, #343a42 1px, transparent 1px);
-
-  background-size: 45px 45px;
+  height: calc(100vh - 280px);
+  width: 100%;
 }
 
-.road1 {
-  position: absolute;
-  width: 140%;
-  height: 18px;
-  background: #555d66;
-  transform: rotate(-18deg);
-  top: 45%;
-  left: -20%;
+/* Leafletの現在地マーカー */
+
+.currentMarker {
+  font-size: 35px;
 }
 
-.road2 {
-  position: absolute;
-  width: 140%;
-  height: 18px;
-  background: #555d66;
-  transform: rotate(35deg);
-  top: 55%;
-  left: -20%;
+/* 目的地 */
+
+.destinationMarker {
+  font-size: 35px;
 }
 
-.bike {
+/* 目的地表示 */
+
+#destinationInfo {
+
   position: absolute;
-  left: 50%;
-  top: 50%;
 
-  transform: translate(-50%, -50%);
+  top: 85px;
+  left: 10px;
 
-  font-size: 45px;
-  z-index: 5;
-}
+  z-index: 1000;
 
-.locationText {
-  position: absolute;
-  top: 15px;
-  left: 15px;
+  background: rgba(0,0,0,0.75);
 
   padding: 8px 12px;
 
-  background: rgba(0,0,0,0.7);
   border-radius: 10px;
 
   font-size: 13px;
-  color: #ddd;
 }
 
-/* =========================
+/* =====================
    速度
-========================= */
+===================== */
 
 #speedBox {
+
   position: absolute;
-  bottom: 125px;
+
+  bottom: 120px;
   left: 0;
+
   width: 100%;
+
   text-align: center;
+
+  z-index: 1000;
+
+  pointer-events: none;
 }
 
 #speed {
-  font-size: 52px;
-  font-weight: 800;
+
+  font-size: 50px;
+  font-weight: bold;
 }
 
 .kmh {
+
   color: #aaa;
-  font-size: 16px;
 }
 
-/* =========================
-   終了ボタン
-========================= */
+/* =====================
+   下ボタン
+===================== */
 
 #finishButton {
+
   position: absolute;
 
   bottom: 20px;
   left: 20px;
 
   width: calc(100% - 40px);
+
   height: 65px;
 
   border: none;
   border-radius: 18px;
 
   background: #252b34;
+
   color: white;
 
   font-size: 20px;
   font-weight: bold;
+
+  z-index: 1000;
 }
 
-/* =========================
+/* =====================
    ATS
-========================= */
+===================== */
 
 #ats {
+
   display: none;
 
   position: absolute;
@@ -218,27 +224,30 @@ input {
   left: 20px;
 
   width: calc(100% - 40px);
+
+  z-index: 2000;
 }
 
 .atsWarning {
+
   text-align: center;
 
   color: #ff453a;
 
-  font-size: 18px;
   font-weight: bold;
 
-  margin-bottom: 9px;
+  margin-bottom: 8px;
 }
 
 .slider {
-  position: relative;
 
   height: 65px;
 
+  background: #252b34;
+
   border-radius: 18px;
 
-  background: #252b34;
+  position: relative;
 
   overflow: hidden;
 
@@ -246,21 +255,22 @@ input {
 }
 
 .sliderText {
+
   position: absolute;
 
   width: 100%;
   height: 100%;
 
   display: flex;
-  align-items: center;
+
   justify-content: center;
+  align-items: center;
 
   color: #aaa;
-
-  font-size: 18px;
 }
 
 .sliderButton {
+
   position: absolute;
 
   left: 5px;
@@ -274,25 +284,26 @@ input {
   background: #ff453a;
 
   display: flex;
-  align-items: center;
+
   justify-content: center;
+  align-items: center;
 
   font-size: 25px;
-  font-weight: bold;
-
-  z-index: 10;
 
   touch-action: none;
 }
+
 </style>
+
 </head>
 
 
 <body>
 
-<!-- =========================
+
+<!-- =====================
      設定
-========================= -->
+===================== -->
 
 <div id="setup">
 
@@ -300,22 +311,27 @@ input {
     🚲 cycletrain
   </div>
 
-  <label>種別</label>
+  <label>
+    種別
+  </label>
 
   <select id="type">
+
     <option>普通</option>
     <option>快速</option>
     <option>急行</option>
     <option>特急</option>
     <option>新快速</option>
+
   </select>
 
 
-  <label>行き先</label>
+  <label>
+    行き先
+  </label>
 
   <input
     id="destination"
-    type="text"
     placeholder="例：別府駅"
   >
 
@@ -324,15 +340,17 @@ input {
     class="startButton"
     onclick="startDrive()"
   >
+
     🚃 運転開始
+
   </button>
 
 </div>
 
 
-<!-- =========================
-     運転画面
-========================= -->
+<!-- =====================
+     運転
+===================== -->
 
 <div id="drive">
 
@@ -341,23 +359,13 @@ input {
   </div>
 
 
-  <div id="map">
-
-    <div class="road1"></div>
-    <div class="road2"></div>
-
-    <div class="locationText">
-      📍 GPS待機中
-    </div>
-
-    <div class="bike">
-      🚲
-    </div>
-
+  <div id="destinationInfo">
+    📍 地図をタップして目的地設定
   </div>
 
 
-  <!-- 速度 -->
+  <div id="map"></div>
+
 
   <div id="speedBox">
 
@@ -372,13 +380,13 @@ input {
   </div>
 
 
-  <!-- 通常時 -->
-
   <button
     id="finishButton"
     onclick="finishDrive()"
   >
+
     運転終了
+
   </button>
 
 
@@ -410,11 +418,28 @@ input {
 </div>
 
 
+<!-- Leaflet -->
+
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
 <script>
 
-/* =========================
+/* =====================
    変数
-========================= */
+===================== */
+
+let map;
+
+let currentMarker;
+
+let destinationMarker;
+
+let watchID;
+
+let destination = null;
 
 let atsActive = false;
 
@@ -422,237 +447,24 @@ let startX = 0;
 
 let sliderX = 0;
 
-let watchID = null;
 
-let alarmInterval = null;
-
-let bellInterval = null;
-
-let audioContext = null;
-
-
-/* =========================
-   音声システム準備
-========================= */
-
-function prepareAudio() {
-
-  if (!audioContext) {
-
-    audioContext =
-      new (window.AudioContext ||
-      window.webkitAudioContext)();
-
-  }
-
-  if (audioContext.state === "suspended") {
-
-    audioContext.resume();
-
-  }
-
-}
-
-
-/* =========================
-   ジリリリ音
-========================= */
-
-function ringAlarm() {
-
-  if (!audioContext) return;
-
-  const oscillator =
-    audioContext.createOscillator();
-
-  const gain =
-    audioContext.createGain();
-
-  oscillator.type = "square";
-
-  oscillator.frequency.value = 700;
-
-  gain.gain.value = 0.12;
-
-  oscillator.connect(gain);
-
-  gain.connect(audioContext.destination);
-
-  oscillator.start();
-
-  setTimeout(function() {
-
-    oscillator.stop();
-
-  }, 350);
-
-}
-
-
-/* =========================
-   ATS警報開始
-========================= */
-
-function startAlarm() {
-
-  stopAlarm();
-
-  ringAlarm();
-
-  alarmInterval =
-    setInterval(function() {
-
-      if (atsActive) {
-
-        ringAlarm();
-
-      }
-
-    }, 450);
-
-}
-
-
-/* =========================
-   ATS警報停止
-========================= */
-
-function stopAlarm() {
-
-  if (alarmInterval !== null) {
-
-    clearInterval(alarmInterval);
-
-    alarmInterval = null;
-
-  }
-
-}
-
-
-/* =========================
-   キンコン音
-========================= */
-
-function playBell() {
-
-  if (!audioContext) return;
-
-  /* キン */
-
-  const osc1 =
-    audioContext.createOscillator();
-
-  const gain1 =
-    audioContext.createGain();
-
-  osc1.type = "sine";
-
-  osc1.frequency.value = 880;
-
-  gain1.gain.value = 0.15;
-
-  osc1.connect(gain1);
-
-  gain1.connect(audioContext.destination);
-
-  osc1.start();
-
-  setTimeout(function() {
-
-    osc1.stop();
-
-  }, 180);
-
-
-  /* コン */
-
-  setTimeout(function() {
-
-    if (!audioContext) return;
-
-    const osc2 =
-      audioContext.createOscillator();
-
-    const gain2 =
-      audioContext.createGain();
-
-    osc2.type = "sine";
-
-    osc2.frequency.value = 660;
-
-    gain2.gain.value = 0.15;
-
-    osc2.connect(gain2);
-
-    gain2.connect(audioContext.destination);
-
-    osc2.start();
-
-    setTimeout(function() {
-
-      osc2.stop();
-
-    }, 220);
-
-  }, 180);
-
-}
-
-
-/* =========================
-   キンコン開始
-========================= */
-
-function startBell() {
-
-  stopBell();
-
-  playBell();
-
-  bellInterval =
-    setInterval(function() {
-
-      playBell();
-
-    }, 1300);
-
-}
-
-
-/* =========================
-   キンコン停止
-========================= */
-
-function stopBell() {
-
-  if (bellInterval !== null) {
-
-    clearInterval(bellInterval);
-
-    bellInterval = null;
-
-  }
-
-}
-
-
-/* =========================
+/* =====================
    運転開始
-========================= */
+===================== */
 
 function startDrive() {
-
-  prepareAudio();
 
   const type =
     document.getElementById("type").value;
 
-  const destination =
-    document.getElementById("destination").value.trim();
+  const destinationName =
+    document
+      .getElementById("destination")
+      .value
+      .trim();
 
 
-  if (destination === "") {
+  if (!destinationName) {
 
     alert("行き先を入力してください");
 
@@ -661,64 +473,223 @@ function startDrive() {
   }
 
 
-  document.getElementById("board").textContent =
-    type + "・" + destination + "行き";
+  document.getElementById("board")
+    .textContent =
+      type + "・" +
+      destinationName +
+      "行き";
 
 
-  document.getElementById("setup").style.display =
-    "none";
+  document.getElementById("setup")
+    .style.display = "none";
 
-  document.getElementById("drive").style.display =
-    "block";
-
-
-  startGPS();
+  document.getElementById("drive")
+    .style.display = "block";
 
 
-  /*
-   * 今はテスト用
-   * 5秒後にATS作動
-   *
-   * 後でここを
-   * 「目的地まで200m」
-   * のGPS判定に変更する
-   */
+  /* 地図作成 */
 
-  setTimeout(function() {
-
-    activateATS();
-
-  }, 5000);
+  initMap();
 
 }
 
 
-/* =========================
-   GPS
-========================= */
+/* =====================
+   地図
+===================== */
 
-function startGPS() {
+function initMap() {
 
-  if (!navigator.geolocation) {
+  if (map) {
 
-    document.querySelector(".locationText").textContent =
-      "📍 GPS非対応";
+    map.invalidateSize();
 
     return;
 
   }
 
 
+  /*
+   * 最初は日本中心
+   */
+
+  map =
+    L.map("map");
+
+
+  L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom: 19,
+
+      attribution:
+        '&copy; OpenStreetMap contributors'
+    }
+  ).addTo(map);
+
+
+  /*
+   * GPS取得
+   */
+
+  if (
+    navigator.geolocation
+  ) {
+
+    navigator.geolocation.getCurrentPosition(
+
+      function(position) {
+
+        const lat =
+          position.coords.latitude;
+
+        const lng =
+          position.coords.longitude;
+
+
+        map.setView(
+          [lat, lng],
+          17
+        );
+
+
+        currentMarker =
+          L.marker(
+            [lat, lng]
+          )
+          .addTo(map)
+          .bindPopup(
+            "🚲 現在地"
+          );
+
+
+        startGPS();
+
+      },
+
+      function() {
+
+        /*
+         * GPS失敗時
+         */
+
+        map.setView(
+          [35.681236, 139.767125],
+          13
+        );
+
+      },
+
+      {
+        enableHighAccuracy: true,
+        timeout: 10000
+      }
+
+    );
+
+  }
+
+  else {
+
+    map.setView(
+      [35.681236, 139.767125],
+      13
+    );
+
+  }
+
+
+  /*
+   * 地図をタップ
+   */
+
+  map.on(
+    "click",
+    function(e) {
+
+      setDestination(
+        e.latlng.lat,
+        e.latlng.lng
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================
+   目的地設定
+===================== */
+
+function setDestination(
+  lat,
+  lng
+) {
+
+  destination =
+    L.latLng(lat, lng);
+
+
+  /* 古い目的地を消す */
+
+  if (destinationMarker) {
+
+    map.removeLayer(
+      destinationMarker
+    );
+
+  }
+
+
+  /* 新しい目的地 */
+
+  destinationMarker =
+    L.marker(
+      [lat, lng]
+    )
+    .addTo(map)
+    .bindPopup(
+      "📍 目的地"
+    )
+    .openPopup();
+
+
+  document.getElementById(
+    "destinationInfo"
+  ).textContent =
+    "📍 目的地設定済み";
+
+
+}
+
+
+/* =====================
+   GPS
+===================== */
+
+function startGPS() {
+
   watchID =
     navigator.geolocation.watchPosition(
 
       function(position) {
 
+        const lat =
+          position.coords.latitude;
+
+        const lng =
+          position.coords.longitude;
+
+
         let speed =
           position.coords.speed;
 
 
-        if (speed === null || speed < 0) {
+        if (
+          speed === null ||
+          speed < 0
+        ) {
 
           speed = 0;
 
@@ -729,28 +700,82 @@ function startGPS() {
           speed * 3.6;
 
 
-        document.getElementById("speed").textContent =
+        document.getElementById(
+          "speed"
+        ).textContent =
           Math.round(speed);
 
 
-        document.querySelector(".locationText").textContent =
-          "📍 GPS取得中";
+        /*
+         * 現在地マーカー更新
+         */
+
+        if (currentMarker) {
+
+          currentMarker.setLatLng(
+            [lat, lng]
+          );
+
+        }
+
+
+        /*
+         * 目的地が設定されている場合
+         */
+
+        if (destination) {
+
+          const current =
+            L.latLng(lat, lng);
+
+
+          const distance =
+            current.distanceTo(
+              destination
+            );
+
+
+          document.getElementById(
+            "destinationInfo"
+          ).textContent =
+            "📍 目的地まで " +
+            Math.round(distance) +
+            " m";
+
+
+          /*
+           * 200m以内
+           */
+
+          if (
+            distance <= 200 &&
+            !atsActive
+          ) {
+
+            activateATS();
+
+          }
+
+        }
 
       },
-
 
       function() {
 
-        document.querySelector(".locationText").textContent =
-          "📍 GPS取得失敗";
+        document.getElementById(
+          "destinationInfo"
+        ).textContent =
+          "📍 GPSを取得できません";
 
       },
 
-
       {
         enableHighAccuracy: true,
+
         maximumAge: 1000,
+
         timeout: 10000
+
       }
 
     );
@@ -758,47 +783,109 @@ function startGPS() {
 }
 
 
-/* =========================
-   ATS作動
-========================= */
+/* =====================
+   ATS
+===================== */
 
 function activateATS() {
-
-  if (atsActive) return;
 
   atsActive = true;
 
 
-  document.getElementById("finishButton").style.display =
-    "none";
-
-  document.getElementById("ats").style.display =
-    "block";
+  document.getElementById(
+    "finishButton"
+  ).style.display = "none";
 
 
-  /* ジリリリ開始 */
+  document.getElementById(
+    "ats"
+  ).style.display = "block";
 
-  startAlarm();
+
+  /* テスト用音 */
+
+  beep();
 
 }
 
 
-/* =========================
-   ATSスライド
-========================= */
+/* =====================
+   ATS音
+===================== */
+
+function beep() {
+
+  const AudioContext =
+    window.AudioContext ||
+    window.webkitAudioContext;
+
+
+  if (!AudioContext) return;
+
+
+  const audio =
+    new AudioContext();
+
+
+  const oscillator =
+    audio.createOscillator();
+
+  const gain =
+    audio.createGain();
+
+
+  oscillator.type =
+    "square";
+
+  oscillator.frequency.value =
+    700;
+
+  gain.gain.value =
+    0.12;
+
+
+  oscillator.connect(gain);
+
+  gain.connect(
+    audio.destination
+  );
+
+
+  oscillator.start();
+
+
+  setTimeout(
+    function() {
+
+      oscillator.stop();
+
+      audio.close();
+
+    },
+    300
+  );
+
+}
+
+
+/* =====================
+   スライド
+===================== */
 
 const sliderButton =
-  document.getElementById("sliderButton");
+  document.getElementById(
+    "sliderButton"
+  );
 
 
 sliderButton.addEventListener(
   "touchstart",
-  function(event) {
+  function(e) {
 
     if (!atsActive) return;
 
     startX =
-      event.touches[0].clientX;
+      e.touches[0].clientX;
 
   }
 );
@@ -806,35 +893,31 @@ sliderButton.addEventListener(
 
 sliderButton.addEventListener(
   "touchmove",
-  function(event) {
+  function(e) {
 
     if (!atsActive) return;
 
 
-    const currentX =
-      event.touches[0].clientX;
+    const x =
+      e.touches[0].clientX;
 
 
     sliderX =
-      currentX - startX;
+      x - startX;
 
 
-    if (sliderX < 0) {
-
+    if (sliderX < 0)
       sliderX = 0;
 
-    }
 
-
-    if (sliderX > 250) {
-
+    if (sliderX > 250)
       sliderX = 250;
-
-    }
 
 
     sliderButton.style.transform =
-      "translateX(" + sliderX + "px)";
+      "translateX(" +
+      sliderX +
+      "px)";
 
   }
 );
@@ -849,47 +932,26 @@ sliderButton.addEventListener(
 
     if (sliderX >= 190) {
 
-      /*
-       * ATS解除
-       */
-
       atsActive = false;
 
 
-      /* ジリリ停止 */
+      document.getElementById(
+        "ats"
+      ).style.display =
+        "none";
 
-      stopAlarm();
+
+      document.getElementById(
+        "finishButton"
+      ).style.display =
+        "block";
 
 
       sliderButton.style.transform =
-        "translateX(250px)";
+        "translateX(0)";
 
 
-      setTimeout(function() {
-
-        document.getElementById("ats").style.display =
-          "none";
-
-
-        document.getElementById("finishButton").style.display =
-          "block";
-
-
-        sliderButton.style.transform =
-          "translateX(0)";
-
-
-        sliderX = 0;
-
-
-        /*
-         * 解除後から
-         * キンコン開始
-         */
-
-        startBell();
-
-      }, 250);
+      sliderX = 0;
 
     }
 
@@ -906,36 +968,23 @@ sliderButton.addEventListener(
 );
 
 
-/* =========================
-   運転終了
-========================= */
+/* =====================
+   終了
+===================== */
 
 function finishDrive() {
 
-  if (atsActive) {
-
-    return;
-
-  }
+  if (atsActive) return;
 
 
-  if (!confirm("運転を終了しますか？")) {
-
-    return;
-
-  }
-
-
-  /* 全音停止 */
-
-  stopAlarm();
-
-  stopBell();
+  if (
+    !confirm(
+      "運転を終了しますか？"
+    )
+  ) return;
 
 
-  /* GPS停止 */
-
-  if (watchID !== null) {
+  if (watchID) {
 
     navigator.geolocation.clearWatch(
       watchID
@@ -946,17 +995,16 @@ function finishDrive() {
   }
 
 
-  /* 画面を戻す */
-
-  document.getElementById("drive").style.display =
+  document.getElementById(
+    "drive"
+  ).style.display =
     "none";
 
-  document.getElementById("setup").style.display =
+
+  document.getElementById(
+    "setup"
+  ).style.display =
     "block";
-
-
-  document.getElementById("speed").textContent =
-    "0";
 
 }
 
