@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>cycletrain</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #080b10;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  overflow: hidden;
+}
+
+/* 設定画面 */
+#setup {
+  height: 100vh;
+  padding: 30px 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+label {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  color: #aaa;
+}
+
+select,
+input {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid #333b48;
+  background: #151a22;
+  color: white;
+  font-size: 18px;
+}
+
+.start {
+  width: 100%;
+  margin-top: 30px;
+  padding: 17px;
+  border: none;
+  border-radius: 16px;
+  background: #238636;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* 運転画面 */
+#drive {
+  display: none;
+  height: 100vh;
+  position: relative;
+}
+
+/* 幕 */
+#destinationBoard {
+  height: 75px;
+  background: #050505;
+  border-bottom: 3px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* マップ */
+#map {
+  height: calc(100vh - 275px);
+  background:
+    linear-gradient(45deg, #171c23 25%, transparent 25%),
+    linear-gradient(-45deg, #171c23 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #171c23 75%),
+    linear-gradient(-45deg, transparent 75%, #171c23 75%);
+  background-size: 40px 40px;
+  background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+  position: relative;
+}
+
+/* 現在位置 */
+.bike {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 45px;
+}
+
+/* 速度 */
+#speedBox {
+  position: absolute;
+  bottom: 130px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+#speed {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.kmh {
+  font-size: 18px;
+  color: #aaa;
+}
+
+/* 下のボタン */
+#bottomButton {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: calc(100% - 40px);
+  height: 65px;
+  border-radius: 18px;
+  border: none;
+  background: #242a33;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* ATS */
+#ats {
+  display: none;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: calc(100% - 40px);
+}
+
+.atsText {
+  text-align: center;
+  color: #ff453a;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.slider {
+  height: 65px;
+  background: #242a33;
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sliderText {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  line-height: 65px;
+  color: #aaa;
+  font-size: 18px;
+}
+
+.sliderButton {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 55px;
+  height: 55px;
+  border-radius: 15px;
+  background: #ff453a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  z-index: 2;
+  touch-action: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 設定画面 -->
+<div id="setup">
+
+  <h1>🚲 cycletrain</h1>
+
+  <label>種別</label>
+
+  <select id="type">
+    <option>普通</option>
+    <option>快速</option>
+    <option>急行</option>
+    <option>特急</option>
+    <option>新快速</option>
+  </select>
+
+  <label>行き先</label>
+
+  <input id="destination" placeholder="例：別府駅">
+
+  <button class="start" onclick="startDrive()">
+    運転開始
+  </button>
+
+</div>
+
+
+<!-- 運転画面 -->
+<div id="drive">
+
+  <div id="destinationBoard">
+    快速・別府駅行き
+  </div>
+
+  <div id="map">
+    <div class="bike">🚲</div>
+  </div>
+
+  <div id="speedBox">
+    <div id="speed">0</div>
+    <div class="kmh">km/h</div>
+  </div>
+
+  <button id="bottomButton" onclick="finishDrive()">
+    運転終了
+  </button>
+
+  <div id="ats">
+
+    <div class="atsText">
+      ⚠️ ATS作動
+    </div>
+
+    <div class="slider">
+
+      <div class="sliderText">
+        スライドで解除
+      </div>
+
+      <div class="sliderButton" id="sliderButton">
+        →
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let atsActive = false;
+let startX = 0;
+let currentX = 0;
+
+
+/* 運転開始 */
+function startDrive() {
+
+  const type =
+    document.getElementById("type").value;
+
+  const destination =
+    document.getElementById("destination").value;
+
+  if (destination.trim() === "") {
+
+    alert("行き先を入力してください");
+
+    return;
+  }
+
+  document.getElementById("setup").style.display = "none";
+
+  document.getElementById("drive").style.display = "block";
+
+  document.getElementById("destinationBoard").textContent =
+    type + "・" + destination + "行き";
+
+}
+
+
+/* 運転終了 */
+function finishDrive() {
+
+  if (atsActive) return;
+
+  if (confirm("運転を終了しますか？")) {
+
+    document.getElementById("drive").style.display = "none";
+
+    document.getElementById("setup").style.display = "block";
+
+  }
+
+}
+
+
+/* テスト用ATS */
+/* 今はボタンを5秒後にATS作動 */
+
+function testATS() {
+
+  atsActive = true;
+
+  document.getElementById("bottomButton").style.display = "none";
+
+  document.getElementById("ats").style.display = "block";
+
+}
+
+
+/* スライド処理 */
+
+const slider =
+  document.getElementById("sliderButton");
+
+slider.addEventListener("touchstart", function(e) {
+
+  startX = e.touches[0].clientX;
+
+});
+
+slider.addEventListener("touchmove", function(e) {
+
+  if (!atsActive) return;
+
+  currentX = e.touches[0].clientX;
+
+  let move = currentX - startX;
+
+  if (move < 0) move = 0;
+
+  if (move > 260) move = 260;
+
+  slider.style.transform =
+    "translateX(" + move + "px)";
+
+});
+
+slider.addEventListener("touchend", function() {
+
+  let matrix =
+    new DOMMatrix(getComputedStyle(slider).transform);
+
+  let x = matrix.m41;
+
+  if (x > 200) {
+
+    slider.style.transform =
+      "translateX(260px)";
+
+    setTimeout(function() {
+
+      atsActive = false;
+
+      document.getElementById("ats").style.display = "none";
+
+      document.getElementById("bottomButton").style.display = "block";
+
+      slider.style.transform =
+        "translateX(0)";
+
+    }, 300);
+
+  } else {
+
+    slider.style.transform =
+      "translateX(0)";
+
+  }
+
+});
+
+
+/* 今はテストとして5秒後にATS */
+
+function startATSTest() {
+
+  setTimeout(function() {
+
+    testATS();
+
+  }, 5000);
+
+}
+
+</script>
+
+</body>
+</html>
