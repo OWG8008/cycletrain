@@ -1,1087 +1,2115 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no">
+
 <title>cycletrain</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
 <style>
+
+/* =====================================================
+   基本
+===================================================== */
+
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
-html,body{
+
+html,
+body{
   margin:0;
+  padding:0;
   width:100%;
   height:100%;
   overflow:hidden;
 }
+
 body{
   background:#08090c;
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif;
+  color:white;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "Helvetica Neue",
+    sans-serif;
 }
-/* =========================
-   共通Liquid Glass
-========================= */
+
+
+/* =====================================================
+   Liquid Glass
+===================================================== */
+
 .glass{
-  background:rgba(20,20,24,.72);
-  border:1px solid rgba(255,255,255,.15);
-  box-shadow:
-    0 15px 45px rgba(0,0,0,.35),
-    inset 0 1px 0 rgba(255,255,255,.12);
-  backdrop-filter:blur(30px) saturate(170%);
-  -webkit-backdrop-filter:blur(30px) saturate(170%);
-}
-/* =========================
-   設定画面
-========================= */
-#setup{
-  width:100%;
-  height:100vh;
-  padding:20px;
-  overflow-y:auto;
-}
-.logo{
-  text-align:center;
-  font-size:34px;
-  font-weight:850;
-  letter-spacing:-1.5px;
-  margin:20px 0;
-}
-/* =========================
-   設定マップ
-========================= */
-#setupMapArea{
-  position:relative;
-  width:100%;
-  height:43vh;
-  min-height:300px;
-  border-radius:30px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.15);
-  box-shadow:0 15px 50px rgba(0,0,0,.45);
-}
-#setupMap{
-  width:100%;
-  height:100%;
-}
-.setupHint{
-  position:absolute;
-  top:10px;
-  left:10px;
-  right:10px;
-  z-index:1000;
-  padding:11px 14px;
-  border-radius:20px;
-  background:rgba(0,0,0,.72);
-  border:1px solid rgba(255,255,255,.14);
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
-  text-align:center;
-  font-size:13px;
-  font-weight:700;
-}
-/* =========================
-   入力
-========================= */
-label{
-  display:block;
-  margin:16px 4px 7px;
-  color:rgba(255,255,255,.58);
-  font-size:14px;
-  font-weight:650;
-}
-select,input{
-  width:100%;
-  height:56px;
-  padding:0 16px;
-  border-radius:20px;
-  border:1px solid rgba(255,255,255,.13);
-  background:rgba(255,255,255,.075);
-  color:#fff;
-  font-size:17px;
-  outline:none;
-}
-select option{
-  background:#17191e;
-  color:#fff;
-}
-/* =========================
-   ルート設定情報
-========================= */
-#setupInfo{
-  margin-top:12px;
-  padding:14px;
-  border-radius:21px;
-  background:rgba(255,255,255,.055);
-  border:1px solid rgba(255,255,255,.09);
-  font-size:14px;
-  line-height:1.75;
-}
-.small{
-  color:rgba(255,255,255,.55);
-  font-size:12px;
-}
-/* =========================
-   経由地名入力
-========================= */
-#viaNameArea{
-  display:none;
-  margin-top:10px;
-}
-#viaNameRow{
-  display:flex;
-  gap:8px;
-}
-#viaNameRow input{
-  flex:1;
-}
-.smallButton{
-  width:90px;
-  border:0;
-  border-radius:18px;
-  background:#ff9500;
-  color:#fff;
-  font-weight:800;
-}
-/* =========================
-   開始
-========================= */
-.startButton{
-  width:100%;
-  height:62px;
-  margin-top:16px;
-  border:0;
-  border-radius:23px;
-  background:linear-gradient(
-    180deg,
-    #4aa3ff,
-    #1478e8
-  );
-  color:#fff;
-  font-size:19px;
-  font-weight:800;
-  box-shadow:
-    0 12px 35px rgba(20,120,232,.30),
-    inset 0 1px 0 rgba(255,255,255,.32);
-}
-.startButton:active{
-  transform:scale(.97);
-}
-/* =========================
-   運転画面
-========================= */
-#drive{
-  display:none;
-  position:relative;
-  width:100%;
-  height:100vh;
-  overflow:hidden;
-}
-/* =========================
-   行先幕
-========================= */
-#board{
-  position:absolute;
-  top:calc(8px + env(safe-area-inset-top));
-  left:10px;
-  right:10px;
-  height:70px;
-  z-index:3000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  padding:0 14px;
-  border-radius:26px;
-  background:linear-gradient(
-    135deg,
-    rgba(0,0,0,.88),
-    rgba(28,28,31,.64)
-  );
-  border:1px solid rgba(255,255,255,.17);
-  box-shadow:
-    0 14px 42px rgba(0,0,0,.45),
-    inset 0 1px 0 rgba(255,255,255,.14);
-  backdrop-filter:blur(32px) saturate(180%);
-  -webkit-backdrop-filter:blur(32px) saturate(180%);
-}
-/* 種別 */
-#boardType{
-  font-size:21px;
-  font-weight:850;
-  white-space:nowrap;
-}
-/* 行先幕 */
-#destinationDisplay{
-  padding:7px 14px;
-  border-radius:15px;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(40,40,43,.95),
-      rgba(5,5,7,.9)
-    );
-  border:1px solid rgba(255,255,255,.13);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.1),
-    0 4px 15px rgba(0,0,0,.3);
-  font-size:20px;
-  font-weight:850;
-  white-space:nowrap;
-}
-.board-normal{
-  color:#fff;
-}
-.board-shinkaisoku{
-  color:#4da3ff;
-}
-.board-other{
-  color:#ff453a;
-}
-/* =========================
-   次は
-========================= */
-#nextBoard{
-  position:absolute;
-  top:calc(86px + env(safe-area-inset-top));
-  left:10px;
-  right:10px;
-  height:38px;
-  z-index:2900;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  border-radius:19px;
-  background:rgba(0,0,0,.68);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
-}
-#nextText{
-  white-space:nowrap;
-  padding-left:100%;
-  font-size:14px;
-  font-weight:700;
-  animation:scrollText 10s linear infinite;
-}
-@keyframes scrollText{
-  from{
-    transform:translateX(0);
-  }
-  to{
-    transform:translateX(-180%);
-  }
-}
-/* =========================
-   マップ
-========================= */
-#map{
-  width:100%;
-  height:100%;
-  background:#e3e8ec;
-}
-.leaflet-control-zoom{
-  border:0!important;
-  margin:135px 12px 0 0!important;
-}
-.leaflet-control-zoom a{
-  width:42px!important;
-  height:42px!important;
-  line-height:42px!important;
-  border:0!important;
-  color:#222!important;
-  background:rgba(255,255,255,.82)!important;
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  box-shadow:0 5px 20px rgba(0,0,0,.18);
-}
-.leaflet-control-zoom a:first-child{
-  border-radius:15px 15px 5px 5px!important;
-}
-.leaflet-control-zoom a:last-child{
-  border-radius:5px 5px 15px 15px!important;
-}
-/* =========================
-   上部情報
-========================= */
-#distanceBox,
-#limitBox,
-#modeBox,
-#followBox,
-#routeButton{
-  position:absolute;
-  z-index:2100;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(0,0,0,.70);
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
-  box-shadow:0 8px 25px rgba(0,0,0,.25);
-}
-/* 距離 */
-#distanceBox{
-  top:calc(132px + env(safe-area-inset-top));
-  left:10px;
-  padding:10px 14px;
-  border-radius:18px;
-  font-size:13px;
-}
-/* 制限 */
-#limitBox{
-  top:calc(132px + env(safe-area-inset-top));
-  right:10px;
-  padding:10px 14px;
-  border-radius:18px;
-  font-size:13px;
-}
-/* 追従 */
-#followBox{
-  top:calc(172px + env(safe-area-inset-top));
-  left:10px;
-  padding:8px 11px;
-  border-radius:17px;
-  display:flex;
-  align-items:center;
-  gap:7px;
-  font-size:13px;
-}
-/* モード */
-#modeBox{
-  top:calc(172px + env(safe-area-inset-top));
-  right:10px;
-  padding:9px 12px;
-  border-radius:17px;
-  font-size:13px;
-}
-/* スイッチ */
-#followSwitch{
-  width:45px;
-  height:25px;
-  appearance:none;
-  padding:0;
-  border:0;
-  background:rgba(255,255,255,.25);
-  border-radius:20px;
-  position:relative;
-}
-#followSwitch:checked{
-  background:#238636;
-}
-#followSwitch::after{
-  content:"";
-  position:absolute;
-  width:21px;
-  height:21px;
-  top:2px;
-  left:2px;
-  border-radius:50%;
-  background:#fff;
-  transition:.2s;
-}
-#followSwitch:checked::after{
-  transform:translateX(20px);
-}
-/* =========================
-   地点一覧
-========================= */
-#routeButton{
-  top:calc(211px + env(safe-area-inset-top));
-  right:10px;
-  color:#fff;
-  padding:9px 13px;
-  border-radius:17px;
-  font-size:13px;
-}
-#routePanel{
-  display:none;
-  position:absolute;
-  top:calc(255px + env(safe-area-inset-top));
-  right:10px;
-  width:250px;
-  max-height:310px;
-  overflow-y:auto;
-  z-index:2500;
-  padding:10px;
-  border-radius:23px;
-  background:rgba(10,12,16,.84);
-  border:1px solid rgba(255,255,255,.14);
-  backdrop-filter:blur(30px) saturate(160%);
-  -webkit-backdrop-filter:blur(30px) saturate(160%);
-}
-.routeTitle{
-  color:rgba(255,255,255,.55);
-  font-size:13px;
-  padding:5px 7px 9px;
-}
-.routeItem{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:6px;
-  padding:10px;
-  margin-bottom:6px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:15px;
-  font-size:13px;
-}
-.deleteRoute{
-  border:0;
-  border-radius:10px;
-  background:rgba(255,69,58,.8);
-  color:#fff;
-  padding:6px 8px;
-}
-/* =========================
-   速度
-========================= */
-#speedBox{
-  position:absolute;
-  bottom:calc(115px + env(safe-area-inset-bottom));
-  left:0;
-  width:100%;
-  z-index:2000;
-  text-align:center;
-  pointer-events:none;
-}
-#speed{
-  font-size:55px;
-  font-weight:850;
-  letter-spacing:-2px;
-  text-shadow:0 4px 20px rgba(0,0,0,.5);
-}
-.kmh{
-  color:rgba(255,255,255,.55);
-  font-size:14px;
-}
-/* =========================
-   速度超過
-========================= */
-#overspeed{
-  display:none;
-  position:absolute;
-  bottom:calc(180px + env(safe-area-inset-bottom));
-  left:0;
-  width:100%;
-  z-index:2600;
-  text-align:center;
-  color:#ff453a;
-  font-size:19px;
-  font-weight:800;
-}
-/* =========================
-   終了
-========================= */
-#finishButton{
-  position:absolute;
-  left:20px;
-  bottom:calc(20px + env(safe-area-inset-bottom));
-  width:calc(100% - 40px);
-  height:62px;
-  z-index:2800;
-  border:1px solid rgba(255,255,255,.13);
-  border-radius:23px;
-  background:rgba(0,0,0,.73);
-  color:#fff;
-  font-size:19px;
-  font-weight:800;
-  backdrop-filter:blur(28px);
-  -webkit-backdrop-filter:blur(28px);
-}
-/* =========================
-   ATS
-========================= */
-#ats{
-  display:none;
-  position:absolute;
-  left:15px;
-  bottom:calc(15px + env(safe-area-inset-bottom));
-  width:calc(100% - 30px);
-  z-index:4000;
-  padding:17px;
-  border-radius:30px;
   background:
     linear-gradient(
       135deg,
-      rgba(0,0,0,.92),
-      rgba(25,25,28,.70)
+      rgba(255,255,255,.14),
+      rgba(255,255,255,.035)
     );
-  border:1px solid rgba(255,255,255,.17);
+
+  border:
+    1px solid
+    rgba(255,255,255,.16);
+
   box-shadow:
-    0 20px 60px rgba(0,0,0,.58),
-    inset 0 1px 0 rgba(255,255,255,.14);
-  backdrop-filter:blur(35px) saturate(180%);
-  -webkit-backdrop-filter:blur(35px) saturate(180%);
+    0 12px 40px
+    rgba(0,0,0,.35),
+
+    inset 0 1px 0
+    rgba(255,255,255,.14);
+
+  backdrop-filter:
+    blur(30px)
+    saturate(170%);
+
+  -webkit-backdrop-filter:
+    blur(30px)
+    saturate(170%);
 }
-.atsWarning{
-  text-align:center;
-  color:#ff453a;
-  font-size:20px;
-  font-weight:850;
-  margin-bottom:6px;
-}
-.atsTimer{
-  text-align:center;
-  color:rgba(255,255,255,.55);
-  font-size:13px;
-  margin-bottom:10px;
-}
-/* =========================
-   ATS解除スライダー
-========================= */
-.slider{
+
+
+/* =====================================================
+   最初の設定画面
+===================================================== */
+
+#setup{
+
   position:relative;
-  height:66px;
-  border-radius:21px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.08);
-  overflow:hidden;
-  touch-action:none;
-}
-.sliderText{
-  position:absolute;
+
   width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:rgba(255,255,255,.48);
-  font-size:17px;
+  height:100vh;
+
+  overflow:hidden;
+
+  background:#dfe5e9;
 }
-.sliderButton{
+
+
+/* 最初から地図 */
+
+#setupMap{
+
   position:absolute;
-  left:5px;
-  top:5px;
-  width:56px;
-  height:56px;
-  border-radius:18px;
+
+  inset:0;
+
+  z-index:1;
+}
+
+
+/* =====================================================
+   上部タイトル
+===================================================== */
+
+.setupTop{
+
+  position:absolute;
+
+  top:
+    calc(10px + env(safe-area-inset-top));
+
+  left:10px;
+  right:10px;
+
+  height:62px;
+
+  z-index:3000;
+
+  border-radius:24px;
+
   display:flex;
+
   align-items:center;
+
+  justify-content:space-between;
+
+  padding:0 17px;
+
+  background:
+    rgba(0,0,0,.70);
+
+  border:
+    1px solid
+    rgba(255,255,255,.16);
+
+  backdrop-filter:
+    blur(30px)
+    saturate(170%);
+
+  -webkit-backdrop-filter:
+    blur(30px)
+    saturate(170%);
+
+  box-shadow:
+    0 10px 35px
+    rgba(0,0,0,.35);
+}
+
+
+.setupTitle{
+
+  font-size:21px;
+
+  font-weight:850;
+
+  letter-spacing:-.5px;
+}
+
+
+.setupStep{
+
+  font-size:13px;
+
+  color:
+    rgba(255,255,255,.58);
+}
+
+
+/* =====================================================
+   設定パネル
+===================================================== */
+
+.setupPanel{
+
+  position:absolute;
+
+  left:10px;
+  right:10px;
+
+  bottom:
+    calc(10px + env(safe-area-inset-bottom));
+
+  z-index:3000;
+
+  padding:15px;
+
+  border-radius:28px;
+
+  background:
+    rgba(10,11,15,.78);
+
+  border:
+    1px solid
+    rgba(255,255,255,.15);
+
+  box-shadow:
+    0 18px 55px
+    rgba(0,0,0,.48),
+
+    inset 0 1px 0
+    rgba(255,255,255,.12);
+
+  backdrop-filter:
+    blur(35px)
+    saturate(170%);
+
+  -webkit-backdrop-filter:
+    blur(35px)
+    saturate(170%);
+
+}
+
+
+.setupRow{
+
+  display:flex;
+
+  gap:8px;
+
+  margin-bottom:9px;
+}
+
+
+.setupField{
+
+  flex:1;
+
+  min-width:0;
+}
+
+
+.setupField label{
+
+  display:block;
+
+  margin:
+    0 0 6px 4px;
+
+  font-size:12px;
+
+  color:
+    rgba(255,255,255,.55);
+}
+
+
+select,
+input{
+
+  width:100%;
+
+  height:48px;
+
+  padding:
+    0 13px;
+
+  border-radius:16px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  outline:none;
+
+  background:
+    rgba(255,255,255,.08);
+
+  color:white;
+
+  font-size:16px;
+
+  -webkit-appearance:none;
+
+  backdrop-filter:
+    blur(20px);
+
+  -webkit-backdrop-filter:
+    blur(20px);
+}
+
+
+select option{
+
+  background:#17191e;
+
+  color:white;
+}
+
+
+.setupHint{
+
+  text-align:center;
+
+  color:
+    rgba(255,255,255,.60);
+
+  font-size:12px;
+
+  margin:
+    5px 0 10px;
+}
+
+
+.setupButtons{
+
+  display:flex;
+
+  gap:8px;
+}
+
+
+.setupButton{
+
+  flex:1;
+
+  height:53px;
+
+  border:0;
+
+  border-radius:19px;
+
+  font-size:16px;
+
+  font-weight:800;
+
+  color:white;
+
+  background:
+    rgba(255,255,255,.10);
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+}
+
+
+.setupButton.blue{
+
+  background:
+    linear-gradient(
+      180deg,
+      #4aa3ff,
+      #1478e8
+    );
+
+  box-shadow:
+    0 8px 25px
+    rgba(20,120,232,.28);
+}
+
+
+.setupButton:active{
+
+  transform:scale(.97);
+
+}
+
+
+/* =====================================================
+   地図上の設定モード
+===================================================== */
+
+#setupMode{
+
+  position:absolute;
+
+  top:
+    calc(82px + env(safe-area-inset-top));
+
+  left:10px;
+
+  z-index:3000;
+
+  padding:
+    9px 14px;
+
+  border-radius:17px;
+
+  background:
+    rgba(0,0,0,.72);
+
+  border:
+    1px solid
+    rgba(255,255,255,.13);
+
+  backdrop-filter:
+    blur(25px);
+
+  -webkit-backdrop-filter:
+    blur(25px);
+
+  font-size:13px;
+
+  font-weight:700;
+}
+
+
+/* =====================================================
+   地点リスト
+===================================================== */
+
+#setupRouteList{
+
+  max-height:100px;
+
+  overflow-y:auto;
+
+  margin-bottom:8px;
+}
+
+
+.setupRouteItem{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:8px;
+
+  padding:
+    8px 10px;
+
+  margin-bottom:5px;
+
+  border-radius:13px;
+
+  background:
+    rgba(255,255,255,.07);
+
+  font-size:13px;
+}
+
+
+.setupRouteItem span{
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  white-space:nowrap;
+}
+
+
+.deleteButton{
+
+  flex:none;
+
+  border:0;
+
+  border-radius:10px;
+
+  padding:
+    6px 9px;
+
+  background:
+    rgba(255,69,58,.75);
+
+  color:white;
+
+}
+
+
+/* =====================================================
+   運転画面
+===================================================== */
+
+#drive{
+
+  display:none;
+
+  position:relative;
+
+  width:100%;
+  height:100vh;
+
+  overflow:hidden;
+}
+
+
+#map{
+
+  position:absolute;
+
+  inset:0;
+
+  z-index:1;
+}
+
+
+/* =====================================================
+   行先表示
+===================================================== */
+
+#board{
+
+  position:absolute;
+
+  top:
+    calc(8px + env(safe-area-inset-top));
+
+  left:10px;
+  right:10px;
+
+  height:68px;
+
+  z-index:3000;
+
+  display:flex;
+
+  align-items:center;
+
   justify-content:center;
-  background:linear-gradient(
-    180deg,
-    #ff7043,
-    #e63828
-  );
-  font-size:25px;
+
+  padding:
+    0 18px;
+
+  border-radius:25px;
+
+  overflow:hidden;
+
+  white-space:nowrap;
+
+  font-size:22px;
+
+  font-weight:850;
+
+  letter-spacing:-.5px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,0,0,.80),
+      rgba(25,25,28,.58)
+    );
+
+  border:
+    1px solid
+    rgba(255,255,255,.17);
+
   box-shadow:
-    0 5px 15px rgba(255,69,58,.25),
-    inset 0 1px 0 rgba(255,255,255,.25);
-  touch-action:none;
+    0 12px 35px
+    rgba(0,0,0,.42),
+
+    inset 0 1px 0
+    rgba(255,255,255,.14);
+
+  backdrop-filter:
+    blur(32px)
+    saturate(175%);
+
+  -webkit-backdrop-filter:
+    blur(32px)
+    saturate(175%);
 }
-/* =========================
-   マーカー
-========================= */
-.current-marker{
-  width:18px;
-  height:18px;
+
+
+.board-normal{
+  color:white;
+}
+
+
+.board-shinkaisoku{
+  color:#4da3ff;
+}
+
+
+.board-other{
+  color:#ff453a;
+}
+
+
+/* =====================================================
+   次は ○○
+===================================================== */
+
+#nextBoard{
+
+  position:absolute;
+
+  top:
+    calc(82px + env(safe-area-inset-top));
+
+  left:10px;
+  right:10px;
+
+  height:38px;
+
+  z-index:2900;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  overflow:hidden;
+
+  border-radius:18px;
+
+  background:
+    rgba(0,0,0,.68);
+
+  border:
+    1px solid
+    rgba(255,255,255,.11);
+
+  backdrop-filter:
+    blur(25px);
+
+  -webkit-backdrop-filter:
+    blur(25px);
+
+  font-size:14px;
+
+  font-weight:700;
+
+}
+
+
+.nextText{
+
+  display:inline-block;
+
+  white-space:nowrap;
+
+}
+
+
+/* =====================================================
+   距離
+===================================================== */
+
+#distanceBox{
+
+  position:absolute;
+
+  top:
+    calc(128px + env(safe-area-inset-top));
+
+  left:10px;
+
+  z-index:2500;
+
+  padding:
+    9px 13px;
+
+  border-radius:17px;
+
+  background:
+    rgba(0,0,0,.70);
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  backdrop-filter:
+    blur(25px);
+
+  -webkit-backdrop-filter:
+    blur(25px);
+
+  font-size:13px;
+}
+
+
+/* =====================================================
+   制限速度
+===================================================== */
+
+#limitBox{
+
+  position:absolute;
+
+  top:
+    calc(128px + env(safe-area-inset-top));
+
+  right:10px;
+
+  z-index:2500;
+
+  padding:
+    9px 13px;
+
+  border-radius:17px;
+
+  background:
+    rgba(0,0,0,.70);
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  backdrop-filter:
+    blur(25px);
+
+  -webkit-backdrop-filter:
+    blur(25px);
+
+  font-size:13px;
+}
+
+
+/* =====================================================
+   追従
+===================================================== */
+
+#followBox{
+
+  position:absolute;
+
+  top:
+    calc(168px + env(safe-area-inset-top));
+
+  left:10px;
+
+  z-index:2500;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:7px;
+
+  padding:
+    8px 10px;
+
+  border-radius:16px;
+
+  background:
+    rgba(0,0,0,.68);
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  backdrop-filter:
+    blur(22px);
+
+  -webkit-backdrop-filter:
+    blur(22px);
+
+  font-size:13px;
+}
+
+
+#followSwitch{
+
+  width:45px;
+  height:25px;
+
+  appearance:none;
+
+  padding:0;
+
+  border:0;
+
+  background:
+    rgba(255,255,255,.25);
+
+  border-radius:20px;
+
+  position:relative;
+}
+
+
+#followSwitch:checked{
+
+  background:#238636;
+}
+
+
+#followSwitch::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:21px;
+  height:21px;
+
+  top:2px;
+  left:2px;
+
   border-radius:50%;
-  background:#1677ff;
-  border:3px solid #fff;
+
+  background:white;
+
+  transition:.2s;
+}
+
+
+#followSwitch:checked::after{
+
+  transform:
+    translateX(20px);
+}
+
+
+/* =====================================================
+   地点一覧
+===================================================== */
+
+#routeButton{
+
+  position:absolute;
+
+  top:
+    calc(168px + env(safe-area-inset-top));
+
+  right:10px;
+
+  z-index:2500;
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  border-radius:16px;
+
+  background:
+    rgba(0,0,0,.68);
+
+  color:white;
+
+  padding:
+    9px 12px;
+
+  font-size:13px;
+
+  backdrop-filter:
+    blur(22px);
+
+  -webkit-backdrop-filter:
+    blur(22px);
+}
+
+
+#routePanel{
+
+  display:none;
+
+  position:absolute;
+
+  top:
+    calc(210px + env(safe-area-inset-top));
+
+  right:10px;
+
+  width:250px;
+
+  max-height:300px;
+
+  overflow-y:auto;
+
+  z-index:4000;
+
+  padding:9px;
+
+  border-radius:22px;
+
+  background:
+    rgba(10,12,16,.80);
+
+  border:
+    1px solid
+    rgba(255,255,255,.14);
+
   box-shadow:
-    0 0 0 6px rgba(22,119,255,.22),
-    0 4px 12px rgba(0,0,0,.35);
+    0 15px 45px
+    rgba(0,0,0,.45);
+
+  backdrop-filter:
+    blur(30px)
+    saturate(160%);
+
+  -webkit-backdrop-filter:
+    blur(30px)
+    saturate(160%);
 }
-.destination-marker{
-  width:24px;
-  height:24px;
-  border-radius:50%;
-  background:#ff453a;
-  border:4px solid #fff;
-  box-shadow:0 3px 12px rgba(0,0,0,.35);
+
+
+.routeTitle{
+
+  color:
+    rgba(255,255,255,.55);
+
+  font-size:13px;
+
+  padding:
+    5px 7px 9px;
 }
-.via-marker{
-  width:20px;
-  height:20px;
-  border-radius:50%;
-  background:#ff9500;
-  border:3px solid #fff;
-  box-shadow:0 3px 10px rgba(0,0,0,.3);
-}
-/* =========================
-   小さい画面
-========================= */
-@media(max-width:500px){
-  #boardType{
-    font-size:19px;
-  }
-  #destinationDisplay{
-    font-size:18px;
-  }
-  .nextText{
-    font-size:13px;
-  }
-}
-</style>
-</head>
-<body>
-<!-- =====================================================
-     初期設定
-===================================================== -->
-<div id="setup">
-  <div class="logo">
-    🚲 cycletrain
-  </div>
-  <div id="setupMapArea">
-<div id="setupMap"></div>
-<div class="setupHint">
-  🎯 地図をタップして目的地を設定<br>
-  その後もう一度タップすると経由地を追加
-</div>
-  </div>
 
-種別
 
-  <select id="type">
-<option>普通</option>
-<option>快速</option>
-<option>急行</option>
-<option>特急</option>
-<option>新快速</option>
-  </select>
-
-行き先
-
-<input
-id=“destinationName”
-type=“text”
-placeholder=“例：別府”
-
-  <div id="setupInfo">
-🎯 目的地：未設定<br>
-<span class="small">
-  📍 経由地：まだありません
-</span>
-  </div>
-  <div id="viaNameArea">
-<label>
-  今追加する経由地の名前
-</label>
-<div id="viaNameRow">
-  <input
-    id="viaName"
-    type="text"
-    placeholder="例：ローソン"
-  >
-  <button
-    class="smallButton"
-    onclick="finishViaName()"
-  >
-    決定
-  </button>
-</div>
-  </div>
-
-速度制限
-
-<input
-id=“speedLimit”
-type=“number”
-min=“1”
-max=“200”
-value=“20”
-inputmode=“numeric”
-
-<button
-class=“startButton”
-onclick=“startDrive()”
-
-🚃 運転開始
-  </button>
-</div>
-<!-- =====================================================
-     運転画面
-===================================================== -->
-<div id="drive">
-  <div id="board">
-<div
-  id="boardType"
-  class="board-other"
->
-  急行
-</div>
-<div id="destinationDisplay">
-  別府
-</div>
-  </div>
-  <div id="nextBoard">
-<div id="nextText">
-  次は、設定地点
-</div>
-  </div>
-  <div id="distanceBox">
-    📍 地点未設定
-  </div>
-  <div id="limitBox">
-    🚦 制限 20 km/h
-  </div>
-  <div id="followBox">
-追従
-<input
-  id="followSwitch"
-  type="checkbox"
-  checked
->
-  </div>
-  <div id="modeBox">
-    🚃 運転中
-  </div>
-
-<button
-id=“routeButton”
-onclick=“toggleRoutePanel()”
-
-📍 地点一覧
-  </button>
-  <div id="routePanel">
-<div class="routeTitle">
-  設定地点
-</div>
-<div id="routeList"></div>
-  </div>
-  <div id="map"></div>
-  <div id="overspeed">
-    ⚠️ 速度超過
-  </div>
-  <div id="speedBox">
-<div id="speed">
-  0
-</div>
-<div class="kmh">
-  km/h
-</div>
-  </div>
-
-<button
-id=“finishButton”
-onclick=“finishDrive()”
-
-運転終了
-  </button>
-  <!-- ATS -->
-  <div id="ats">
-<div
-  id="atsText"
-  class="atsWarning"
->
-  ⚠️ ATS作動
-</div>
-<div
-  id="atsTimer"
-  class="atsTimer"
->
-  自動終了まで 60 秒
-</div>
-<div class="slider">
-  <div class="sliderText">
-    スライドで解除
-  </div>
-  <div
-    class="sliderButton"
-    id="sliderButton"
-  >
-    →
-  </div>
-</div>
-  </div>
-</div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
 /* =====================================================
-   変数
+   速度
 ===================================================== */
-let setupMap=null;
-let map=null;
-let currentMarker=null;
-let destination=null;
-let destinationMarker=null;
-let viaPoints=[];
-let viaMarkers=[];
-let viaNames=[];
-let currentViaIndex=0;
-let destinationName="";
-let currentSpeed=0;
-let speedLimit=20;
-let watchID=null;
+
+#speedBox{
+
+  position:absolute;
+
+  left:0;
+
+  bottom:
+    calc(115px + env(safe-area-inset-bottom));
+
+  width:100%;
+
+  z-index:2200;
+
+  text-align:center;
+
+  pointer-events:none;
+}
+
+
+#speed{
+
+  font-size:55px;
+
+  font-weight:850;
+
+  letter-spacing:-2px;
+
+  text-shadow:
+    0 4px 20px
+    rgba(0,0,0,.5);
+}
+
+
+.kmh{
+
+  color:
+    rgba(255,255,255,.55);
+
+  font-size:14px;
+}
+
+
 /* =====================================================
-   設定マップ用
+   速度超過
 ===================================================== */
-let setupMode="destination";
-let setupCurrentMarker=null;
+
+#overspeed{
+
+  display:none;
+
+  position:absolute;
+
+  bottom:
+    calc(180px + env(safe-area-inset-bottom));
+
+  left:0;
+
+  width:100%;
+
+  z-index:2600;
+
+  text-align:center;
+
+  color:#ff453a;
+
+  font-size:19px;
+
+  font-weight:bold;
+}
+
+
+/* =====================================================
+   終了
+===================================================== */
+
+#finishButton{
+
+  position:absolute;
+
+  left:20px;
+
+  bottom:
+    calc(20px + env(safe-area-inset-bottom));
+
+  width:
+    calc(100% - 40px);
+
+  height:62px;
+
+  z-index:2800;
+
+  border:
+    1px solid
+    rgba(255,255,255,.13);
+
+  border-radius:23px;
+
+  background:
+    rgba(0,0,0,.72);
+
+  color:white;
+
+  font-size:19px;
+
+  font-weight:bold;
+
+  backdrop-filter:
+    blur(28px);
+
+  -webkit-backdrop-filter:
+    blur(28px);
+
+}
+
+
 /* =====================================================
    ATS
 ===================================================== */
-let atsActive=false;
-let atsType="";
-let destinationATSUsed=false;
-let viaATSUsed=[];
-let overspeedATSUsed=false;
-let atsSeconds=60;
-let atsTimer=null;
-let atsCountdownTimer=null;
+
+#ats{
+
+  display:none;
+
+  position:absolute;
+
+  left:15px;
+
+  bottom:
+    calc(15px + env(safe-area-inset-bottom));
+
+  width:
+    calc(100% - 30px);
+
+  z-index:5000;
+
+  padding:16px;
+
+  border-radius:29px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,0,0,.88),
+      rgba(25,25,28,.68)
+    );
+
+  border:
+    1px solid
+    rgba(255,255,255,.16);
+
+  box-shadow:
+    0 18px 55px
+    rgba(0,0,0,.58),
+
+    inset 0 1px 0
+    rgba(255,255,255,.13);
+
+  backdrop-filter:
+    blur(35px)
+    saturate(175%);
+
+  -webkit-backdrop-filter:
+    blur(35px)
+    saturate(175%);
+}
+
+
+.atsWarning{
+
+  text-align:center;
+
+  color:#ff453a;
+
+  font-size:20px;
+
+  font-weight:850;
+
+  margin-bottom:6px;
+}
+
+
+.atsTimer{
+
+  text-align:center;
+
+  color:
+    rgba(255,255,255,.55);
+
+  font-size:13px;
+
+  margin-bottom:9px;
+}
+
+
+.slider{
+
+  position:relative;
+
+  height:66px;
+
+  border-radius:21px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  overflow:hidden;
+
+  touch-action:none;
+}
+
+
+.sliderText{
+
+  position:absolute;
+
+  inset:0;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  color:
+    rgba(255,255,255,.48);
+
+  font-size:17px;
+}
+
+
+.sliderButton{
+
+  position:absolute;
+
+  left:5px;
+  top:5px;
+
+  width:56px;
+  height:56px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ff7043,
+      #e63828
+    );
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:25px;
+
+  z-index:10;
+
+  touch-action:none;
+
+}
+
+
 /* =====================================================
-   音
+   現在地
 ===================================================== */
-let audioContext=null;
-let atsOscillator=null;
-let atsGain=null;
-let bellTimer=null;
+
+.current-marker{
+
+  width:18px;
+  height:18px;
+
+  border-radius:50%;
+
+  background:#1677ff;
+
+  border:3px solid white;
+
+  box-shadow:
+    0 0 0 6px
+    rgba(22,119,255,.22),
+
+    0 4px 12px
+    rgba(0,0,0,.35);
+}
+
+
+/* =====================================================
+   Leaflet
+===================================================== */
+
+.leaflet-control-zoom{
+
+  border:0 !important;
+
+  margin:
+    95px 12px 0 0 !important;
+}
+
+
+.leaflet-control-zoom a{
+
+  width:42px !important;
+  height:42px !important;
+
+  line-height:42px !important;
+
+  border:0 !important;
+
+  color:#222 !important;
+
+  background:
+    rgba(255,255,255,.82) !important;
+
+  backdrop-filter:
+    blur(20px);
+
+  box-shadow:
+    0 4px 18px
+    rgba(0,0,0,.18);
+}
+
+
+.leaflet-control-zoom a:first-child{
+
+  border-radius:
+    14px 14px 5px 5px !important;
+}
+
+
+.leaflet-control-zoom a:last-child{
+
+  border-radius:
+    5px 5px 14px 14px !important;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     最初の設定画面
+===================================================== -->
+
+<div id="setup">
+
+
+  <div id="setupMap"></div>
+
+
+  <div class="setupTop">
+
+    <div class="setupTitle">
+      🚃 cycletrain
+    </div>
+
+    <div
+      class="setupStep"
+      id="setupStep"
+    >
+      目的地を設定
+    </div>
+
+  </div>
+
+
+  <div id="setupMode">
+    🎯 地図をタップして目的地を設定
+  </div>
+
+
+  <div class="setupPanel">
+
+
+    <div id="setupRouteList"></div>
+
+
+    <div class="setupRow">
+
+      <div class="setupField">
+
+        <label>
+          種別
+        </label>
+
+        <select id="type">
+
+          <option>普通</option>
+          <option>快速</option>
+          <option>急行</option>
+          <option>特急</option>
+          <option>新快速</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="setupField">
+
+        <label>
+          速度制限
+        </label>
+
+        <input
+          id="speedLimit"
+          type="number"
+          min="1"
+          max="200"
+          value="20"
+          inputmode="numeric"
+        >
+
+      </div>
+
+    </div>
+
+
+    <div class="setupField">
+
+      <label>
+        行き先名
+      </label>
+
+      <input
+        id="destinationName"
+        type="text"
+        placeholder="例：別府駅"
+      >
+
+    </div>
+
+
+    <div class="setupHint">
+      地図をタップ → 名前を入力 → 地点を追加
+    </div>
+
+
+    <div class="setupButtons">
+
+      <button
+        class="setupButton"
+        onclick="changeSetupMode()"
+      >
+        📍 経由地を追加
+      </button>
+
+      <button
+        class="setupButton blue"
+        onclick="startDrive()"
+      >
+        🚃 運転開始
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     運転画面
+===================================================== -->
+
+<div id="drive">
+
+
+  <div id="map"></div>
+
+
+  <div id="board">
+    普通
+  </div>
+
+
+  <div id="nextBoard">
+    <span
+      class="nextText"
+      id="nextText"
+    >
+      次は、目的地
+    </span>
+  </div>
+
+
+  <div id="distanceBox">
+    📍 地点を設定してください
+  </div>
+
+
+  <div id="limitBox">
+    🚦 制限 20 km/h
+  </div>
+
+
+  <div id="followBox">
+
+    追従
+
+    <input
+      id="followSwitch"
+      type="checkbox"
+      checked
+    >
+
+  </div>
+
+
+  <button
+    id="routeButton"
+    onclick="toggleRoutePanel()"
+  >
+    📍 地点一覧
+  </button>
+
+
+  <div id="routePanel">
+
+    <div class="routeTitle">
+      設定地点
+    </div>
+
+    <div id="routeList"></div>
+
+  </div>
+
+
+  <div id="overspeed">
+    ⚠️ 速度超過
+  </div>
+
+
+  <div id="speedBox">
+
+    <div id="speed">
+      0
+    </div>
+
+    <div class="kmh">
+      km/h
+    </div>
+
+  </div>
+
+
+  <button
+    id="finishButton"
+    onclick="finishDrive()"
+  >
+    運転終了
+  </button>
+
+
+  <!-- ATS -->
+
+  <div id="ats">
+
+    <div
+      id="atsText"
+      class="atsWarning"
+    >
+      ⚠️ ATS作動
+    </div>
+
+    <div
+      id="atsTimer"
+      class="atsTimer"
+    >
+      自動終了まで 60 秒
+    </div>
+
+
+    <div class="slider">
+
+      <div class="sliderText">
+        スライドで解除
+      </div>
+
+      <div
+        class="sliderButton"
+        id="sliderButton"
+      >
+        →
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script
+src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<script>
+
+/* =====================================================
+   変数
+===================================================== */
+
+let setupMap = null;
+
+let map = null;
+
+let currentMarker = null;
+
+let destination = null;
+
+let destinationName = "";
+
+let destinationMarker = null;
+
+let viaPoints = [];
+
+let viaNames = [];
+
+let viaMarkers = [];
+
+let currentViaIndex = 0;
+
+let setupMode = "destination";
+
+let watchID = null;
+
+let speedLimit = 20;
+
+let currentSpeed = 0;
+
+
+/* =====================================================
+   ATS
+===================================================== */
+
+let atsActive = false;
+
+let atsType = "";
+
+let atsTimer = null;
+
+let atsCountdownTimer = null;
+
+let atsSeconds = 60;
+
+let destinationATSUsed = false;
+
+let viaATSUsed = [];
+
+let overspeedATSUsed = false;
+
+
+/* =====================================================
+   キンコン
+===================================================== */
+
+let bellTimer = null;
+
+let bellActive = false;
+
+
+/* =====================================================
+   Audio
+===================================================== */
+
+let audioContext = null;
+
+let atsOscillator = null;
+
+let atsGain = null;
+
+let atsLfo = null;
+
+let atsLfoGain = null;
+
+
 /* =====================================================
    スライダー
 ===================================================== */
-let sliderStartX=0;
-let sliderMoveX=0;
+
+let startX = 0;
+
+let sliderX = 0;
+
+
 /* =====================================================
-   AudioContext
+   Audio開始
 ===================================================== */
+
 function prepareAudio(){
+
   try{
+
     if(!audioContext){
-      audioContext=
+
+      audioContext =
         new(
           window.AudioContext ||
           window.webkitAudioContext
         )();
+
     }
+
+
     if(
-      audioContext.state==="suspended"
+      audioContext.state ===
+      "suspended"
     ){
+
       audioContext.resume();
+
     }
+
   }catch(e){
-    console.log(e);
+
+    console.log(
+      "Audio error:",
+      e
+    );
+
   }
+
 }
+
+
 /* =====================================================
-   ATS連続音
-   リーーーーーーーー
+   ATS音
+   「リーーーーーーー」
 ===================================================== */
-function startATSAlarm(){
+
+function startAlarm(){
+
   prepareAudio();
-  stopATSAlarm();
+
+  stopAlarm();
+
+
   if(!audioContext){
+
     return;
+
   }
-  atsOscillator=
-    audioContext.createOscillator();
-  atsGain=
-    audioContext.createGain();
+
+
   /*
-   * 連続した警報音
+   * 連続したATS音
+   *
+   * squareではなく
+   * sawtooth＋AM変調
+   * にして「リーーーーー」
+   * と鳴らす
    */
-  atsOscillator.type="sawtooth";
-  atsOscillator.frequency.setValueAtTime(
-    760,
-    audioContext.currentTime
+
+  atsOscillator =
+    audioContext.createOscillator();
+
+  atsGain =
+    audioContext.createGain();
+
+  atsLfo =
+    audioContext.createOscillator();
+
+  atsLfoGain =
+    audioContext.createGain();
+
+
+  atsOscillator.type =
+    "sawtooth";
+
+
+  atsOscillator.frequency.value =
+    730;
+
+
+  /*
+   * 音量
+   */
+
+  atsGain.gain.value =
+    0.055;
+
+
+  /*
+   * リリリではなく
+   * ゆっくりした揺れ
+   */
+
+  atsLfo.type =
+    "sine";
+
+  atsLfo.frequency.value =
+    7;
+
+
+  atsLfoGain.gain.value =
+    0.018;
+
+
+  atsLfo.connect(
+    atsLfoGain
   );
-  atsGain.gain.setValueAtTime(
-    0.0001,
-    audioContext.currentTime
+
+  atsLfoGain.connect(
+    atsGain.gain
   );
-  atsGain.gain.linearRampToValueAtTime(
-    0.12,
-    audioContext.currentTime+0.05
-  );
+
+
   atsOscillator.connect(
     atsGain
   );
+
   atsGain.connect(
     audioContext.destination
   );
+
+
   atsOscillator.start();
+
+  atsLfo.start();
+
+
   /*
-   * 音をほんの少し揺らす
+   * iPhoneで無音にならないよう
+   * AudioContextを確認
    */
-  const lfo=
-    audioContext.createOscillator();
-  const lfoGain=
-    audioContext.createGain();
-  lfo.frequency.value=5;
-  lfoGain.gain.value=.025;
-  lfo.connect(lfoGain);
-  lfoGain.connect(atsGain.gain);
-  lfo.start();
-  atsOscillator._lfo=lfo;
-  atsOscillator._lfoGain=lfoGain;
-}
-/* =====================================================
-   ATS停止
-===================================================== */
-function stopATSAlarm(){
-  if(atsOscillator){
-    if(atsOscillator._lfo){
-      try{
-        atsOscillator._lfo.stop();
-      }catch(e){}
-      try{
-        atsOscillator._lfo.disconnect();
-      }catch(e){}
-    }
-    try{
-      atsOscillator.stop();
-    }catch(e){}
-    try{
-      atsOscillator.disconnect();
-    }catch(e){}
-    atsOscillator=null;
+
+  if(
+    audioContext.state ===
+    "suspended"
+  ){
+
+    audioContext.resume();
+
   }
+
+}
+
+
+/* =====================================================
+   ATS音停止
+===================================================== */
+
+function stopAlarm(){
+
+  try{
+
+    if(atsOscillator){
+
+      atsOscillator.stop();
+
+      atsOscillator.disconnect();
+
+      atsOscillator = null;
+
+    }
+
+  }catch(e){}
+
+
+  try{
+
+    if(atsLfo){
+
+      atsLfo.stop();
+
+      atsLfo.disconnect();
+
+      atsLfo = null;
+
+    }
+
+  }catch(e){}
+
+
   if(atsGain){
+
     try{
       atsGain.disconnect();
     }catch(e){}
-    atsGain=null;
+
+    atsGain = null;
+
   }
+
+
+  if(atsLfoGain){
+
+    try{
+      atsLfoGain.disconnect();
+    }catch(e){}
+
+    atsLfoGain = null;
+
+  }
+
 }
+
+
 /* =====================================================
    キンコン
 ===================================================== */
+
 function playBell(){
+
   prepareAudio();
+
   if(!audioContext){
+
     return;
+
   }
-  const now=
+
+
+  const now =
     audioContext.currentTime;
-  const osc1=
+
+
+  const osc1 =
     audioContext.createOscillator();
-  const gain1=
+
+  const gain1 =
     audioContext.createGain();
-  osc1.type="sine";
-  osc1.frequency.value=1046;
+
+
+  osc1.type =
+    "sine";
+
+  osc1.frequency.value =
+    1046;
+
+
   gain1.gain.setValueAtTime(
     .0001,
     now
   );
+
   gain1.gain.exponentialRampToValueAtTime(
-    .16,
-    now+.01
+    .18,
+    now + .01
   );
+
   gain1.gain.exponentialRampToValueAtTime(
     .001,
-    now+.28
+    now + .30
   );
+
+
   osc1.connect(gain1);
-  gain1.connect(audioContext.destination);
+
+  gain1.connect(
+    audioContext.destination
+  );
+
+
   osc1.start(now);
-  osc1.stop(now+.3);
-  setTimeout(()=>{
-    if(!audioContext){
-      return;
-    }
-    const now2=
-      audioContext.currentTime;
-    const osc2=
-      audioContext.createOscillator();
-    const gain2=
-      audioContext.createGain();
-    osc2.type="sine";
-    osc2.frequency.value=784;
-    gain2.gain.setValueAtTime(
-      .0001,
-      now2
-    );
-    gain2.gain.exponentialRampToValueAtTime(
-      .14,
-      now2+.01
-    );
-    gain2.gain.exponentialRampToValueAtTime(
-      .001,
-      now2+.32
-    );
-    osc2.connect(gain2);
-    gain2.connect(audioContext.destination);
-    osc2.start(now2);
-    osc2.stop(now2+.34);
-  },135);
+
+  osc1.stop(
+    now + .32
+  );
+
+
+  setTimeout(
+    function(){
+
+      if(!audioContext){
+        return;
+      }
+
+
+      const now2 =
+        audioContext.currentTime;
+
+
+      const osc2 =
+        audioContext.createOscillator();
+
+      const gain2 =
+        audioContext.createGain();
+
+
+      osc2.type =
+        "sine";
+
+      osc2.frequency.value =
+        784;
+
+
+      gain2.gain.setValueAtTime(
+        .0001,
+        now2
+      );
+
+      gain2.gain.exponentialRampToValueAtTime(
+        .16,
+        now2 + .01
+      );
+
+      gain2.gain.exponentialRampToValueAtTime(
+        .001,
+        now2 + .34
+      );
+
+
+      osc2.connect(gain2);
+
+      gain2.connect(
+        audioContext.destination
+      );
+
+
+      osc2.start(now2);
+
+      osc2.stop(
+        now2 + .36
+      );
+
+    },
+    135
+  );
+
 }
+
+
 /* =====================================================
    キンコン停止判定
 ===================================================== */
-function bellShouldStop(){
+
+function canStopBell(){
+
   if(!currentMarker){
+
     return false;
+
   }
-  const current=
+
+
+  const current =
     currentMarker.getLatLng();
+
+
   /*
-   * 現在の経由地
+   * 一番近い未到達地点が30m以内
    */
+
   if(
-    currentViaIndex<
+    currentViaIndex <
     viaPoints.length
   ){
+
     if(
       current.distanceTo(
         viaPoints[currentViaIndex]
-      )<=30
+      ) <= 30
     ){
+
       return true;
+
     }
+
   }
+
+
   /*
    * 目的地
    */
-  if(destination){
-    if(
-      current.distanceTo(destination)<=30
-    ){
-      return true;
-    }
-  }
-  /*
-   * 速度ATS
-   */
+
   if(
-    atsType==="overspeed" &&
-    currentSpeed<=speedLimit-3
+    currentViaIndex >=
+    viaPoints.length &&
+    destination
   ){
-    return true;
+
+    if(
+      current.distanceTo(
+        destination
+      ) <= 30
+    ){
+
+      return true;
+
+    }
+
   }
+
+
+  /*
+   * 速度ATS解除
+   */
+
+  if(
+    atsType === "overspeed" &&
+    currentSpeed <=
+    speedLimit - 3
+  ){
+
+    return true;
+
+  }
+
+
   return false;
+
 }
+
+
 /* =====================================================
    キンコン開始
 ===================================================== */
+
 function startBell(){
+
   stopBell();
-  if(bellShouldStop()){
+
+
+  if(canStopBell()){
+
     return;
+
   }
+
+
+  bellActive = true;
+
   playBell();
-  bellTimer=
-    setInterval(()=>{
-      if(bellShouldStop()){
-        stopBell();
-        return;
-      }
-      playBell();
-    },700);
+
+
+  bellTimer =
+    setInterval(
+      function(){
+
+        if(canStopBell()){
+
+          stopBell();
+
+          return;
+
+        }
+
+        playBell();
+
+      },
+      700
+    );
+
 }
+
+
 /* =====================================================
    キンコン停止
 ===================================================== */
+
 function stopBell(){
-  if(bellTimer){
-    clearInterval(bellTimer);
-    bellTimer=null;
+
+  if(
+    bellTimer !== null
+  ){
+
+    clearInterval(
+      bellTimer
+    );
+
+    bellTimer = null;
+
   }
+
+
+  bellActive = false;
+
 }
+
+
 /* =====================================================
-   設定マップ
+   最初の地図
 ===================================================== */
+
 function initSetupMap(){
+
   if(setupMap){
-    setupMap.invalidateSize();
+
     return;
+
   }
-  setupMap=
+
+
+  setupMap =
     L.map(
       "setupMap",
       {
         zoomControl:true
       }
     );
+
+
   L.tileLayer(
     "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
     {
@@ -1091,1201 +2119,2126 @@ function initSetupMap(){
       subdomains:"abcd"
     }
   ).addTo(setupMap);
+
+
+  /*
+   * GPS現在地
+   */
+
   if(
     navigator.geolocation
   ){
+
     navigator.geolocation.getCurrentPosition(
-      position=>{
-        const lat=
-          position.coords.latitude;
-        const lng=
-          position.coords.longitude;
+
+      function(position){
+
         setupMap.setView(
-          [lat,lng],
+          [
+            position.coords.latitude,
+            position.coords.longitude
+          ],
           17
         );
-        const icon=
-          L.divIcon({
-            className:"",
-            html:
-              '<div class="current-marker"></div>',
-            iconSize:[18,18],
-            iconAnchor:[9,9]
-          });
-        setupCurrentMarker=
-          L.marker(
-            [lat,lng],
-            {icon}
-          )
-          .addTo(setupMap);
+
       },
-      ()=>{
+
+      function(){
+
         setupMap.setView(
           [35.681236,139.767125],
           13
         );
+
       },
+
       {
         enableHighAccuracy:true,
-        timeout:10000,
-        maximumAge:1000
+        timeout:10000
       }
+
     );
+
   }
   else{
+
     setupMap.setView(
       [35.681236,139.767125],
       13
     );
+
   }
+
+
+  /*
+   * 地図タップ
+   */
+
   setupMap.on(
     "click",
-    e=>{
-      setSetupPoint(
+    function(e){
+
+      setupMapPoint(
         e.latlng
       );
+
     }
   );
+
 }
+
+
 /* =====================================================
-   設定地点
+   設定画面で地点をタップ
 ===================================================== */
-function setSetupPoint(latlng){
+
+function setupMapPoint(latlng){
+
   /*
    * 目的地
    */
+
   if(
-    setupMode==="destination"
+    setupMode ===
+    "destination"
   ){
+
     if(destinationMarker){
+
       setupMap.removeLayer(
         destinationMarker
       );
+
     }
-    destination=
+
+
+    destination =
       L.latLng(
         latlng.lat,
         latlng.lng
       );
-    const icon=
-      L.divIcon({
-        className:"",
-        html:
-          '<div class="destination-marker"></div>',
-        iconSize:[24,24],
-        iconAnchor:[12,12]
-      });
-    destinationMarker=
+
+
+    const name =
+      prompt(
+        "目的地の名前を入力してください",
+        "別府駅"
+      );
+
+
+    if(
+      !name ||
+      !name.trim()
+    ){
+
+      destination = null;
+
+      return;
+
+    }
+
+
+    destinationName =
+      name.trim();
+
+
+    destinationMarker =
       L.marker(
-        latlng,
-        {icon}
+        latlng
       )
       .addTo(setupMap)
-      .bindPopup("🎯 目的地")
+      .bindPopup(
+        "🎯 " +
+        destinationName
+      )
       .openPopup();
-    setupMode="via";
-    document.getElementById(
-      "viaNameArea"
-    ).style.display="block";
-    updateSetupInfo();
+
+
+    setupMode =
+      "via";
+
+
+    updateSetupMode();
+
+    updateSetupRouteList();
+
     return;
+
   }
+
+
   /*
-   * 経由地
+   * 経由地点
    */
-  const name=
-    document.getElementById(
-      "viaName"
-    ).value.trim();
-  addSetupVia(
-    latlng,
-    name||("経由 "+(viaPoints.length+1))
-  );
+
+  if(
+    setupMode ===
+    "via"
+  ){
+
+    const name =
+      prompt(
+        "経由地の名前を入力してください",
+        "ローソン"
+      );
+
+
+    if(
+      !name ||
+      !name.trim()
+    ){
+
+      return;
+
+    }
+
+
+    addSetupViaPoint(
+      latlng,
+      name.trim()
+    );
+
+  }
+
 }
+
+
 /* =====================================================
    経由地追加
 ===================================================== */
-function addSetupVia(
+
+function addSetupViaPoint(
   latlng,
   name
 ){
-  const point=
+
+  const point =
     L.latLng(
       latlng.lat,
       latlng.lng
     );
-  viaPoints.push(point);
-  viaNames.push(name);
-  viaATSUsed.push(false);
-  const icon=
-    L.divIcon({
-      className:"",
-      html:
-        '<div class="via-marker"></div>',
-      iconSize:[20,20],
-      iconAnchor:[10,10]
-    });
-  const marker=
+
+
+  viaPoints.push(
+    point
+  );
+
+
+  viaNames.push(
+    name
+  );
+
+
+  viaATSUsed.push(
+    false
+  );
+
+
+  const marker =
     L.marker(
-      latlng,
-      {icon}
+      latlng
     )
     .addTo(setupMap)
     .bindPopup(
-      "📍 "+name
+      "📍 " +
+      name
     );
-  viaMarkers.push(marker);
-  document.getElementById(
-    "viaName"
-  ).value="";
-  updateSetupInfo();
-  /*
-   * 次も経由地として追加可能
-   */
-  setupMode="via";
-}
-/* =====================================================
-   経由地名決定
-===================================================== */
-function finishViaName(){
-  /*
-   * このボタンは
-   * 入力をクリアして
-   * 次の地点を追加する準備
-   */
-  document.getElementById(
-    "viaName"
-  ).value="";
-  alert(
-    "地図をタップすると次の経由地を追加できます"
+
+
+  viaMarkers.push(
+    marker
   );
+
+
+  updateSetupRouteList();
+
 }
+
+
 /* =====================================================
-   設定情報
+   設定モード変更
 ===================================================== */
-function updateSetupInfo(){
-  let html="";
-  if(destination){
-    html+=
-      "🎯 目的地："+
-      (
-        document.getElementById(
-          "destinationName"
-        ).value.trim() ||
-        "未入力"
-      )+
-      "<br>";
-  }
-  else{
-    html+=
-      "🎯 目的地：未設定<br>";
-  }
-  if(viaPoints.length){
-    html+=
-      '<span class="small">';
-    viaNames.forEach(
-      (name,i)=>{
-        html+=
-          "📍 経由"+(i+1)+"："+
-          name+
-          "<br>";
-      }
+
+function changeSetupMode(){
+
+  if(!destination){
+
+    setupMode =
+      "destination";
+
+    alert(
+      "先に目的地を設定してください"
     );
-    html+=
-      "</span>";
+
+    updateSetupMode();
+
+    return;
+
+  }
+
+
+  setupMode =
+    "via";
+
+
+  updateSetupMode();
+
+}
+
+
+/* =====================================================
+   設定モード表示
+===================================================== */
+
+function updateSetupMode(){
+
+  const box =
+    document.getElementById(
+      "setupMode"
+    );
+
+  const step =
+    document.getElementById(
+      "setupStep"
+    );
+
+
+  if(
+    setupMode ===
+    "destination"
+  ){
+
+    box.textContent =
+      "🎯 地図をタップして目的地を設定";
+
+    step.textContent =
+      "目的地を設定";
+
   }
   else{
-    html+=
-      '<span class="small">📍 経由地：まだありません</span>';
+
+    box.textContent =
+      "📍 地図をタップして経由地を追加";
+
+    step.textContent =
+      "経由地を設定";
+
   }
-  document.getElementById(
-    "setupInfo"
-  ).innerHTML=html;
+
 }
+
+
+/* =====================================================
+   設定地点一覧
+===================================================== */
+
+function updateSetupRouteList(){
+
+  const list =
+    document.getElementById(
+      "setupRouteList"
+    );
+
+
+  list.innerHTML = "";
+
+
+  if(destination){
+
+    const item =
+      document.createElement(
+        "div"
+      );
+
+    item.className =
+      "setupRouteItem";
+
+
+    const text =
+      document.createElement(
+        "span"
+      );
+
+    text.textContent =
+      "🎯 " +
+      destinationName;
+
+
+    const button =
+      document.createElement(
+        "button"
+      );
+
+    button.className =
+      "deleteButton";
+
+    button.textContent =
+      "削除";
+
+
+    button.onclick =
+      deleteDestination;
+
+
+    item.appendChild(text);
+
+    item.appendChild(button);
+
+    list.appendChild(item);
+
+  }
+
+
+  viaPoints.forEach(
+    function(point,index){
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+      item.className =
+        "setupRouteItem";
+
+
+      const text =
+        document.createElement(
+          "span"
+        );
+
+      text.textContent =
+        "📍 " +
+        (index + 1) +
+        ". " +
+        viaNames[index];
+
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+      button.className =
+        "deleteButton";
+
+      button.textContent =
+        "削除";
+
+
+      button.onclick =
+        function(){
+
+          deleteSetupVia(
+            index
+          );
+
+        };
+
+
+      item.appendChild(text);
+
+      item.appendChild(button);
+
+      list.appendChild(item);
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   目的地削除
+===================================================== */
+
+function deleteDestination(){
+
+  if(
+    !confirm(
+      "目的地を削除しますか？"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    destinationMarker &&
+    setupMap
+  ){
+
+    setupMap.removeLayer(
+      destinationMarker
+    );
+
+  }
+
+
+  destination = null;
+
+  destinationName = "";
+
+  destinationMarker = null;
+
+
+  /*
+   * 目的地を削除したら
+   * 目的地設定へ戻る
+   */
+
+  setupMode =
+    "destination";
+
+
+  updateSetupMode();
+
+  updateSetupRouteList();
+
+}
+
+
+/* =====================================================
+   経由地削除
+===================================================== */
+
+function deleteSetupVia(index){
+
+  if(
+    !confirm(
+      "この経由地を削除しますか？"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    viaMarkers[index] &&
+    setupMap
+  ){
+
+    setupMap.removeLayer(
+      viaMarkers[index]
+    );
+
+  }
+
+
+  viaMarkers.splice(
+    index,
+    1
+  );
+
+  viaPoints.splice(
+    index,
+    1
+  );
+
+  viaNames.splice(
+    index,
+    1
+  );
+
+  viaATSUsed.splice(
+    index,
+    1
+  );
+
+
+  updateSetupRouteList();
+
+}
+
+
+/* =====================================================
+   種別カラー
+===================================================== */
+
+function updateBoardColor(type){
+
+  const board =
+    document.getElementById(
+      "board"
+    );
+
+
+  board.classList.remove(
+    "board-normal",
+    "board-shinkaisoku",
+    "board-other"
+  );
+
+
+  if(
+    type ===
+    "普通"
+  ){
+
+    board.classList.add(
+      "board-normal"
+    );
+
+  }
+  else if(
+    type ===
+    "新快速"
+  ){
+
+    board.classList.add(
+      "board-shinkaisoku"
+    );
+
+  }
+  else{
+
+    board.classList.add(
+      "board-other"
+    );
+
+  }
+
+}
+
+
 /* =====================================================
    運転開始
 ===================================================== */
+
 function startDrive(){
+
+  if(!destination){
+
+    alert(
+      "まず地図から目的地を設定してください"
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * ここが重要
+   *
+   * ユーザーがボタンを押した瞬間に
+   * AudioContextを起動
+   */
+
   prepareAudio();
-  destinationName=
-    document.getElementById(
-      "destinationName"
-    ).value.trim();
-  const type=
+
+
+  const type =
     document.getElementById(
       "type"
     ).value;
-  speedLimit=
+
+
+  speedLimit =
     Number(
       document.getElementById(
         "speedLimit"
       ).value
     );
-  if(!destination){
-    alert(
-      "地図をタップして目的地を設定してください"
-    );
-    return;
-  }
-  if(!destinationName){
-    alert(
-      "行き先を入力してください"
-    );
-    return;
-  }
+
+
   if(
     !speedLimit ||
-    speedLimit<=0
+    speedLimit <= 0
   ){
+
     alert(
       "速度制限を設定してください"
     );
+
     return;
+
   }
+
+
   /*
-   * 画面
+   * 表示
    */
+
   document.getElementById(
-    "setup"
-  ).style.display="none";
-  document.getElementById(
-    "drive"
-  ).style.display="block";
-  /*
-   * 行先幕
-   */
-  document.getElementById(
-    "boardType"
-  ).textContent=type;
-  document.getElementById(
-    "destinationDisplay"
-  ).textContent=destinationName;
+    "board"
+  ).textContent =
+    type;
+
+
   updateBoardColor(type);
-  /*
-   * 制限
-   */
+
+
   document.getElementById(
     "limitBox"
-  ).textContent=
-    "🚦 制限 "+
-    speedLimit+
+  ).textContent =
+    "🚦 制限 " +
+    speedLimit +
     " km/h";
+
+
   /*
-   * ATS初期化
+   * 画面切り替え
    */
-  destinationATSUsed=false;
-  overspeedATSUsed=false;
-  currentViaIndex=0;
-  viaATSUsed=
+
+  document.getElementById(
+    "setup"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "drive"
+  ).style.display =
+    "block";
+
+
+  /*
+   * ATSリセット
+   */
+
+  destinationATSUsed = false;
+
+  overspeedATSUsed = false;
+
+  viaATSUsed =
     viaPoints.map(
-      ()=>false
+      function(){
+        return false;
+      }
     );
-  updateNextBoard();
+
+
+  currentViaIndex = 0;
+
+
   updateRouteList();
+
+  updateNextBoard();
+
+
   setTimeout(
     initDriveMap,
     100
   );
+
 }
+
+
 /* =====================================================
-   種別カラー
+   運転地図
 ===================================================== */
-function updateBoardColor(type){
-  const el=
-    document.getElementById(
-      "boardType"
-    );
-  el.classList.remove(
-    "board-normal",
-    "board-shinkaisoku",
-    "board-other"
-  );
-  if(type==="普通"){
-    el.classList.add(
-      "board-normal"
-    );
-  }
-  else if(type==="新快速"){
-    el.classList.add(
-      "board-shinkaisoku"
-    );
-  }
-  else{
-    el.classList.add(
-      "board-other"
-    );
-  }
-}
-/* =====================================================
-   運転マップ
-===================================================== */
+
 function initDriveMap(){
+
   if(map){
+
     map.invalidateSize();
+
     return;
+
   }
-  map=
+
+
+  map =
     L.map(
       "map",
       {
         zoomControl:true
       }
     );
+
+
   L.tileLayer(
     "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
     {
+
       maxZoom:20,
+
       attribution:
         "&copy; OpenStreetMap &copy; CARTO",
-      subdomains:"abcd"
+
+      subdomains:
+        "abcd"
+
     }
   ).addTo(map);
+
+
   /*
-   * 目的地
+   * 保存していた地点を
+   * 運転地図にも表示
    */
-  if(destination){
-    const icon=
-      L.divIcon({
-        className:"",
-        html:
-          '<div class="destination-marker"></div>',
-        iconSize:[24,24],
-        iconAnchor:[12,12]
-      });
-    destinationMarker=
-      L.marker(
-        destination,
-        {icon}
-      )
-      .addTo(map)
-      .bindPopup(
-        "🎯 "+destinationName
-      );
-  }
-  /*
-   * 経由地
-   */
+
+  destinationMarker =
+    L.marker(
+      destination
+    )
+    .addTo(map)
+    .bindPopup(
+      "🎯 " +
+      destinationName
+    );
+
+
   viaMarkers.forEach(
-    marker=>{
+    function(marker){
+
       /*
-       * 既存マーカーを
-       * setupMapから
-       * drive mapへ作り直す
+       * setupMapのマーカーは
+       * 運転地図には移さない
        */
+
     }
   );
-  viaMarkers=[];
+
+
+  /*
+   * 運転用に経由地マーカー生成
+   */
+
+  viaMarkers = [];
+
+
   viaPoints.forEach(
-    (point,i)=>{
-      const icon=
-        L.divIcon({
-          className:"",
-          html:
-            '<div class="via-marker"></div>',
-          iconSize:[20,20],
-          iconAnchor:[10,10]
-        });
-      const marker=
+    function(point,index){
+
+      const marker =
         L.marker(
-          point,
-          {icon}
+          point
         )
         .addTo(map)
         .bindPopup(
-          "📍 "+
-          viaNames[i]
+          "📍 " +
+          viaNames[index]
         );
-      viaMarkers.push(marker);
+
+
+      viaMarkers.push(
+        marker
+      );
+
     }
   );
+
+
   /*
    * GPS
    */
+
   if(
     navigator.geolocation
   ){
+
     navigator.geolocation.getCurrentPosition(
-      position=>{
-        const lat=
+
+      function(position){
+
+        const lat =
           position.coords.latitude;
-        const lng=
+
+        const lng =
           position.coords.longitude;
+
+
         map.setView(
           [lat,lng],
           17
         );
+
+
         createCurrentMarker(
           lat,
           lng
         );
+
+
         startGPS();
-        /*
-         * 運転開始時点で
-         * キンコン開始
-         */
-        startBell();
+
       },
-      ()=>{
-        map.setView(
-          destination,
-          15
+
+      function(){
+
+        map.fitBounds(
+          createRouteBounds()
         );
-        startGPS();
+
       },
+
       {
         enableHighAccuracy:true,
         timeout:10000,
         maximumAge:1000
       }
+
     );
+
   }
-  else{
-    map.setView(
-      destination,
-      15
-    );
-  }
+
 }
+
+
+/* =====================================================
+   ルート範囲
+===================================================== */
+
+function createRouteBounds(){
+
+  const points = [];
+
+
+  if(destination){
+
+    points.push(
+      destination
+    );
+
+  }
+
+
+  viaPoints.forEach(
+    function(point){
+
+      points.push(
+        point
+      );
+
+    }
+  );
+
+
+  if(points.length){
+
+    return L.latLngBounds(
+      points
+    );
+
+  }
+
+
+  return L.latLngBounds(
+    [
+      [35.68,139.76],
+      [35.69,139.77]
+    ]
+  );
+
+}
+
+
 /* =====================================================
    現在地マーカー
 ===================================================== */
+
 function createCurrentMarker(
   lat,
   lng
 ){
-  const icon=
-    L.divIcon({
-      className:"",
-      html:
-        '<div class="current-marker"></div>',
-      iconSize:[18,18],
-      iconAnchor:[9,9]
-    });
-  currentMarker=
+
+  const icon =
+    L.divIcon(
+      {
+        className:"",
+        html:
+          '<div class="current-marker"></div>',
+        iconSize:[18,18],
+        iconAnchor:[9,9]
+      }
+    );
+
+
+  currentMarker =
     L.marker(
       [lat,lng],
-      {icon}
+      {
+        icon:icon
+      }
     )
     .addTo(map);
+
 }
+
+
+/* =====================================================
+   次は○○
+===================================================== */
+
+function updateNextBoard(){
+
+  const next =
+    document.getElementById(
+      "nextText"
+    );
+
+
+  if(
+    currentViaIndex <
+    viaPoints.length
+  ){
+
+    next.textContent =
+      "次は、" +
+      viaNames[
+        currentViaIndex
+      ];
+
+  }
+  else if(destination){
+
+    next.textContent =
+      "次は、" +
+      destinationName;
+
+  }
+  else{
+
+    next.textContent =
+      "次は、設定なし";
+
+  }
+
+
+  /*
+   * 文字を少し流す
+   */
+
+  next.style.animation =
+    "none";
+
+}
+
+
+/* =====================================================
+   一番近い未到達地点を表示
+===================================================== */
+
+function updateNearestDistance(
+  current
+){
+
+  /*
+   * まず経由地を順番に処理
+   *
+   * 「一番近い未到達の経由地」
+   */
+
+  if(
+    currentViaIndex <
+    viaPoints.length
+  ){
+
+    const via =
+      viaPoints[
+        currentViaIndex
+      ];
+
+
+    const distance =
+      current.distanceTo(
+        via
+      );
+
+
+    document.getElementById(
+      "distanceBox"
+    ).textContent =
+      "📍 " +
+      viaNames[
+        currentViaIndex
+      ] +
+      "まで " +
+      formatDistance(distance);
+
+
+    return distance;
+
+  }
+
+
+  /*
+   * 経由地が全部終わったら目的地
+   */
+
+  if(destination){
+
+    const distance =
+      current.distanceTo(
+        destination
+      );
+
+
+    document.getElementById(
+      "distanceBox"
+    ).textContent =
+      "🎯 " +
+      destinationName +
+      "まで " +
+      formatDistance(distance);
+
+
+    return distance;
+
+  }
+
+
+  return Infinity;
+
+}
+
+
+/* =====================================================
+   距離表示
+===================================================== */
+
+function formatDistance(distance){
+
+  if(
+    distance >= 1000
+  ){
+
+    return (
+      distance / 1000
+    ).toFixed(2) +
+    " km";
+
+  }
+
+
+  return (
+    Math.round(distance)
+  ) +
+  " m";
+
+}
+
+
 /* =====================================================
    GPS
 ===================================================== */
+
 function startGPS(){
+
   if(
-    watchID!==null
+    watchID !== null
   ){
+
     navigator.geolocation.clearWatch(
       watchID
     );
+
   }
-  watchID=
+
+
+  watchID =
     navigator.geolocation.watchPosition(
-      position=>{
-        const lat=
+
+      function(position){
+
+        const lat =
           position.coords.latitude;
-        const lng=
+
+        const lng =
           position.coords.longitude;
-        /*
-         * 速度
-         */
-        let speed=
+
+
+        let speed =
           position.coords.speed;
+
+
         if(
-          speed===null ||
-          speed<0
+          speed === null ||
+          speed < 0
         ){
-          speed=0;
+
+          speed = 0;
+
         }
-        currentSpeed=
-          speed*3.6;
+
+
+        speed *= 3.6;
+
+        currentSpeed =
+          speed;
+
+
         document.getElementById(
           "speed"
-        ).textContent=
-          Math.round(currentSpeed);
+        ).textContent =
+          Math.round(speed);
+
+
         /*
          * 現在地
          */
+
         if(currentMarker){
+
           currentMarker.setLatLng(
             [lat,lng]
           );
+
         }
+
+
         /*
          * 追従
          */
+
         if(
           document.getElementById(
             "followSwitch"
           ).checked &&
           map
         ){
+
           map.panTo(
             [lat,lng],
             {
               animate:true,
-              duration:.4
+              duration:.5
             }
           );
+
         }
+
+
         /*
          * 速度超過
          */
+
         if(
-          currentSpeed>speedLimit
+          speed >
+          speedLimit
         ){
+
           document.getElementById(
             "overspeed"
-          ).style.display="block";
-          /*
-           * 速度ATSは一回だけ
-           */
+          ).style.display =
+            "block";
+
+
           if(
             !atsActive &&
             !overspeedATSUsed
           ){
-            overspeedATSUsed=true;
+
+            overspeedATSUsed =
+              true;
+
+
             activateATS(
               "⚠️ 速度超過ATS",
               "overspeed"
             );
+
           }
+
         }
         else{
+
           document.getElementById(
             "overspeed"
-          ).style.display="none";
+          ).style.display =
+            "none";
+
         }
-        if(!destination){
-          return;
-        }
-        const current=
+
+
+        const current =
           L.latLng(
             lat,
             lng
           );
+
+
         /*
-         * ===================================
-         * 経由地
-         * ===================================
+         * 距離表示
          */
+
+        const distance =
+          updateNearestDistance(
+            current
+          );
+
+
+        /*
+         * 経由地
+         */
+
         if(
-          currentViaIndex<
+          currentViaIndex <
           viaPoints.length
         ){
-          const via=
+
+          const via =
             viaPoints[
               currentViaIndex
             ];
-          const distance=
+
+
+          const viaDistance =
             current.distanceTo(
               via
             );
-          document.getElementById(
-            "distanceBox"
-          ).textContent=
-            "📍 "+
-            viaNames[currentViaIndex]+
-            "まで "+
-            formatDistance(distance);
+
+
           /*
-           * 次は
+           * 100mでATS
            */
-          updateNextBoard();
-          /*
-           * 100m以内
-           *
-           * ATS確実に一回
-           */
+
           if(
-            distance<=100 &&
-            !viaATSUsed[currentViaIndex] &&
-            !atsActive
+            viaDistance <= 100 &&
+            !atsActive &&
+            !viaATSUsed[
+              currentViaIndex
+            ]
           ){
-            viaATSUsed[currentViaIndex]=true;
+
+            viaATSUsed[
+              currentViaIndex
+            ] = true;
+
+
             activateATS(
-              "⚠️ 経由地ATS\n"+
-              viaNames[currentViaIndex],
+              "⚠️ " +
+              viaNames[
+                currentViaIndex
+              ] +
+              " ATS",
               "via"
             );
-            return;
+
           }
+
+
           /*
-           * 30m以内
-           *
-           * 到達
+           * 30m到達
            */
+
           if(
-            distance<=30
+            viaDistance <= 30
           ){
+
             stopBell();
-            /*
-             * 次の経由地へ
-             */
+
+
             currentViaIndex++;
+
+
             updateNextBoard();
-            /*
-             * 次の地点があれば
-             * 再びキンコン
-             */
-            if(
-              currentViaIndex<
-              viaPoints.length
-            ){
-              startBell();
-            }
-            else{
-              /*
-               * 最後の経由地を過ぎたら
-               * 目的地へ
-               */
-              startBell();
-            }
+
+
+            updateNearestDistance(
+              current
+            );
+
           }
+
+          else if(
+            !atsActive
+          ){
+
+            /*
+             * ATSが出ていない間
+             * 接近キンコン
+             */
+
+            if(
+              viaDistance > 30
+            ){
+
+              startBell();
+
+            }
+
+          }
+
+
           return;
+
         }
+
+
         /*
-         * ===================================
          * 目的地
-         * ===================================
          */
-        const distance=
-          current.distanceTo(
-            destination
-          );
-        document.getElementById(
-          "distanceBox"
-        ).textContent=
-          "🎯 "+
-          destinationName+
-          "まで "+
-          formatDistance(distance);
-        updateNextBoard();
-        /*
-         * 目的地ATS
-         *
-         * 200m以内で一回
-         */
-        if(
-          distance<=200 &&
-          !destinationATSUsed &&
-          !atsActive
-        ){
-          destinationATSUsed=true;
-          activateATS(
-            "🏁 目的地ATS",
-            "destination"
-          );
-          return;
+
+        if(destination){
+
+          const destinationDistance =
+            current.distanceTo(
+              destination
+            );
+
+
+          /*
+           * 200mで到着ATS
+           */
+
+          if(
+            destinationDistance <= 200 &&
+            !atsActive &&
+            !destinationATSUsed
+          ){
+
+            destinationATSUsed =
+              true;
+
+
+            activateATS(
+              "🏁 目的地ATS",
+              "destination"
+            );
+
+          }
+
+
+          /*
+           * 30mでキンコン停止
+           */
+
+          if(
+            destinationDistance <= 30
+          ){
+
+            stopBell();
+
+          }
+          else if(
+            !atsActive
+          ){
+
+            startBell();
+
+          }
+
         }
-        /*
-         * 30m以内
-         */
-        if(
-          distance<=30
-        ){
-          stopBell();
-        }
+
       },
-      ()=>{
+
+      function(){
+
         document.getElementById(
           "distanceBox"
-        ).textContent=
+        ).textContent =
           "📍 GPS取得失敗";
+
       },
+
       {
+
         enableHighAccuracy:true,
+
         maximumAge:1000,
+
         timeout:10000
+
       }
+
     );
+
 }
-/* =====================================================
-   距離表示
-===================================================== */
-function formatDistance(distance){
-  if(distance>=1000){
-    return(
-      (distance/1000)
-      .toFixed(2)+
-      " km"
-    );
-  }
-  return(
-    Math.round(distance)+
-    " m"
-  );
-}
-/* =====================================================
-   次は表示
-===================================================== */
-function updateNextBoard(){
-  const el=
-    document.getElementById(
-      "nextText"
-    );
-  let text="";
-  if(
-    currentViaIndex<
-    viaPoints.length
-  ){
-    text=
-      "次は、"+
-      viaNames[currentViaIndex];
-  }
-  else{
-    text=
-      "次は、"+
-      destinationName;
-  }
-  el.textContent=text;
-  /*
-   * アニメーションを
-   * 毎回最初から
-   */
-  el.style.animation="none";
-  void el.offsetWidth;
-  el.style.animation=
-    "scrollText 10s linear infinite";
-}
-/* =====================================================
-   地点一覧
-===================================================== */
-function updateRouteList(){
-  const list=
-    document.getElementById(
-      "routeList"
-    );
-  list.innerHTML="";
-  /*
-   * 経由地
-   */
-  viaPoints.forEach(
-    (point,i)=>{
-      const item=
-        document.createElement(
-          "div"
-        );
-      item.className=
-        "routeItem";
-      const text=
-        document.createElement(
-          "span"
-        );
-      text.textContent=
-        "📍 "+
-        viaNames[i];
-      const button=
-        document.createElement(
-          "button"
-        );
-      button.className=
-        "deleteRoute";
-      button.textContent=
-        "削除";
-      button.onclick=
-        ()=>{
-          deleteVia(i);
-        };
-      item.appendChild(text);
-      item.appendChild(button);
-      list.appendChild(item);
-    }
-  );
-  /*
-   * 目的地
-   */
-  if(destination){
-    const item=
-      document.createElement(
-        "div"
-      );
-    item.className=
-      "routeItem";
-    const text=
-      document.createElement(
-        "span"
-      );
-    text.textContent=
-      "🎯 "+
-      destinationName;
-    item.appendChild(text);
-    list.appendChild(item);
-  }
-}
-/* =====================================================
-   経由地削除
-===================================================== */
-function deleteVia(index){
-  if(
-    !confirm(
-      "この経由地を削除しますか？"
-    )
-  ){
-    return;
-  }
-  if(viaMarkers[index] && map){
-    map.removeLayer(
-      viaMarkers[index]
-    );
-  }
-  viaPoints.splice(
-    index,
-    1
-  );
-  viaNames.splice(
-    index,
-    1
-  );
-  viaATSUsed.splice(
-    index,
-    1
-  );
-  if(
-    currentViaIndex>index
-  ){
-    currentViaIndex--;
-  }
-  if(
-    currentViaIndex<0
-  ){
-    currentViaIndex=0;
-  }
-  updateRouteList();
-  updateNextBoard();
-}
-/* =====================================================
-   パネル
-===================================================== */
-function toggleRoutePanel(){
-  const panel=
-    document.getElementById(
-      "routePanel"
-    );
-  panel.style.display=
-    panel.style.display==="block"
-    ?"none"
-    :"block";
-}
+
+
 /* =====================================================
    ATS作動
 ===================================================== */
+
 function activateATS(
   message,
   type
 ){
-  /*
-   * ATS中なら何もしない
-   */
+
   if(atsActive){
+
     return;
+
   }
-  atsActive=true;
-  atsType=type;
-  atsSeconds=60;
+
+
+  atsActive = true;
+
+  atsType = type;
+
+  atsSeconds = 60;
+
+
   /*
    * キンコン停止
    */
+
   stopBell();
+
+
   /*
-   * 終了ボタンOFF
+   * 終了ボタン停止
    */
+
   document.getElementById(
     "finishButton"
-  ).style.display="none";
+  ).style.display =
+    "none";
+
+
   /*
-   * ATS画面
+   * ATS表示
    */
+
   document.getElementById(
     "ats"
-  ).style.display="block";
+  ).style.display =
+    "block";
+
+
   document.getElementById(
     "atsText"
-  ).textContent=
+  ).textContent =
     message;
+
+
   document.getElementById(
     "atsTimer"
-  ).textContent=
+  ).textContent =
     "自動終了まで 60 秒";
+
+
   /*
-   * ATS音
-   *
-   * ここが今回の重要部分
+   * ★ここで連続ATS音
    */
-  prepareAudio();
-  startATSAlarm();
+
+  startAlarm();
+
+
   /*
    * バイブ
    */
-  if(navigator.vibrate){
+
+  if(
+    navigator.vibrate
+  ){
+
     navigator.vibrate(
-      [500,150,500]
+      [500,200,500]
     );
+
   }
+
+
   /*
    * カウントダウン
    */
+
   clearInterval(
     atsCountdownTimer
   );
-  atsCountdownTimer=
-    setInterval(()=>{
-      if(!atsActive){
-        return;
-      }
-      atsSeconds--;
-      document.getElementById(
-        "atsTimer"
-      ).textContent=
-        "自動終了まで "+
-        Math.max(
-          0,
-          atsSeconds
-        )+
-        " 秒";
-      if(
-        atsSeconds<=0
-      ){
-        releaseATS();
-      }
-    },1000);
+
+
+  atsCountdownTimer =
+    setInterval(
+      function(){
+
+        if(!atsActive){
+
+          return;
+
+        }
+
+
+        atsSeconds--;
+
+
+        document.getElementById(
+          "atsTimer"
+        ).textContent =
+          "自動終了まで " +
+          Math.max(
+            0,
+            atsSeconds
+          ) +
+          " 秒";
+
+
+        if(
+          atsSeconds <= 0
+        ){
+
+          releaseATS();
+
+        }
+
+      },
+      1000
+    );
+
+
   /*
-   * 念のため
-   * 60秒で強制解除
+   * 念のため60秒タイマー
    */
-  clearTimeout(atsTimer);
-  atsTimer=
+
+  clearTimeout(
+    atsTimer
+  );
+
+
+  atsTimer =
     setTimeout(
-      releaseATS,
+      function(){
+
+        releaseATS();
+
+      },
       60000
     );
+
 }
+
+
 /* =====================================================
    ATS解除
 ===================================================== */
+
 function releaseATS(){
+
   if(!atsActive){
+
     return;
+
   }
-  atsActive=false;
-  clearTimeout(atsTimer);
-  clearInterval(atsCountdownTimer);
-  atsTimer=null;
-  atsCountdownTimer=null;
+
+
+  atsActive = false;
+
+
+  clearTimeout(
+    atsTimer
+  );
+
+  clearInterval(
+    atsCountdownTimer
+  );
+
+
+  atsTimer = null;
+
+  atsCountdownTimer = null;
+
+
   /*
-   * 音停止
+   * ★連続音を確実に停止
    */
-  stopATSAlarm();
-  /*
-   * バイブ停止
-   */
-  if(navigator.vibrate){
+
+  stopAlarm();
+
+
+  if(
+    navigator.vibrate
+  ){
+
     navigator.vibrate(0);
+
   }
-  /*
-   * ATS画面OFF
-   */
+
+
   document.getElementById(
     "ats"
-  ).style.display="none";
-  /*
-   * 終了ボタンON
-   */
+  ).style.display =
+    "none";
+
+
   document.getElementById(
     "finishButton"
-  ).style.display="block";
+  ).style.display =
+    "block";
+
+
   /*
-   * 解除後のキンコン
+   * ATS解除後
+   * まだ地点から30m以上なら
+   * キンコン再開
    */
+
   if(
-    !bellShouldStop()
+    !canStopBell()
   ){
+
     startBell();
+
   }
+
 }
+
+
 /* =====================================================
    ATSスライダー
 ===================================================== */
-const sliderButton=
+
+const sliderButton =
   document.getElementById(
     "sliderButton"
   );
+
+
 sliderButton.addEventListener(
   "touchstart",
-  e=>{
+  function(e){
+
     if(!atsActive){
+
       return;
+
     }
-    sliderStartX=
+
+
+    startX =
       e.touches[0].clientX;
-    sliderMoveX=0;
+
+    sliderX = 0;
+
   },
-  {passive:true}
-);
-sliderButton.addEventListener(
-  "touchmove",
-  e=>{
-    if(!atsActive){
-      return;
-    }
-    sliderMoveX=
-      e.touches[0].clientX-
-      sliderStartX;
-    if(sliderMoveX<0){
-      sliderMoveX=0;
-    }
-    const slider=
-      sliderButton.parentElement;
-    const max=
-      slider.clientWidth-
-      sliderButton.clientWidth-
-      10;
-    if(sliderMoveX>max){
-      sliderMoveX=max;
-    }
-    sliderButton.style.transform=
-      "translateX("+
-      sliderMoveX+
-      "px)";
-  },
-  {passive:true}
-);
-sliderButton.addEventListener(
-  "touchend",
-  ()=>{
-    if(!atsActive){
-      return;
-    }
-    const slider=
-      sliderButton.parentElement;
-    const max=
-      slider.clientWidth-
-      sliderButton.clientWidth-
-      10;
-    if(
-      sliderMoveX>=
-      max*.7
-    ){
-      releaseATS();
-    }
-    sliderButton.style.transform=
-      "translateX(0)";
-    sliderMoveX=0;
+  {
+    passive:true
   }
 );
+
+
+sliderButton.addEventListener(
+  "touchmove",
+  function(e){
+
+    if(!atsActive){
+
+      return;
+
+    }
+
+
+    sliderX =
+      e.touches[0].clientX -
+      startX;
+
+
+    if(sliderX < 0){
+
+      sliderX = 0;
+
+    }
+
+
+    const slider =
+      sliderButton.parentElement;
+
+
+    const max =
+      slider.clientWidth -
+      sliderButton.clientWidth -
+      10;
+
+
+    if(sliderX > max){
+
+      sliderX = max;
+
+    }
+
+
+    sliderButton.style.transform =
+      "translateX(" +
+      sliderX +
+      "px)";
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+sliderButton.addEventListener(
+  "touchend",
+  function(){
+
+    if(!atsActive){
+
+      return;
+
+    }
+
+
+    const slider =
+      sliderButton.parentElement;
+
+
+    const max =
+      slider.clientWidth -
+      sliderButton.clientWidth -
+      10;
+
+
+    if(
+      sliderX >=
+      max * .7
+    ){
+
+      releaseATS();
+
+    }
+
+
+    sliderButton.style.transform =
+      "translateX(0)";
+
+    sliderX = 0;
+
+  }
+);
+
+
+/* =====================================================
+   地点一覧
+===================================================== */
+
+function updateRouteList(){
+
+  const list =
+    document.getElementById(
+      "routeList"
+    );
+
+
+  list.innerHTML = "";
+
+
+  viaPoints.forEach(
+    function(point,index){
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+
+      item.className =
+        "setupRouteItem";
+
+
+      const text =
+        document.createElement(
+          "span"
+        );
+
+
+      text.textContent =
+        "📍 " +
+        (index + 1) +
+        ". " +
+        viaNames[index];
+
+
+      item.appendChild(
+        text
+      );
+
+
+      list.appendChild(
+        item
+      );
+
+    }
+  );
+
+
+  if(destination){
+
+    const item =
+      document.createElement(
+        "div"
+      );
+
+
+    item.className =
+      "setupRouteItem";
+
+
+    const text =
+      document.createElement(
+        "span"
+      );
+
+
+    text.textContent =
+      "🎯 " +
+      destinationName;
+
+
+    item.appendChild(
+      text
+    );
+
+
+    list.appendChild(
+      item
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   地点一覧開閉
+===================================================== */
+
+function toggleRoutePanel(){
+
+  const panel =
+    document.getElementById(
+      "routePanel"
+    );
+
+
+  panel.style.display =
+    panel.style.display ===
+    "block"
+      ? "none"
+      : "block";
+
+}
+
+
 /* =====================================================
    運転終了
 ===================================================== */
+
 function finishDrive(){
+
   if(atsActive){
+
     return;
+
   }
+
+
   if(
     !confirm(
       "運転を終了しますか？"
     )
   ){
+
     return;
+
   }
-  /*
-   * 音停止
-   */
-  stopATSAlarm();
+
+
+  stopAlarm();
+
   stopBell();
-  /*
-   * GPS停止
-   */
+
+
+  clearTimeout(
+    atsTimer
+  );
+
+  clearInterval(
+    atsCountdownTimer
+  );
+
+
   if(
-    watchID!==null
+    watchID !== null
   ){
+
     navigator.geolocation.clearWatch(
       watchID
     );
-    watchID=null;
+
+    watchID = null;
+
   }
+
+
   /*
-   * マップ破棄
+   * 運転画面のマーカー削除
    */
-  if(map){
-    map.remove();
-    map=null;
+
+  if(destinationMarker && map){
+
+    map.removeLayer(
+      destinationMarker
+    );
+
   }
+
+
+  viaMarkers.forEach(
+    function(marker){
+
+      if(map){
+
+        map.removeLayer(
+          marker
+        );
+
+      }
+
+    }
+  );
+
+
+  if(currentMarker && map){
+
+    map.removeLayer(
+      currentMarker
+    );
+
+  }
+
+
+  destination = null;
+
+  destinationName = "";
+
+  viaPoints = [];
+
+  viaNames = [];
+
+  viaMarkers = [];
+
+  destinationMarker = null;
+
+  currentMarker = null;
+
+  currentViaIndex = 0;
+
+  destinationATSUsed = false;
+
+  overspeedATSUsed = false;
+
+  viaATSUsed = [];
+
+  atsActive = false;
+
+  atsType = "";
+
+  currentSpeed = 0;
+
+
   /*
-   * 目的地・経由地
+   * 設定画面に戻る
    */
-  destination=null;
-  destinationMarker=null;
-  viaPoints=[];
-  viaMarkers=[];
-  viaNames=[];
-  viaATSUsed=[];
-  currentViaIndex=0;
-  destinationATSUsed=false;
-  overspeedATSUsed=false;
-  currentMarker=null;
-  /*
-   * 初期状態
-   */
-  setupMode="destination";
-  /*
-   * 設定画面
-   */
+
   document.getElementById(
     "drive"
-  ).style.display="none";
+  ).style.display =
+    "none";
+
+
   document.getElementById(
     "setup"
-  ).style.display="block";
-  document.getElementById(
-    "routePanel"
-  ).style.display="none";
-  document.getElementById(
-    "viaNameArea"
-  ).style.display="none";
-  document.getElementById(
-    "setupInfo"
-  ).innerHTML=
-    "🎯 目的地：未設定<br>"+
-    '<span class="small">📍 経由地：まだありません</span>';
+  ).style.display =
+    "block";
+
+
   /*
-   * 設定マップを作り直す
+   * 地図を作り直す
    */
+
   if(setupMap){
+
     setupMap.remove();
-    setupMap=null;
+
+    setupMap = null;
+
   }
+
+
+  if(map){
+
+    map.remove();
+
+    map = null;
+
+  }
+
+
+  setupMode =
+    "destination";
+
+
+  updateSetupMode();
+
+  updateSetupRouteList();
+
+
+  document.getElementById(
+    "speed"
+  ).textContent =
+    "0";
+
+
+  document.getElementById(
+    "overspeed"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "ats"
+  ).style.display =
+    "none";
+
+
   setTimeout(
     initSetupMap,
     100
   );
+
 }
+
+
 /* =====================================================
-   初期起動
+   初期化
 ===================================================== */
+
 window.addEventListener(
   "load",
-  ()=>{
+  function(){
+
     initSetupMap();
+
   }
 );
+
+
 /* =====================================================
    ページ終了
 ===================================================== */
+
 window.addEventListener(
   "beforeunload",
-  ()=>{
-    stopATSAlarm();
+  function(){
+
+    stopAlarm();
+
     stopBell();
+
     if(
-      watchID!==null &&
+      watchID !== null &&
       navigator.geolocation
     ){
+
       navigator.geolocation.clearWatch(
         watchID
       );
+
     }
+
   }
 );
+
 </script>
+
 </body>
 </html>
