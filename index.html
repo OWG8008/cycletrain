@@ -2184,79 +2184,36 @@ function activateATS(
 
 function releaseATS(){
 
-  if(
-    !atsActive
-  ){
-
+  if(!atsActive){
     return;
-
   }
-
-
-  /*
-   * ATS OFF
-   */
 
   atsActive = false;
 
-
-  /*
-   * タイマー停止
-   */
-
-  clearTimeout(
-    atsTimer
-  );
-
-  clearInterval(
-    atsCountdownTimer
-  );
-
+  clearTimeout(atsTimer);
+  clearInterval(atsCountdownTimer);
 
   atsTimer = null;
-
   atsCountdownTimer = null;
 
-
-  /*
-   * ジリリリリ停止
-   */
-
+  // ATSの「ジリリリリ」を停止
   stopAlarm();
 
-
-  /*
-   * 振動停止
-   */
-
-  if(
-    navigator.vibrate
-  ){
-
+  // バイブ停止
+  if(navigator.vibrate){
     navigator.vibrate(0);
-
   }
 
+  // ATS画面を消す
+  document.getElementById("ats").style.display = "none";
 
-  /*
-   * ATS画面消す
-   */
+  // 終了ボタンを復活
+  document.getElementById("finishButton").style.display = "block";
 
-  document.getElementById(
-    "ats"
-  ).style.display =
-    "none";
+  // ATS解除後はキンコン開始
+  startBell();
 
-
-  /*
-   * 終了ボタン復活
-   */
-
-  document.getElementById(
-    "finishButton"
-  ).style.display =
-    "block";
-
+}
 
   /*
    * =========================
