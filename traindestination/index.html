@@ -17,6 +17,7 @@
 >
 
 <meta name="theme-color" content="#050609">
+
 <meta
     name="apple-mobile-web-app-status-bar-style"
     content="black-translucent"
@@ -28,7 +29,7 @@
 <style>
 
 /* =====================================================
-   基本
+   BASIC
 ===================================================== */
 
 * {
@@ -37,6 +38,7 @@
 }
 
 html {
+
     width: 100%;
     min-height: 100%;
 
@@ -44,16 +46,19 @@ html {
     padding: 0;
 
     background:
+
         radial-gradient(
-            circle at 10% 0%,
+            circle at 8% 0%,
             rgba(255,255,255,.12),
             transparent 30%
         ),
+
         radial-gradient(
-            circle at 95% 20%,
+            circle at 95% 18%,
             rgba(100,140,255,.10),
             transparent 32%
         ),
+
         linear-gradient(
             145deg,
             #040508,
@@ -92,7 +97,7 @@ body {
 
 
 /* =====================================================
-   アプリ
+   APP
 ===================================================== */
 
 .app {
@@ -106,15 +111,25 @@ body {
     margin: 0 auto;
 
     padding:
-        calc(9px + env(safe-area-inset-top))
+
+        calc(
+            10px +
+            env(safe-area-inset-top)
+        )
+
         8px
-        calc(18px + env(safe-area-inset-bottom))
+
+        calc(
+            20px +
+            env(safe-area-inset-bottom)
+        )
+
         8px;
 }
 
 
 /* =====================================================
-   Liquid Glass
+   LIQUID GLASS
 ===================================================== */
 
 .glass {
@@ -128,9 +143,10 @@ body {
         rgba(255,255,255,.17);
 
     background:
+
         linear-gradient(
             135deg,
-            rgba(255,255,255,.135),
+            rgba(255,255,255,.14),
             rgba(255,255,255,.065) 48%,
             rgba(255,255,255,.035)
         );
@@ -171,6 +187,7 @@ body {
     height: 170%;
 
     background:
+
         linear-gradient(
             110deg,
             transparent 43%,
@@ -186,13 +203,13 @@ body {
 
 
 /* =====================================================
-   上部案内表示
+   HEADER
 ===================================================== */
 
-.route-card {
+.header {
 
     padding:
-        15px 15px 13px;
+        16px 17px;
 
     border-radius: 25px;
 
@@ -200,67 +217,97 @@ body {
 }
 
 
-.route-title {
+.train-type {
 
     position: relative;
     z-index: 2;
 
-    font-size: 21px;
-
-    font-weight: 750;
-
-    letter-spacing: -.6px;
-
-    white-space: nowrap;
-}
-
-
-.route-title span {
+    font-size: 13px;
 
     color:
-        rgba(255,255,255,.55);
+        rgba(255,255,255,.48);
 
-    font-size: 16px;
-
-    font-weight: 600;
-
-    margin-left: 3px;
+    margin-bottom: 3px;
 }
 
 
-/* =====================================================
-   矢印
-===================================================== */
-
-.route-arrows {
+.destination {
 
     position: relative;
     z-index: 2;
 
-    margin-top: 11px;
+    font-size: 29px;
 
-    display: flex;
+    font-weight: 760;
 
-    justify-content:
-        space-between;
+    letter-spacing: -1px;
+}
+
+
+.train-number {
+
+    position: absolute;
+
+    right: 16px;
+    top: 17px;
+
+    z-index: 3;
 
     padding:
-        0 5px;
+        6px 10px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    font-size: 12px;
+
+    font-weight: 700;
 
     color:
-        rgba(255,255,255,.38);
-
-    font-size: 15px;
-
-    letter-spacing: 2px;
+        rgba(255,255,255,.72);
 }
 
 
 /* =====================================================
-   駅一覧
+   NEXT 4 STATIONS
 ===================================================== */
 
-.route-stations {
+.next-stations {
+
+    padding:
+        15px 14px 17px;
+
+    border-radius: 25px;
+
+    margin-bottom: 9px;
+}
+
+
+.next-label {
+
+    position: relative;
+    z-index: 2;
+
+    font-size: 11px;
+
+    color:
+        rgba(255,255,255,.40);
+
+    margin-bottom: 12px;
+}
+
+
+/*
+   横方向の案内表示
+*/
+
+.station-board {
 
     position: relative;
     z-index: 2;
@@ -272,13 +319,15 @@ body {
     justify-content:
         space-between;
 
-    gap: 3px;
-
-    margin-top: 6px;
+    width: 100%;
 }
 
 
-.route-station {
+/*
+   各駅
+*/
+
+.board-station {
 
     flex: 1;
 
@@ -286,51 +335,94 @@ body {
 
     text-align: center;
 
-    font-size: 12px;
-
-    font-weight: 650;
-
-    color:
-        rgba(255,255,255,.42);
-
-    white-space: nowrap;
-
-    transition:
-        .3s ease;
+    position: relative;
 }
 
 
-.route-station.passed {
+/*
+   駅名を2文字縦に
+*/
+
+.board-name {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 48px;
+
+    font-size: 19px;
+
+    line-height: 1.15;
+
+    font-weight: 750;
+
+    letter-spacing: 1px;
 
     color:
-        rgba(255,255,255,.20);
+        rgba(255,255,255,.72);
+
+    text-shadow:
+        0 1px 8px
+        rgba(255,255,255,.08);
 }
 
 
-.route-station.current {
+/*
+   1文字の場合
+*/
+
+.board-name span {
+
+    display: block;
+
+    height: 22px;
+}
+
+
+/*
+   ＞
+*/
+
+.board-arrow {
+
+    flex: 0 0 19px;
+
+    text-align: center;
+
+    font-size: 21px;
+
+    font-weight: 500;
+
+    color:
+        rgba(255,255,255,.30);
+
+    transform:
+        translateY(1px);
+}
+
+
+/*
+   最初の駅を少し強調
+*/
+
+.board-station:first-child
+.board-name {
 
     color: #fff;
 
-    font-weight: 800;
-
-    transform:
-        scale(1.08);
-
     text-shadow:
-        0 0 12px
-        rgba(255,255,255,.30);
-}
-
-
-.route-station.future {
-
-    color:
-        rgba(255,255,255,.58);
+        0 0 14px
+        rgba(255,255,255,.22);
 }
 
 
 /* =====================================================
-   速度
+   SPEED
 ===================================================== */
 
 .speed-box {
@@ -396,7 +488,7 @@ body {
 
 
 /* =====================================================
-   列車位置
+   POSITION
 ===================================================== */
 
 .position-section {
@@ -458,7 +550,7 @@ body {
 
 
 /* =====================================================
-   Apple Music風バー
+   PROGRESS BAR
 ===================================================== */
 
 .progress-wrapper {
@@ -475,8 +567,10 @@ body {
 
     position: absolute;
 
-    inset: 0;
+    left: 0;
+    top: 0;
 
+    width: 100%;
     height: 23px;
 
     border-radius: 999px;
@@ -511,6 +605,7 @@ body {
     border-radius: 999px;
 
     background:
+
         linear-gradient(
             90deg,
             rgba(255,255,255,.38),
@@ -552,7 +647,7 @@ body {
 
 
 /* =====================================================
-   現在区間
+   INFO
 ===================================================== */
 
 .info-card {
@@ -644,6 +739,7 @@ body {
     border-radius: 18px;
 
     background:
+
         linear-gradient(
             135deg,
             rgba(255,255,255,.76),
@@ -677,23 +773,24 @@ body {
 
 
 /* =====================================================
-   小さいiPhone
+   SMALL SCREEN
 ===================================================== */
 
 @media (
     max-width: 380px
 ) {
 
-    .route-title {
-        font-size: 19px;
+    .destination {
+        font-size: 26px;
     }
 
-    .route-title span {
-        font-size: 14px;
+    .board-name {
+        font-size: 17px;
     }
 
-    .route-station {
-        font-size: 10px;
+    .board-arrow {
+        flex-basis: 15px;
+        font-size: 18px;
     }
 
     .speed {
@@ -702,36 +799,6 @@ body {
 
     .station {
         font-size: 19px;
-    }
-}
-
-
-/* =====================================================
-   高さが小さい端末
-===================================================== */
-
-@media (
-    max-height: 700px
-) {
-
-    .route-card {
-        padding: 12px 14px;
-    }
-
-    .speed-box {
-        padding: 11px 15px 13px;
-    }
-
-    .speed {
-        font-size: 65px;
-    }
-
-    .position-section {
-        padding: 12px 15px 13px;
-    }
-
-    .info-card {
-        padding: 13px 15px;
     }
 
 }
@@ -748,36 +815,48 @@ body {
 
 
 <!-- ===================================================
-     上部案内
+     HEADER
 =================================================== -->
 
-<div class="route-card glass">
+<div class="header glass">
 
-    <div class="route-title">
+    <div class="train-type">
         特急ソニック
-        <span>博多行き</span>
     </div>
 
-
-    <div
-        id="routeArrows"
-        class="route-arrows"
-    >
-        → → → → → → → → → →
+    <div class="destination">
+        博多行き
     </div>
 
-
-    <div
-        id="routeStations"
-        class="route-stations"
-    >
+    <div class="train-number">
+        10号
     </div>
 
 </div>
 
 
 <!-- ===================================================
-     速度
+     次の4駅
+=================================================== -->
+
+<div class="next-stations glass">
+
+    <div class="next-label">
+        次の停車駅
+    </div>
+
+    <div
+        id="stationBoard"
+        class="station-board"
+    >
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================
+     SPEED
 =================================================== -->
 
 <div class="speed-box glass">
@@ -805,7 +884,7 @@ body {
 
 
 <!-- ===================================================
-     列車位置
+     POSITION
 =================================================== -->
 
 <div class="position-section glass">
@@ -859,7 +938,7 @@ body {
 
 
 <!-- ===================================================
-     現在区間
+     INFO
 =================================================== -->
 
 <div class="info-card glass">
@@ -916,7 +995,6 @@ body {
 
 /* =====================================================
    ソニック10号
-
    大分 → 博多
 ===================================================== */
 
@@ -998,119 +1076,6 @@ const stations = [
 
 
 /* =====================================================
-   駅表示を作成
-===================================================== */
-
-function createRouteStations() {
-
-    const container =
-        document.getElementById(
-            "routeStations"
-        );
-
-
-    container.innerHTML = "";
-
-
-    stations.forEach(
-        (station, index) => {
-
-            const element =
-                document.createElement(
-                    "div"
-                );
-
-
-            element.className =
-                "route-station future";
-
-
-            element.id =
-                "routeStation-" +
-                index;
-
-
-            element.textContent =
-                station.name;
-
-
-            container.appendChild(
-                element
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   上部駅表示更新
-===================================================== */
-
-function updateRouteStations(
-    currentIndex
-) {
-
-    stations.forEach(
-        (station, index) => {
-
-            const element =
-                document.getElementById(
-                    "routeStation-" +
-                    index
-                );
-
-
-            if (!element) {
-                return;
-            }
-
-
-            element.classList.remove(
-                "passed",
-                "current",
-                "future"
-            );
-
-
-            if (
-                index <
-                currentIndex
-            ) {
-
-                element.classList.add(
-                    "passed"
-                );
-
-            }
-
-            else if (
-                index ===
-                currentIndex
-            ) {
-
-                element.classList.add(
-                    "current"
-                );
-
-            }
-
-            else {
-
-                element.classList.add(
-                    "future"
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =====================================================
    設定
 ===================================================== */
 
@@ -1142,7 +1107,209 @@ let watchId =
 
 
 /* =====================================================
-   距離計算
+   次の4駅を表示
+===================================================== */
+
+function updateNextStations() {
+
+    const board =
+        document.getElementById(
+            "stationBoard"
+        );
+
+
+    board.innerHTML = "";
+
+
+    /*
+       currentSegmentの次駅から
+       4駅表示
+    */
+
+    const startIndex =
+        currentSegment + 1;
+
+
+    const endIndex =
+        Math.min(
+            startIndex + 4,
+            stations.length
+        );
+
+
+    for (
+        let i = startIndex;
+        i < endIndex;
+        i++
+    ) {
+
+        const station =
+            stations[i];
+
+
+        /*
+           駅
+        */
+
+        const stationElement =
+            document.createElement(
+                "div"
+            );
+
+
+        stationElement.className =
+            "board-station";
+
+
+        const name =
+            document.createElement(
+                "div"
+            );
+
+
+        name.className =
+            "board-name";
+
+
+        /*
+           駅名を1文字ずつ縦に
+        */
+
+        const chars =
+            [...station.name];
+
+
+        chars.forEach(
+            char => {
+
+                const span =
+                    document.createElement(
+                        "span"
+                    );
+
+                span.textContent =
+                    char;
+
+                name.appendChild(
+                    span
+                );
+
+            }
+        );
+
+
+        stationElement.appendChild(
+            name
+        );
+
+
+        board.appendChild(
+            stationElement
+        );
+
+
+        /*
+           ＞
+        */
+
+        if (
+            i < endIndex - 1
+        ) {
+
+            const arrow =
+                document.createElement(
+                    "div"
+                );
+
+
+            arrow.className =
+                "board-arrow";
+
+
+            arrow.textContent =
+                "＞";
+
+
+            board.appendChild(
+                arrow
+            );
+
+        }
+
+    }
+
+
+    /*
+       4駅に満たない場合
+       空きを作る
+    */
+
+    const displayed =
+        endIndex -
+        startIndex;
+
+
+    for (
+        let i = displayed;
+        i < 4;
+        i++
+    ) {
+
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+
+        empty.className =
+            "board-station";
+
+
+        empty.innerHTML =
+            `
+            <div class="board-name">
+                <span></span>
+                <span></span>
+            </div>
+            `;
+
+
+        board.appendChild(
+            empty
+        );
+
+
+        if (
+            i < 3
+        ) {
+
+            const arrow =
+                document.createElement(
+                    "div"
+                );
+
+
+            arrow.className =
+                "board-arrow";
+
+
+            arrow.textContent =
+                "＞";
+
+
+            board.appendChild(
+                arrow
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   距離
 ===================================================== */
 
 function getDistance(
@@ -1189,7 +1356,7 @@ function getDistance(
 
 
 /* =====================================================
-   点と駅間の距離
+   点と区間の距離
 ===================================================== */
 
 function pointToSegmentDistance(
@@ -1293,7 +1460,6 @@ function pointToSegmentDistance(
     return Math.sqrt(
 
         (px - closestX) ** 2 +
-
         (py - closestY) ** 2
 
     );
@@ -1302,7 +1468,7 @@ function pointToSegmentDistance(
 
 
 /* =====================================================
-   初期区間判定
+   初期区間
 ===================================================== */
 
 function detectInitialSegment(
@@ -1311,7 +1477,7 @@ function detectInitialSegment(
 ) {
 
     /*
-       駅そのものに近い場合
+       駅に近い場合
     */
 
     for (
@@ -1334,10 +1500,6 @@ function detectInitialSegment(
             STATION_RADIUS
         ) {
 
-            /*
-               博多
-            */
-
             if (
                 i >=
                 stations.length - 1
@@ -1348,16 +1510,6 @@ function detectInitialSegment(
             }
 
 
-            /*
-               例：
-
-               行橋にいる
-
-               ↓
-
-               行橋 → 小倉
-            */
-
             return i;
 
         }
@@ -1366,7 +1518,7 @@ function detectInitialSegment(
 
 
     /*
-       駅間にいる場合
+       区間上にいる場合
     */
 
     let bestSegment =
@@ -1526,32 +1678,22 @@ function updateGPS(
 
     /*
        初回GPS
-
-       現在地から区間を決定
     */
 
     if (
         !initialized
     ) {
 
-        const detected =
+        currentSegment =
             detectInitialSegment(
                 lat,
                 lon
             );
 
 
-        currentSegment =
-            detected;
-
-
         initialized =
             true;
 
-
-        /*
-           博多
-        */
 
         if (
             currentSegment >=
@@ -1564,24 +1706,15 @@ function updateGPS(
 
         }
 
+
+        updateNextStations();
+
     }
 
 
     /*
-       終点
+       次駅
     */
-
-    if (
-        currentSegment >=
-        stations.length - 1
-    ) {
-
-        showArrival();
-
-        return;
-
-    }
-
 
     const to =
         stations[
@@ -1601,11 +1734,13 @@ function updateGPS(
     /*
        駅切り替え
 
-       近い＋減速
+       「近い」だけでは切り替えない。
 
-       または
+       速度が25km/h以下に落ちた
+       ＋
+       駅まで500m以内
 
-       かなり近い
+       もしくは80m以内
     */
 
     const slowEnough =
@@ -1624,8 +1759,8 @@ function updateGPS(
     if (
 
         (
-            closeEnough &&
-            slowEnough
+            slowEnough &&
+            closeEnough
         )
 
         ||
@@ -1648,6 +1783,9 @@ function updateGPS(
 
         }
 
+
+        updateNextStations();
+
     }
 
 
@@ -1660,7 +1798,7 @@ function updateGPS(
 
 
 /* =====================================================
-   表示更新
+   表示
 ===================================================== */
 
 function updateDisplay(
@@ -1706,7 +1844,7 @@ function updateDisplay(
 
 
     /*
-       バー進行率
+       バー
     */
 
     let progress =
@@ -1727,10 +1865,6 @@ function updateDisplay(
         );
 
 
-    /*
-       駅名
-    */
-
     document.getElementById(
         "fromStation"
     ).textContent =
@@ -1742,10 +1876,6 @@ function updateDisplay(
     ).textContent =
         to.name;
 
-
-    /*
-       バー
-    */
 
     document.getElementById(
         "progressFill"
@@ -1812,17 +1942,6 @@ function updateDisplay(
         "」です";
 
 
-    /*
-       上部駅表示
-
-       現在の「出発駅」を強調
-    */
-
-    updateRouteStations(
-        currentSegment
-    );
-
-
     setStatus(
         "● GPS接続中"
     );
@@ -1878,9 +1997,24 @@ function showArrival() {
         "終点です";
 
 
-    updateRouteStations(
-        stations.length - 1
-    );
+    /*
+       次駅表示を空にする
+    */
+
+    document.getElementById(
+        "stationBoard"
+    ).innerHTML =
+        `
+        <div
+            class="board-station"
+            style="flex:1"
+        >
+            <div class="board-name">
+                <span>博</span>
+                <span>多</span>
+            </div>
+        </div>
+        `;
 
 
     setStatus(
@@ -1940,7 +2074,7 @@ function gpsError(
 
 
 /* =====================================================
-   ステータス
+   STATUS
 ===================================================== */
 
 function setStatus(
@@ -1963,11 +2097,12 @@ window.addEventListener(
     "load",
     () => {
 
-        createRouteStations();
+        /*
+           初期状態では
+           大分からの次の4駅
+        */
 
-        updateRouteStations(
-            0
-        );
+        updateNextStations();
 
         startGPS();
 
