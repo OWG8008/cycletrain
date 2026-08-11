@@ -2,7 +2,6 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport"
       content="width=device-width,
                initial-scale=1,
@@ -12,20 +11,27 @@
 <title>GPS Train Monitor</title>
 
 <style>
-
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
 }
 
-html,
-body{
+html,body{
     margin:0;
-    padding:0;
-
-    background:#08090d;
-    color:white;
-
+    min-height:100%;
+    background:
+        radial-gradient(
+            circle at 20% 0%,
+            #34415f 0%,
+            transparent 38%
+        ),
+        radial-gradient(
+            circle at 100% 30%,
+            #26354e 0%,
+            transparent 40%
+        ),
+        #080a0f;
+    color:#fff;
     font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -47,81 +53,98 @@ button{
 }
 
 
-/* =========================
-   設定
-========================= */
+/* ==============================
+   Liquid Glass
+============================== */
+
+.glass{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.13),
+            rgba(255,255,255,.045)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.16);
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.28),
+
+        inset 0 1px 0
+        rgba(255,255,255,.15),
+
+        inset 0 -1px 0
+        rgba(255,255,255,.04);
+
+    backdrop-filter:
+        blur(28px)
+        saturate(150%);
+
+    -webkit-backdrop-filter:
+        blur(28px)
+        saturate(150%);
+}
 
 .page{
     width:100%;
     max-width:760px;
-
     margin:auto;
-
-    padding:
-        20px
-        15px
-        40px;
+    padding:24px 15px 45px;
 }
 
 .title{
-    font-size:31px;
+    font-size:32px;
     font-weight:900;
-
     letter-spacing:-1.5px;
 }
 
 .subtitle{
-    color:#818894;
-
+    color:#aeb5c2;
     font-size:12px;
-
     margin-top:5px;
-    margin-bottom:22px;
+    margin-bottom:20px;
 }
 
 .card{
-    background:#15171d;
-
-    border:
-        1px solid
-        #252832;
-
-    border-radius:23px;
-
+    border-radius:25px;
     padding:19px;
-
     margin-bottom:14px;
 }
 
 .section-title{
     font-size:17px;
-
     font-weight:900;
-
     margin-bottom:13px;
 }
 
 
-/* 列車 */
+/* ==============================
+   設定画面
+============================== */
 
 .train-grid{
     display:grid;
-
     gap:10px;
 }
 
 .train-button{
-    border:0;
-
-    border-radius:18px;
-
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:19px;
     padding:17px;
-
     text-align:left;
 
-    background:#252831;
+    color:#fff;
 
-    color:white;
+    background:
+        rgba(255,255,255,.06);
+
+    transition:
+        transform .15s,
+        background .2s,
+        border .2s;
 }
 
 .train-button:active,
@@ -133,147 +156,136 @@ button{
 }
 
 .train-button.selected{
-    background:#315fea;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(82,132,255,.85),
+            rgba(61,87,210,.62)
+        );
+
+    border-color:
+        rgba(255,255,255,.25);
 }
 
 .train-name{
     font-size:19px;
-
     font-weight:900;
 }
 
 .train-description{
     margin-top:5px;
-
-    color:#8c93a0;
-
+    color:#aab1bd;
     font-size:12px;
 }
 
 .train-button.selected
 .train-description{
-    color:#dce5ff;
+    color:#e8edff;
 }
 
 
-/* 路線 */
-
 .route-grid{
     display:grid;
-
     gap:9px;
 }
 
 .route-button{
-    border:0;
-
-    border-radius:17px;
-
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
     padding:16px;
-
-    background:#252831;
-
-    color:white;
-
+    background:rgba(255,255,255,.06);
+    color:#fff;
     text-align:left;
 }
 
 .route-button.selected{
-    background:#315fea;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(82,132,255,.85),
+            rgba(61,87,210,.62)
+        );
 }
 
 .route-name{
     font-size:17px;
-
     font-weight:900;
 }
 
 .route-detail{
-    color:#8b929f;
-
+    color:#a5acb8;
     font-size:11px;
-
     margin-top:4px;
 }
 
-.route-button.selected
-.route-detail{
-    color:#dce5ff;
-}
-
-
-/* 行き先 */
 
 .destination-grid{
     display:grid;
-
     grid-template-columns:
         repeat(2,1fr);
-
     gap:9px;
 }
 
 .destination-button{
-    border:0;
-
-    border-radius:15px;
-
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:17px;
     padding:15px 8px;
 
-    background:#252831;
+    background:
+        rgba(255,255,255,.06);
 
-    color:white;
-
+    color:#fff;
     font-weight:800;
 }
 
 .destination-button.selected{
-    background:#315fea;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(82,132,255,.85),
+            rgba(61,87,210,.62)
+        );
 }
 
 
-/* ソニック */
-
 .stop-list{
     display:grid;
-
     gap:8px;
 }
 
 .stop-button{
     width:100%;
-
-    border:0;
-
-    border-radius:15px;
-
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:17px;
     padding:14px;
 
-    background:#252831;
+    background:
+        rgba(255,255,255,.055);
 
-    color:white;
+    color:#fff;
 
     display:flex;
-
     align-items:center;
-
     gap:12px;
 
     text-align:left;
 }
 
+.stop-button.selected{
+    background:
+        rgba(70,110,230,.38);
+}
+
 .stop-check{
     width:23px;
     height:23px;
-
-    border-radius:7px;
+    border-radius:50%;
 
     border:
         2px solid
-        #666d79;
+        rgba(255,255,255,.35);
 
     display:flex;
-
     align-items:center;
     justify-content:center;
 
@@ -282,15 +294,11 @@ button{
 
 .stop-check::after{
     content:"";
-
     width:8px;
     height:4px;
 
-    border-left:
-        2px solid white;
-
-    border-bottom:
-        2px solid white;
+    border-left:2px solid white;
+    border-bottom:2px solid white;
 
     transform:
         rotate(-45deg)
@@ -299,19 +307,12 @@ button{
     transition:.15s;
 }
 
-.stop-button.selected{
-    background:#202945;
+.stop-button.selected .stop-check{
+    background:#4d78ff;
+    border-color:#4d78ff;
 }
 
-.stop-button.selected
-.stop-check{
-    background:#315fea;
-
-    border-color:#315fea;
-}
-
-.stop-button.selected
-.stop-check::after{
+.stop-button.selected .stop-check::after{
     transform:
         rotate(-45deg)
         scale(1);
@@ -319,229 +320,201 @@ button{
 
 .stop-name{
     font-size:14px;
-
     font-weight:800;
 }
 
 .stop-note{
     margin-left:auto;
-
-    color:#747b87;
-
+    color:#8f96a3;
     font-size:10px;
 }
 
 
-/* 設定情報 */
-
 .info{
-    color:#858c98;
-
+    color:#a4abb7;
     font-size:13px;
-
     line-height:1.8;
 }
 
 .info b{
-    color:white;
+    color:#fff;
 }
 
 .start-button{
     width:100%;
-
-    border:0;
-
-    border-radius:19px;
-
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:20px;
     padding:18px;
 
-    background:#27c86d;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(64,216,126,.95),
+            rgba(26,170,91,.85)
+        );
 
-    color:white;
-
+    color:#fff;
     font-size:18px;
-
     font-weight:900;
+
+    box-shadow:
+        0 15px 35px
+        rgba(28,180,100,.22),
+
+        inset 0 1px 0
+        rgba(255,255,255,.3);
 }
 
 .start-button:disabled{
-    background:#282c34;
-
-    color:#656b76;
+    background:rgba(255,255,255,.07);
+    color:#6f7682;
+    box-shadow:none;
 }
 
 
-/* =========================
+/* ==============================
    運転画面
-========================= */
+============================== */
 
 .drive{
     width:100%;
-
     max-width:850px;
-
     margin:auto;
-
     padding:13px;
 }
 
 .top{
-    min-height:48px;
-
+    min-height:50px;
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
 }
 
 .service{
     font-size:16px;
-
     font-weight:900;
 }
 
 .service-destination{
     margin-top:2px;
-
-    color:#858c98;
-
+    color:#9ca4b0;
     font-size:11px;
 }
 
 .gps-status{
+    padding:7px 10px;
+    border-radius:999px;
+
+    background:
+        rgba(50,220,120,.12);
+
+    border:
+        1px solid
+        rgba(90,255,150,.2);
+
+    color:#72e69c;
+
     font-size:10px;
-
     font-weight:800;
-
-    color:#65d38f;
 }
 
 
 /* 行き先 */
 
 .destination-card{
-    background:#15171d;
-
-    border-radius:23px;
-
-    padding:21px;
-
+    border-radius:27px;
+    padding:23px;
     margin-bottom:13px;
 }
 
 .destination{
-    font-size:36px;
-
+    font-size:38px;
     line-height:1;
-
     font-weight:900;
-
     letter-spacing:-2px;
 }
 
 .route-name-drive{
-    color:#858c98;
-
+    color:#9da5b2;
     font-size:12px;
-
-    margin-top:8px;
+    margin-top:9px;
 }
 
 
-/* =========================
-   次駅
-========================= */
+/* ==============================
+   駅カード
+============================== */
 
 .station-card{
-    background:#15171d;
-
-    border-radius:23px;
-
+    border-radius:27px;
     padding:21px;
-
     margin-bottom:13px;
 }
 
 .station-header{
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     margin-bottom:17px;
 }
 
 .station-header-title{
     font-size:15px;
-
     font-weight:900;
 }
 
 .station-count{
-    color:#737a86;
-
+    color:#858d9a;
     font-size:10px;
 }
 
 .current-row{
     display:flex;
-
     justify-content:space-between;
-
     align-items:flex-end;
-
     margin-bottom:8px;
 }
 
-.current-label{
-    color:#858c98;
-
+.current-label,
+.next-label{
+    color:#858d9a;
     font-size:10px;
 }
 
 .current-name{
-    font-size:17px;
-
+    font-size:18px;
     font-weight:900;
-}
-
-.next-label{
-    text-align:right;
-
-    color:#858c98;
-
-    font-size:10px;
 }
 
 .next-name{
     text-align:right;
-
-    font-size:20px;
-
+    font-size:21px;
     font-weight:900;
 }
 
 
-/* =========================
-   Apple Music風バー
-========================= */
+/* ==============================
+   Apple Music風進行バー
+============================== */
 
 .progress-box{
     position:relative;
 
     width:100%;
-
     height:22px;
 
     margin-top:13px;
 
-    background:#30333b;
+    background:
+        rgba(255,255,255,.11);
 
     border-radius:999px;
 
     overflow:hidden;
+
+    box-shadow:
+        inset 0 1px 3px
+        rgba(0,0,0,.3);
 }
 
 .progress-fill{
@@ -553,106 +526,109 @@ button{
     width:0%;
     height:100%;
 
-    background:white;
+    background:
+        linear-gradient(
+            90deg,
+            #fff,
+            #e7eaff
+        );
 
     border-radius:999px;
 
     transition:
-        width
-        .25s
+        width .3s
         cubic-bezier(.22,.61,.36,1);
+
+    box-shadow:
+        0 0 18px
+        rgba(255,255,255,.18);
 }
 
 .progress-distance{
     display:flex;
-
     justify-content:space-between;
 
     margin-top:8px;
 
-    color:#6d7480;
-
+    color:#747c89;
     font-size:10px;
 }
 
 
-/* =========================
+/* ==============================
    速度
-========================= */
+============================== */
 
 .speed-card{
-    background:#15171d;
-
-    border-radius:23px;
-
-    padding:24px;
+    border-radius:27px;
+    padding:26px;
 
     display:flex;
-
     flex-direction:column;
-
     align-items:center;
 }
 
 .speed-circle{
-    width:190px;
-    height:190px;
+    width:200px;
+    height:200px;
 
     border-radius:50%;
 
+    background:
+        radial-gradient(
+            circle at 35% 25%,
+            rgba(255,255,255,.14),
+            rgba(255,255,255,.035) 55%,
+            rgba(255,255,255,.015)
+        );
+
     border:
-        2px solid
-        #3a3e47;
+        1px solid
+        rgba(255,255,255,.23);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.18),
+
+        0 18px 45px
+        rgba(0,0,0,.25);
 
     display:flex;
-
     flex-direction:column;
-
     align-items:center;
-
     justify-content:center;
 }
 
 .speed-number{
-    font-size:59px;
-
+    font-size:62px;
     line-height:.9;
-
     font-weight:900;
-
-    letter-spacing:-3px;
+    letter-spacing:-4px;
 }
 
 .speed-unit{
-    color:#858c98;
-
+    color:#9ca4b1;
     font-size:13px;
-
-    margin-top:10px;
+    margin-top:11px;
 }
 
 .speed-caption{
-    margin-top:14px;
-
-    color:#858c98;
-
+    margin-top:15px;
+    color:#9da5b2;
     font-size:11px;
 }
 
 .gps-coordinates{
-    margin-top:12px;
-
-    color:#5e6570;
-
+    margin-top:11px;
+    color:#68707c;
     font-size:9px;
-
     text-align:center;
 }
 
 
-/* =========================
+/* ==============================
    ATS
-========================= */
+============================== */
 
 .ats{
     position:fixed;
@@ -663,16 +639,25 @@ button{
 
     z-index:100;
 
+    border-radius:20px;
+    padding:13px 16px;
+
     background:
-        rgba(23,26,33,.97);
+        rgba(25,29,38,.82);
 
     border:
         1px solid
-        #383d47;
+        rgba(255,255,255,.16);
 
-    border-radius:18px;
+    backdrop-filter:
+        blur(25px);
 
-    padding:13px 16px;
+    -webkit-backdrop-filter:
+        blur(25px);
+
+    box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.35);
 
     transform:
         translateY(140%);
@@ -681,86 +666,79 @@ button{
 }
 
 .ats.show{
-    transform:
-        translateY(0);
+    transform:translateY(0);
 }
 
 .ats-label{
-    color:#ffd34d;
-
+    color:#ffd84d;
     font-size:9px;
-
     font-weight:900;
 }
 
 .ats-text{
     margin-top:3px;
-
     font-size:14px;
-
     font-weight:900;
 }
 
 
-/* =========================
+/* ==============================
    到着
-========================= */
+============================== */
 
 .arrival{
     position:fixed;
-
     inset:0;
-
     z-index:200;
 
-    background:#08090d;
+    background:
+        rgba(5,7,11,.65);
+
+    backdrop-filter:
+        blur(30px);
+
+    -webkit-backdrop-filter:
+        blur(30px);
 
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     padding:25px;
 }
 
 .arrival-box{
     width:100%;
-
     max-width:420px;
+
+    border-radius:30px;
+    padding:30px;
 
     text-align:center;
 }
 
 .arrival-small{
-    color:#7d8490;
-
+    color:#929aa7;
     font-size:13px;
 }
 
 .arrival-title{
     margin:10px 0;
-
     font-size:46px;
-
     font-weight:900;
 }
 
 .arrival-button{
     width:100%;
-
     margin-top:22px;
 
-    border:0;
-
-    border-radius:18px;
-
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:19px;
     padding:17px;
 
-    background:#315fea;
+    background:
+        rgba(80,120,255,.75);
 
     color:white;
-
     font-weight:900;
 }
 
@@ -776,7 +754,6 @@ button{
         grid-template-columns:
             repeat(4,1fr);
     }
-
 }
 
 </style>
@@ -785,13 +762,11 @@ button{
 <body>
 
 
-<!-- =====================================================
+<!-- ==============================
      設定
-===================================================== -->
+============================== -->
 
-<section
-    id="setup"
-    class="page">
+<section id="setup" class="page">
 
     <div class="title">
         列車設定
@@ -802,7 +777,7 @@ button{
     </div>
 
 
-    <div class="card">
+    <div class="card glass">
 
         <div class="section-title">
             列車種別
@@ -861,11 +836,9 @@ button{
     </div>
 
 
-    <!-- 普通 路線 -->
-
     <div
         id="route-card"
-        class="card hidden">
+        class="card glass hidden">
 
         <div class="section-title">
             路線選択
@@ -921,15 +894,12 @@ button{
             </button>
 
         </div>
-
     </div>
 
 
-    <!-- 行き先 -->
-
     <div
         id="destination-card"
-        class="card hidden">
+        class="card glass hidden">
 
         <div
             id="destination-question"
@@ -947,11 +917,9 @@ button{
     </div>
 
 
-    <!-- ソニック停車駅 -->
-
     <div
         id="sonic-stop-card"
-        class="card hidden">
+        class="card glass hidden">
 
         <div class="section-title">
             ソニック停車駅
@@ -969,7 +937,7 @@ button{
     </div>
 
 
-    <div class="card">
+    <div class="card glass">
 
         <div class="section-title">
             設定内容
@@ -999,14 +967,13 @@ button{
 </section>
 
 
-<!-- =====================================================
+<!-- ==============================
      運転画面
-===================================================== -->
+============================== -->
 
 <section
     id="drive"
     class="drive hidden">
-
 
     <div class="top">
 
@@ -1030,7 +997,6 @@ button{
 
         </div>
 
-
         <div
             id="gps-status"
             class="gps-status">
@@ -1042,7 +1008,7 @@ button{
     </div>
 
 
-    <div class="destination-card">
+    <div class="destination-card glass">
 
         <div
             id="drive-destination"
@@ -1063,9 +1029,7 @@ button{
     </div>
 
 
-    <!-- 次駅 -->
-
-    <div class="station-card">
+    <div class="station-card glass">
 
         <div class="station-header">
 
@@ -1150,9 +1114,7 @@ button{
     </div>
 
 
-    <!-- 速度 -->
-
-    <div class="speed-card">
+    <div class="speed-card glass">
 
         <div class="speed-circle">
 
@@ -1187,11 +1149,7 @@ button{
 </section>
 
 
-<!-- ATS -->
-
-<div
-    id="ats"
-    class="ats">
+<div id="ats" class="ats">
 
     <div class="ats-label">
         GPS TRAIN
@@ -1208,13 +1166,11 @@ button{
 </div>
 
 
-<!-- 到着 -->
-
 <div
     id="arrival"
     class="arrival hidden">
 
-    <div class="arrival-box">
+    <div class="arrival-box glass">
 
         <div class="arrival-small">
             終着駅に到着しました
@@ -1247,15 +1203,24 @@ button{
 
 <script>
 
-
 /* =====================================================
    駅座標
 ===================================================== */
 
 const STATIONS = {
 
-    /* ===== 日豊本線 ===== */
-
+    "博多":[33.5898,130.4207],
+    "吉塚":[33.6060,130.4230],
+    "香椎":[33.6580,130.4440],
+    "福間":[33.7660,130.4840],
+    "赤間":[33.8070,130.5700],
+    "折尾":[33.8620,130.7100],
+    "黒崎":[33.8660,130.7660],
+    "戸畑":[33.8970,130.8180],
+    "小倉":[33.8869,130.8820],
+    "朽網":[33.7800,130.9650],
+    "行橋":[33.7280,130.9700],
+    "宇島":[33.6100,131.1400],
     "中津":[33.5996,131.1884],
     "東中津":[33.6152,131.2430],
     "今津":[33.5954,131.2672],
@@ -1296,8 +1261,8 @@ const STATIONS = {
     "海崎":[33.0300,131.9200],
     "佐伯":[32.9600,131.9000],
 
-
-    /* ===== 久大本線 ===== */
+    "鳥栖":[33.37470,130.52120],
+    "久留米":[33.31940,130.51570],
 
     "古国府":[33.2240,131.5990],
     "南大分":[33.2130,131.5830],
@@ -1323,9 +1288,6 @@ const STATIONS = {
     "豊後三芳":[33.3100,130.9200],
     "日田":[33.3200,130.9400],
 
-
-    /* ===== 豊肥本線 ===== */
-
     "滝尾":[33.2150,131.6200],
     "敷戸":[33.1900,131.6000],
     "大分大学前":[33.1900,131.5800],
@@ -1342,172 +1304,61 @@ const STATIONS = {
     "豊後荻":[32.9000,131.3000],
     "滝水":[32.8800,131.2500],
     "波野":[32.8500,131.2000],
-    "宮地":[32.8800,131.1200],
-
-
-    /* ===== ソニック ===== */
-
-    "博多":[33.5898,130.4207],
-    "吉塚":[33.6060,130.4230],
-    "香椎":[33.6580,130.4440],
-    "福間":[33.7660,130.4840],
-    "赤間":[33.8070,130.5700],
-    "折尾":[33.8620,130.7100],
-    "黒崎":[33.8660,130.7660],
-    "戸畑":[33.8970,130.8180],
-    "小倉":[33.8869,130.8820],
-    "朽網":[33.7800,130.9650],
-    "行橋":[33.7280,130.9700],
-    "宇島":[33.6100,131.1400],
-
-
-    /* ===== その他 ===== */
-
-    "鳥栖":[33.3740,130.5180],
-    "久留米":[33.3190,130.5150]
-
+    "宮地":[32.8800,131.1200]
 };
 
 
 /* =====================================================
-   普通列車
+   路線
 ===================================================== */
 
 const LOCAL_ROUTES = {
 
     "日豊本線":[
-        "中津",
-        "東中津",
-        "今津",
-        "天津",
-        "豊前善光寺",
-        "柳ヶ浦",
-        "豊前長洲",
-        "宇佐",
-        "西屋敷",
-        "立石",
-        "中山香",
-        "杵築",
-        "大神",
-        "日出",
-        "暘谷",
-        "豊後豊岡",
-        "亀川",
-        "別府大学",
-        "別府",
-        "東別府",
-        "西大分",
-        "大分",
-        "牧",
-        "高城",
-        "鶴崎",
-        "大在",
-        "坂ノ市",
-        "幸崎",
-        "佐志生",
-        "下ノ江",
-        "熊崎",
-        "臼杵",
-        "上臼杵",
-        "津久見",
-        "日代",
-        "浅海井",
-        "狩生",
-        "海崎",
-        "佐伯"
+        "中津","東中津","今津","天津",
+        "豊前善光寺","柳ヶ浦","豊前長洲",
+        "宇佐","西屋敷","立石","中山香",
+        "杵築","大神","日出","暘谷",
+        "豊後豊岡","亀川","別府大学",
+        "別府","東別府","西大分","大分",
+        "牧","高城","鶴崎","大在","坂ノ市",
+        "幸崎","佐志生","下ノ江","熊崎",
+        "臼杵","上臼杵","津久見","日代",
+        "浅海井","狩生","海崎","佐伯"
     ],
 
     "久大本線":[
-        "大分",
-        "古国府",
-        "南大分",
-        "賀来",
-        "豊後国分",
-        "向之原",
-        "鬼瀬",
-        "小野屋",
-        "天神山",
-        "庄内",
-        "湯平",
-        "南由布",
-        "由布院",
-        "野矢",
-        "豊後中村",
-        "引治",
-        "恵良",
-        "豊後森",
-        "北山田",
-        "杉河内",
-        "天ヶ瀬",
-        "豊後中川",
-        "豊後三芳",
-        "日田"
+        "大分","古国府","南大分","賀来",
+        "豊後国分","向之原","鬼瀬","小野屋",
+        "天神山","庄内","湯平","南由布",
+        "由布院","野矢","豊後中村","引治",
+        "恵良","豊後森","北山田","杉河内",
+        "天ヶ瀬","豊後中川","豊後三芳","日田"
     ],
 
     "豊肥本線":[
-        "大分",
-        "滝尾",
-        "敷戸",
-        "大分大学前",
-        "中判田",
-        "竹中",
-        "犬飼",
-        "菅尾",
-        "三重町",
-        "豊後清川",
-        "緒方",
-        "朝地",
-        "豊後竹田",
-        "玉来",
-        "豊後荻",
-        "滝水",
-        "波野",
-        "宮地"
+        "大分","滝尾","敷戸","大分大学前",
+        "中判田","竹中","犬飼","菅尾",
+        "三重町","豊後清川","緒方","朝地",
+        "豊後竹田","玉来","豊後荻","滝水",
+        "波野","宮地"
     ]
-
 };
 
 
-/* =====================================================
-   ソニック
-===================================================== */
-
 const SONIC_ROUTE = [
-
-    "博多",
-    "吉塚",
-    "香椎",
-    "福間",
-    "赤間",
-    "折尾",
-    "黒崎",
-    "戸畑",
-    "小倉",
-    "朽網",
-    "行橋",
-    "宇島",
-    "中津",
-    "柳ヶ浦",
-    "宇佐",
-    "杵築",
-    "亀川",
-    "別府",
-    "大分",
-    "鶴崎",
-    "大在",
-    "臼杵",
-    "津久見",
-    "佐伯"
-
+    "博多","吉塚","香椎","福間","赤間",
+    "折尾","黒崎","戸畑","小倉","朽網",
+    "行橋","宇島","中津","柳ヶ浦","宇佐",
+    "杵築","亀川","別府","大分","鶴崎",
+    "大在","臼杵","津久見","佐伯"
 ];
 
 
-/* =====================================================
-   ゆふいんの森
-===================================================== */
-
+/*
+   ゆふいんの森は停車駅を限定しない
+*/
 const YUFUIN_ROUTE = [
-
     "博多",
     "鳥栖",
     "久留米",
@@ -1517,7 +1368,6 @@ const YUFUIN_ROUTE = [
     "由布院",
     "大分",
     "別府"
-
 ];
 
 
@@ -1525,87 +1375,61 @@ const YUFUIN_ROUTE = [
    状態
 ===================================================== */
 
-let trainType = null;
+let trainType=null;
+let selectedRoute=null;
+let destination=null;
+let sonicStops=[];
 
-let selectedRoute = null;
+let currentStations=[];
+let currentStationIndex=0;
 
-let destination = null;
+let gpsWatchId=null;
 
-let sonicStops = [];
+let gpsSpeed=0;
+let smoothedSpeed=0;
 
-let currentStations = [];
+let previousGPS=null;
 
-let currentStationIndex = 0;
+let gpsPositionKnown=false;
 
-let gpsWatchId = null;
+let stationArrivalDetected=false;
 
-let gpsSpeed = 0;
-
-let smoothedSpeed = 0;
-
-let previousGPS = null;
-
-let slowingAtStation = false;
-
-let driveStarted = false;
-
-let arrivalTriggered = false;
-
-let gpsPositionKnown = false;
+let arrivalTriggered=false;
 
 
 /* =====================================================
-   定数
-===================================================== */
-
-const MAX_REASONABLE_SPEED = 180;
-
-const STATION_SWITCH_SPEED = 5;
-
-const STATION_ARRIVAL_DISTANCE = 100;
-
-
-/* =====================================================
-   列車選択
+   設定
 ===================================================== */
 
 function selectTrain(type){
 
-    trainType = type;
+    trainType=type;
 
-    selectedRoute = null;
-
-    destination = null;
-
-    sonicStops = [];
-
+    selectedRoute=null;
+    destination=null;
+    sonicStops=[];
 
     document
         .querySelectorAll(".train-button")
-        .forEach(button=>{
-
-            button.classList.toggle(
+        .forEach(b=>{
+            b.classList.toggle(
                 "selected",
-                button.dataset.train === type
+                b.dataset.train===type
             );
-
         });
-
 
     document
         .getElementById("route-card")
         .classList.toggle(
             "hidden",
-            type !== "普通"
+            type!=="普通"
         );
-
 
     document
         .getElementById("sonic-stop-card")
         .classList.add("hidden");
 
-
-    if(type === "普通"){
+    if(type==="普通"){
 
         document
             .getElementById("destination-card")
@@ -1614,36 +1438,25 @@ function selectTrain(type){
     }else{
 
         showExpressDestinations();
-
     }
-
 
     updateSettingInfo();
 }
 
 
-/* =====================================================
-   路線
-===================================================== */
-
 function selectRoute(route){
 
-    selectedRoute = route;
-
-    destination = null;
-
+    selectedRoute=route;
+    destination=null;
 
     document
         .querySelectorAll(".route-button")
-        .forEach(button=>{
-
-            button.classList.toggle(
+        .forEach(b=>{
+            b.classList.toggle(
                 "selected",
-                button.dataset.route === route
+                b.dataset.route===route
             );
-
         });
-
 
     showLocalDestinations();
 
@@ -1651,159 +1464,108 @@ function selectRoute(route){
 }
 
 
-/* =====================================================
-   普通 行き先
-===================================================== */
-
 function showLocalDestinations(){
 
-    const card =
+    const card=
         document.getElementById(
             "destination-card"
         );
 
-    const grid =
+    const grid=
         document.getElementById(
             "destination-grid"
         );
 
-
     card.classList.remove("hidden");
-
 
     document
         .getElementById(
             "destination-question"
         )
-        .textContent =
+        .textContent=
         "終着駅を選択してください";
 
-
-    grid.innerHTML = "";
-
+    grid.innerHTML="";
 
     LOCAL_ROUTES[selectedRoute]
         .forEach(station=>{
 
-            const button =
-                document.createElement(
-                    "button"
-                );
+            const b=
+                document.createElement("button");
 
-            button.className =
+            b.className=
                 "destination-button";
 
-            button.textContent =
-                station;
+            b.textContent=station;
 
-            button.onclick =
-                ()=>selectDestination(
-                    station
-                );
+            b.onclick=()=>{
+                selectDestination(station);
+            };
 
-            grid.appendChild(button);
-
+            grid.appendChild(b);
         });
 }
 
 
-/* =====================================================
-   特急 行き先
-===================================================== */
-
 function showExpressDestinations(){
 
-    const card =
+    const card=
         document.getElementById(
             "destination-card"
         );
 
-    const grid =
+    const grid=
         document.getElementById(
             "destination-grid"
         );
 
-
     card.classList.remove("hidden");
 
-    grid.innerHTML = "";
+    grid.innerHTML="";
 
+    const list=
+        trainType==="特急ソニック"
+        ?
+        ["博多","大分","佐伯"]
+        :
+        ["博多","由布院","別府"];
 
-    let destinations;
+    list.forEach(station=>{
 
+        const b=
+            document.createElement("button");
 
-    if(
-        trainType ===
-        "特急ソニック"
-    ){
-
-        destinations = [
-            "博多",
-            "大分",
-            "佐伯"
-        ];
-
-    }else{
-
-        destinations = [
-            "博多",
-            "由布院",
-            "別府"
-        ];
-
-    }
-
-
-    destinations.forEach(station=>{
-
-        const button =
-            document.createElement(
-                "button"
-            );
-
-        button.className =
+        b.className=
             "destination-button";
 
-        button.textContent =
-            station;
+        b.textContent=station;
 
-        button.onclick =
-            ()=>selectDestination(
-                station
-            );
+        b.onclick=()=>{
+            selectDestination(station);
+        };
 
-        grid.appendChild(button);
-
+        grid.appendChild(b);
     });
 }
 
 
-/* =====================================================
-   行き先
-===================================================== */
-
 function selectDestination(station){
 
-    destination = station;
-
+    destination=station;
 
     document
         .querySelectorAll(
             ".destination-button"
         )
-        .forEach(button=>{
-
-            button.classList.toggle(
+        .forEach(b=>{
+            b.classList.toggle(
                 "selected",
-                button.textContent === station
+                b.textContent===station
             );
-
         });
 
-
     if(
-        trainType ===
-        "特急ソニック"
+        trainType==="特急ソニック"
     ){
 
         showSonicStops();
@@ -1815,9 +1577,7 @@ function selectDestination(station){
                 "sonic-stop-card"
             )
             .classList.add("hidden");
-
     }
-
 
     updateSettingInfo();
 }
@@ -1829,341 +1589,264 @@ function selectDestination(station){
 
 function showSonicStops(){
 
-    const card =
+    const card=
         document.getElementById(
             "sonic-stop-card"
         );
 
-    const list =
+    const list=
         document.getElementById(
             "sonic-stop-list"
         );
 
-
     card.classList.remove("hidden");
 
-    list.innerHTML = "";
+    list.innerHTML="";
 
+    const route=
+        getSonicRoute(destination);
 
-    const route =
-        getSonicRoute(
-            destination
-        );
-
-
-    sonicStops = [
+    sonicStops=[
         route[0],
-        route[route.length - 1]
+        route[route.length-1]
     ];
 
+    route.forEach((station,index)=>{
 
-    route.forEach(
-        (station,index)=>{
+        const mandatory=
+            index===0 ||
+            index===route.length-1;
 
-            const mandatory =
-                index === 0 ||
-                index ===
-                route.length - 1;
+        const b=
+            document.createElement("button");
 
+        b.className="stop-button";
 
-            const button =
-                document.createElement(
-                    "button"
-                );
+        if(mandatory){
+            b.classList.add("selected");
+        }
 
-            button.className =
-                "stop-button";
+        b.innerHTML=`
+            <span class="stop-check"></span>
+            <span class="stop-name">
+                ${station}
+            </span>
+            <span class="stop-note">
+                ${mandatory?"必停":""}
+            </span>
+        `;
 
+        b.onclick=()=>{
 
             if(mandatory){
+                return;
+            }
 
-                button.classList.add(
+            if(
+                sonicStops.includes(station)
+            ){
+
+                sonicStops=
+                    sonicStops.filter(
+                        s=>s!==station
+                    );
+
+                b.classList.remove(
                     "selected"
                 );
 
+            }else{
+
+                sonicStops.push(station);
+
+                b.classList.add(
+                    "selected"
+                );
             }
 
+            updateSettingInfo();
+        };
 
-            button.innerHTML = `
-                <span class="stop-check"></span>
-                <span class="stop-name">
-                    ${station}
-                </span>
-                <span class="stop-note">
-                    ${mandatory ? "必停" : ""}
-                </span>
-            `;
-
-
-            button.onclick = ()=>{
-
-                if(mandatory){
-
-                    return;
-                }
-
-
-                if(
-                    sonicStops.includes(
-                        station
-                    )
-                ){
-
-                    sonicStops =
-                        sonicStops.filter(
-                            s =>
-                            s !== station
-                        );
-
-                    button.classList.remove(
-                        "selected"
-                    );
-
-                }else{
-
-                    sonicStops.push(
-                        station
-                    );
-
-                    button.classList.add(
-                        "selected"
-                    );
-
-                }
-
-
-                updateSettingInfo();
-
-            };
-
-
-            list.appendChild(button);
-
-        }
-    );
+        list.appendChild(b);
+    });
 }
 
 
-/* =====================================================
-   ソニック方向
-===================================================== */
-
 function getSonicRoute(destination){
 
-    if(
-        destination === "博多"
-    ){
-
+    if(destination==="博多"){
         return [
             ...SONIC_ROUTE
         ].reverse();
-
     }
 
-
-    const index =
+    const index=
         SONIC_ROUTE.indexOf(
             destination
         );
 
-
-    if(index < 0){
-
+    if(index<0){
         return [];
-
     }
-
 
     return SONIC_ROUTE.slice(
         0,
-        index + 1
+        index+1
     );
 }
 
 
 /* =====================================================
-   設定情報
+   設定表示
 ===================================================== */
 
 function updateSettingInfo(){
 
-    const info =
+    const info=
         document.getElementById(
             "setting-info"
         );
 
-    const start =
+    const start=
         document.getElementById(
             "start-button"
         );
 
-
     if(!trainType){
 
-        info.innerHTML =
+        info.innerHTML=
             "列車種別を選択してください";
 
-        start.disabled = true;
+        start.disabled=true;
 
         return;
     }
 
-
-    if(trainType === "普通"){
+    if(trainType==="普通"){
 
         if(!selectedRoute){
 
-            info.innerHTML =
-                "列車：<b>普通</b><br>" +
-                "路線：未選択<br>" +
+            info.innerHTML=
+                "列車：<b>普通</b><br>"+
+                "路線：未選択<br>"+
                 "終着：未選択";
 
-            start.disabled = true;
-
+            start.disabled=true;
             return;
         }
-
 
         if(!destination){
 
-            info.innerHTML =
-                "列車：<b>普通</b><br>" +
-                "路線：<b>" +
-                selectedRoute +
-                "</b><br>" +
+            info.innerHTML=
+                "列車：<b>普通</b><br>"+
+                "路線：<b>"+
+                selectedRoute+
+                "</b><br>"+
                 "終着：未選択";
 
-            start.disabled = true;
-
+            start.disabled=true;
             return;
         }
 
-
-        info.innerHTML =
-            "列車：<b>普通</b><br>" +
-            "路線：<b>" +
-            selectedRoute +
-            "</b><br>" +
-            "終着：<b>" +
-            destination +
+        info.innerHTML=
+            "列車：<b>普通</b><br>"+
+            "路線：<b>"+
+            selectedRoute+
+            "</b><br>"+
+            "終着：<b>"+
+            destination+
             "</b>";
 
-        start.disabled = false;
+        start.disabled=false;
 
         return;
     }
-
 
     if(!destination){
 
-        info.innerHTML =
-            "列車：<b>" +
-            trainType +
-            "</b><br>" +
+        info.innerHTML=
+            "列車：<b>"+
+            trainType+
+            "</b><br>"+
             "行き先：未選択";
 
-        start.disabled = true;
+        start.disabled=true;
 
         return;
     }
 
-
-    info.innerHTML =
-        "列車：<b>" +
-        trainType +
-        "</b><br>" +
-        "行き先：<b>" +
-        destination +
+    info.innerHTML=
+        "列車：<b>"+
+        trainType+
+        "</b><br>"+
+        "行き先：<b>"+
+        destination+
         "</b>";
 
-    start.disabled = false;
+    start.disabled=false;
 }
 
 
 /* =====================================================
-   運転ルート
+   ルート作成
 ===================================================== */
 
 function makeDriveRoute(){
 
-    if(
-        trainType === "普通"
-    ){
+    if(trainType==="普通"){
 
-        const route =
-            LOCAL_ROUTES[
-                selectedRoute
-            ];
+        const route=
+            LOCAL_ROUTES[selectedRoute];
 
-        const index =
-            route.indexOf(
-                destination
-            );
-
+        const index=
+            route.indexOf(destination);
 
         return route.slice(
             0,
-            index + 1
+            index+1
         );
     }
 
 
-    if(
-        trainType ===
-        "特急ソニック"
-    ){
+    if(trainType==="特急ソニック"){
 
-        const route =
-            getSonicRoute(
-                destination
-            );
+        const route=
+            getSonicRoute(destination);
 
+        /*
+           選択した停車駅だけ
+           ただし順番はルート順
+        */
 
         return route.filter(
-            station =>
-                sonicStops.includes(
-                    station
-                )
+            station=>
+                sonicStops.includes(station)
         );
     }
 
 
     if(
-        trainType ===
-        "特急ゆふいんの森"
+        trainType==="特急ゆふいんの森"
     ){
 
-        const route =
+        const route=
             [...YUFUIN_ROUTE];
 
+        const index=
+            route.indexOf(destination);
 
-        const index =
-            route.indexOf(
-                destination
-            );
-
-
-        if(
-            destination ===
-            "博多"
-        ){
+        if(destination==="博多"){
 
             return route
-                .slice(
-                    0,
-                    index + 1
-                )
+                .slice(0,index+1)
                 .reverse();
-
         }
-
 
         return route.slice(
             0,
-            index + 1
+            index+1
         );
     }
-
 
     return [];
 }
@@ -2175,13 +1858,10 @@ function makeDriveRoute(){
 
 function startDrive(){
 
-    currentStations =
+    currentStations=
         makeDriveRoute();
 
-
-    if(
-        currentStations.length < 2
-    ){
+    if(currentStations.length<2){
 
         alert(
             "運転ルートを作成できません"
@@ -2191,21 +1871,15 @@ function startDrive(){
     }
 
 
-    /*
-       座標確認
-    */
-
-    const missing =
+    const missing=
         currentStations.filter(
-            station =>
-                !STATIONS[station]
+            s=>!STATIONS[s]
         );
-
 
     if(missing.length){
 
         alert(
-            "GPS座標がありません：\n" +
+            "GPS座標がありません：\n"+
             missing.join("、")
         );
 
@@ -2213,27 +1887,23 @@ function startDrive(){
     }
 
 
-    driveStarted = true;
+    currentStationIndex=0;
 
-    arrivalTriggered = false;
+    gpsSpeed=0;
+    smoothedSpeed=0;
 
-    gpsPositionKnown = false;
+    previousGPS=null;
 
-    currentStationIndex = 0;
+    gpsPositionKnown=false;
 
-    gpsSpeed = 0;
+    stationArrivalDetected=false;
 
-    smoothedSpeed = 0;
-
-    previousGPS = null;
-
-    slowingAtStation = false;
+    arrivalTriggered=false;
 
 
     document
         .getElementById("setup")
         .classList.add("hidden");
-
 
     document
         .getElementById("drive")
@@ -2241,10 +1911,8 @@ function startDrive(){
 
 
     document
-        .getElementById(
-            "drive-service"
-        )
-        .textContent =
+        .getElementById("drive-service")
+        .textContent=
         trainType;
 
 
@@ -2252,8 +1920,8 @@ function startDrive(){
         .getElementById(
             "drive-destination-small"
         )
-        .textContent =
-        destination +
+        .textContent=
+        destination+
         "行";
 
 
@@ -2261,8 +1929,8 @@ function startDrive(){
         .getElementById(
             "drive-destination"
         )
-        .textContent =
-        destination +
+        .textContent=
+        destination+
         "行き";
 
 
@@ -2270,55 +1938,37 @@ function startDrive(){
         .getElementById(
             "drive-route"
         )
-        .textContent =
+        .textContent=
         currentStations.join(
             " → "
         );
 
 
-    document
-        .getElementById(
-            "speed-number"
-        )
-        .textContent =
-        "0";
-
-
     /*
-       ここではまだ
-       博多→鳥栖などと断定しない
+       GPSが来るまで
+       駅名を勝手に決めない
     */
 
     document
         .getElementById(
             "current-station"
         )
-        .textContent =
+        .textContent=
         "GPS取得中...";
-
 
     document
         .getElementById(
             "next-station"
         )
-        .textContent =
+        .textContent=
         "GPS取得中...";
-
 
     document
         .getElementById(
             "station-count"
         )
-        .textContent =
+        .textContent=
         "--";
-
-
-    document
-        .getElementById(
-            "progress-fill"
-        )
-        .style.width =
-        "0%";
 
 
     startGPS();
@@ -2330,14 +1980,12 @@ function startDrive(){
 
 
 /* =====================================================
-   GPS
+   GPS開始
 ===================================================== */
 
 function startGPS(){
 
-    if(
-        !navigator.geolocation
-    ){
+    if(!navigator.geolocation){
 
         setGPSStatus(
             "GPS非対応"
@@ -2347,18 +1995,13 @@ function startGPS(){
     }
 
 
-    gpsWatchId =
+    gpsWatchId=
         navigator.geolocation.watchPosition(
-
             handleGPS,
-
             handleGPSError,
-
             {
                 enableHighAccuracy:true,
-
                 maximumAge:1000,
-
                 timeout:10000
             }
         );
@@ -2371,31 +2014,31 @@ function startGPS(){
 
 function handleGPS(position){
 
-    const lat =
+    const lat=
         position.coords.latitude;
 
-    const lon =
+    const lon=
         position.coords.longitude;
 
 
-    /*
-       GPS速度
-    */
-
-    let speed =
+    let speed=
         position.coords.speed;
 
 
+    /*
+       GPSのspeedはm/s
+    */
+
     if(
         Number.isFinite(speed) &&
-        speed >= 0
+        speed>=0
     ){
 
-        speed *= 3.6;
+        speed*=3.6;
 
     }else{
 
-        speed =
+        speed=
             calculateGPSSpeed(
                 lat,
                 lon,
@@ -2405,213 +2048,122 @@ function handleGPS(position){
 
 
     /*
-       異常GPSを除外
+       GPS異常値
     */
 
     if(
         !Number.isFinite(speed) ||
-        speed < 0 ||
-        speed > MAX_REASONABLE_SPEED
+        speed<0 ||
+        speed>180
     ){
 
-        speed = gpsSpeed;
-    }
-
-
-    gpsSpeed = speed;
-
-
-    /*
-       実速度にかなり近い表示
-       急激な変化だけ少し滑らかに
-    */
-
-    smoothedSpeed +=
-        (
-            gpsSpeed -
-            smoothedSpeed
-        ) * 0.45;
-
-
-    if(
-        Math.abs(
-            gpsSpeed -
-            smoothedSpeed
-        ) < 0.2
-    ){
-
-        smoothedSpeed =
+        speed=
             gpsSpeed;
     }
 
 
+    gpsSpeed=speed;
+
+
     /*
-       速度メーター
+       実速度に近く、
+       かつ表示は滑らか
     */
+
+    smoothedSpeed +=
+        (
+            gpsSpeed-
+            smoothedSpeed
+        )*.5;
+
+
+    if(
+        Math.abs(
+            gpsSpeed-
+            smoothedSpeed
+        )<.15
+    ){
+
+        smoothedSpeed=
+            gpsSpeed;
+    }
+
 
     document
         .getElementById(
             "speed-number"
         )
-        .textContent =
+        .textContent=
         Math.round(
             smoothedSpeed
         );
 
 
-    /*
-       座標
-    */
-
     document
         .getElementById(
             "gps-coordinates"
         )
-        .textContent =
-        "GPS " +
-        lat.toFixed(5) +
-        ", " +
+        .textContent=
+        "GPS "+
+        lat.toFixed(5)+
+        ", "+
         lon.toFixed(5);
 
 
     /*
-       ★ここが重要
-       GPS位置から現在の区間を探す
+       ★ 現在位置から
+       現在の駅・次駅を判定
     */
 
-    syncStationIndexWithGPS(
+    syncStationWithGPS(
         lat,
         lon
     );
 
 
-    /*
-       進行バー
-    */
+    if(
+        previousGPS===null
+    ){
 
-    updateNextStationProgress(
-        lat,
-        lon
-    );
+        previousGPS={
+            lat,
+            lon,
+            time:
+                position.timestamp ||
+                Date.now()
+        };
+
+    }else{
+
+        previousGPS={
+            lat,
+            lon,
+            time:
+                position.timestamp ||
+                Date.now()
+        };
+    }
 
 
     setGPSStatus(
         "GPS接続中"
     );
-
-
-    previousGPS = {
-        lat:lat,
-        lon:lon,
-        time:
-            position.timestamp ||
-            Date.now()
-    };
 }
 
 
 /* =====================================================
-   GPS位置から現在区間を判定
+   ★ 駅位置同期
 ===================================================== */
 
-function syncStationIndexWithGPS(
+function syncStationWithGPS(
     lat,
     lon
 ){
 
     if(
-        currentStations.length < 2
+        currentStations.length<2
     ){
-
         return;
-    }
-
-
-    let bestIndex = 0;
-
-    let bestDistance =
-        Infinity;
-
-
-    /*
-       全区間を調べる
-    */
-
-    for(
-        let i = 0;
-        i <
-        currentStations.length - 1;
-        i++
-    ){
-
-        const a =
-            STATIONS[
-                currentStations[i]
-            ];
-
-        const b =
-            STATIONS[
-                currentStations[i + 1]
-            ];
-
-
-        if(!a || !b){
-
-            continue;
-        }
-
-
-        const projected =
-            projectPointToSegment(
-                lat,
-                lon,
-
-                a[0],
-                a[1],
-
-                b[0],
-                b[1]
-            );
-
-
-        const projectedLat =
-            a[0] +
-            (
-                b[0] -
-                a[0]
-            ) *
-            projected.t;
-
-
-        const projectedLon =
-            a[1] +
-            (
-                b[1] -
-                a[1]
-            ) *
-            projected.t;
-
-
-        const distance =
-            distanceMeters(
-                lat,
-                lon,
-                projectedLat,
-                projectedLon
-            );
-
-
-        if(
-            distance <
-            bestDistance
-        ){
-
-            bestDistance =
-                distance;
-
-            bestIndex =
-                i;
-        }
     }
 
 
@@ -2621,41 +2173,184 @@ function syncStationIndexWithGPS(
 
     if(!gpsPositionKnown){
 
-        currentStationIndex =
-            bestIndex;
+        currentStationIndex=
+            findNearestSegment(
+                lat,
+                lon
+            );
 
-        gpsPositionKnown = true;
+        gpsPositionKnown=true;
 
         updateStationDisplay();
+
+        updateNextStationProgress(
+            lat,
+            lon
+        );
 
         return;
     }
 
 
     /*
-       GPS位置が先の区間なら
-       自動で追従
+       今の区間の次駅
     */
 
+    const nextIndex=
+        currentStationIndex+1;
+
+
     if(
-        bestIndex >
-        currentStationIndex
+        nextIndex>=
+        currentStations.length
     ){
+        return;
+    }
 
-        currentStationIndex =
-            bestIndex;
 
-        slowingAtStation =
-            false;
+    const nextStation=
+        currentStations[
+            nextIndex
+        ];
 
-        updateStationDisplay();
+    const coord=
+        STATIONS[nextStation];
+
+
+    if(!coord){
+        return;
+    }
+
+
+    const distance=
+        distanceMeters(
+            lat,
+            lon,
+            coord[0],
+            coord[1]
+        );
+
+
+    /*
+       駅到着ゾーン
+       GPS誤差を考慮して150m
+    */
+
+    if(distance<=150){
+
+        stationArrivalDetected=true;
     }
 
 
     /*
-       逆方向にGPSが飛んだ場合は
-       いきなり戻さない
+       ★重要
+       到着ゾーンに入っていて
+       速度が5km/h以下なら切替
     */
+
+    if(
+        stationArrivalDetected &&
+        gpsSpeed<=5
+    ){
+
+        switchToNextStation();
+
+        return;
+    }
+
+
+    /*
+       もしGPSが駅の中心を
+       少し通り越した場合でも
+       300m以内なら到着扱い
+    */
+
+    if(
+        distance<=300 &&
+        gpsSpeed<=5
+    ){
+
+        switchToNextStation();
+
+        return;
+    }
+
+
+    updateNextStationProgress(
+        lat,
+        lon
+    );
+}
+
+
+/* =====================================================
+   最寄り区間
+===================================================== */
+
+function findNearestSegment(
+    lat,
+    lon
+){
+
+    let bestIndex=0;
+    let bestDistance=Infinity;
+
+
+    for(
+        let i=0;
+        i<currentStations.length-1;
+        i++
+    ){
+
+        const a=
+            STATIONS[
+                currentStations[i]
+            ];
+
+        const b=
+            STATIONS[
+                currentStations[i+1]
+            ];
+
+
+        const p=
+            projectPointToSegment(
+                lat,
+                lon,
+                a[0],
+                a[1],
+                b[0],
+                b[1]
+            );
+
+
+        const projectedLat=
+            a[0]+
+            (b[0]-a[0])*p.t;
+
+        const projectedLon=
+            a[1]+
+            (b[1]-a[1])*p.t;
+
+
+        const d=
+            distanceMeters(
+                lat,
+                lon,
+                projectedLat,
+                projectedLon
+            );
+
+
+        if(d<bestDistance){
+
+            bestDistance=d;
+            bestIndex=i;
+        }
+    }
+
+
+    return bestIndex;
 }
 
 
@@ -2669,43 +2364,34 @@ function updateNextStationProgress(
 ){
 
     if(
-        currentStationIndex >=
-        currentStations.length - 1
+        currentStationIndex>=
+        currentStations.length-1
     ){
-
         return;
     }
 
 
-    const currentStation =
-        currentStations[
-            currentStationIndex
-        ];
-
-    const nextStation =
-        currentStations[
-            currentStationIndex + 1
-        ];
-
-
-    const current =
+    const current=
         STATIONS[
-            currentStation
+            currentStations[
+                currentStationIndex
+            ]
         ];
 
-    const next =
+    const next=
         STATIONS[
-            nextStation
+            currentStations[
+                currentStationIndex+1
+            ]
         ];
 
 
     if(!current || !next){
-
         return;
     }
 
 
-    const projected =
+    const projected=
         projectPointToSegment(
             lat,
             lon,
@@ -2718,35 +2404,28 @@ function updateNextStationProgress(
         );
 
 
-    const percentage =
+    const percentage=
         Math.max(
             0,
             Math.min(
                 100,
-                projected.t * 100
+                projected.t*100
             )
         );
 
-
-    /*
-       Apple Music風
-       丸なし
-    */
 
     document
         .getElementById(
             "progress-fill"
         )
-        .style.width =
-        percentage +
-        "%";
+        .style.width=
+        percentage+"%";
 
 
-    const distance =
+    const distance=
         distanceMeters(
             lat,
             lon,
-
             next[0],
             next[1]
         );
@@ -2756,37 +2435,8 @@ function updateNextStationProgress(
         .getElementById(
             "next-distance"
         )
-        .textContent =
-        formatDistance(
-            distance
-        );
-
-
-    /*
-       駅到着判定
-    */
-
-    if(
-        distance <=
-        STATION_ARRIVAL_DISTANCE
-    ){
-
-        slowingAtStation = true;
-    }
-
-
-    /*
-       5km/h以下で駅切替
-    */
-
-    if(
-        slowingAtStation &&
-        gpsSpeed <=
-        STATION_SWITCH_SPEED
-    ){
-
-        switchToNextStation();
-    }
+        .textContent=
+        formatDistance(distance);
 }
 
 
@@ -2796,49 +2446,67 @@ function updateNextStationProgress(
 
 function switchToNextStation(){
 
-    if(!slowingAtStation){
-
+    if(
+        !stationArrivalDetected
+    ){
         return;
     }
 
 
-    slowingAtStation = false;
+    stationArrivalDetected=false;
 
 
     if(
-        currentStationIndex <
-        currentStations.length - 1
+        currentStationIndex<
+        currentStations.length-1
     ){
 
         currentStationIndex++;
 
+
+        /*
+           次の区間へ完全リセット
+        */
+
+        document
+            .getElementById(
+                "progress-fill"
+            )
+            .style.width=
+            "0%";
+
+
         updateStationDisplay();
 
 
-        showATS(
+        const arrived=
             currentStations[
                 currentStationIndex
-            ] +
+            ];
+
+
+        showATS(
+            arrived+
             " 到着"
         );
-    }
 
 
-    /*
-       終着
-    */
-
-    if(
-        currentStationIndex >=
-        currentStations.length - 1
-    ){
+        /*
+           終着なら到着画面
+        */
 
         if(
-            gpsSpeed <=
-            STATION_SWITCH_SPEED
+            currentStationIndex===
+            currentStations.length-1
         ){
 
-            arrive();
+            if(gpsSpeed<=5){
+
+                setTimeout(
+                    arrive,
+                    500
+                );
+            }
         }
     }
 }
@@ -2850,14 +2518,14 @@ function switchToNextStation(){
 
 function updateStationDisplay(){
 
-    const current =
+    const current=
         currentStations[
             currentStationIndex
         ];
 
-    const next =
+    const next=
         currentStations[
-            currentStationIndex + 1
+            currentStationIndex+1
         ];
 
 
@@ -2865,49 +2533,41 @@ function updateStationDisplay(){
         .getElementById(
             "current-station"
         )
-        .textContent =
-        current || "--";
+        .textContent=
+        current||"--";
 
 
     document
         .getElementById(
             "next-station"
         )
-        .textContent =
-        next || "終着";
+        .textContent=
+        next||"終着";
 
 
     document
         .getElementById(
             "station-count"
         )
-        .textContent =
+        .textContent=
         (
-            currentStationIndex + 1
-        ) +
-        " / " +
+            currentStationIndex+1
+        )+
+        " / "+
         currentStations.length;
-
-
-    document
-        .getElementById(
-            "progress-fill"
-        )
-        .style.width =
-        "0%";
 
 
     document
         .getElementById(
             "next-distance"
         )
-        .textContent =
+        .textContent=
         "--";
 }
 
 
 /* =====================================================
-   GPS速度計算
+   GPS速度補完
 ===================================================== */
 
 function calculateGPSSpeed(
@@ -2917,48 +2577,41 @@ function calculateGPSSpeed(
 ){
 
     if(!previousGPS){
-
         return 0;
     }
 
 
-    const dt =
+    const dt=
         (
-            timestamp -
+            timestamp-
             previousGPS.time
-        ) / 1000;
+        )/1000;
 
 
     if(
-        dt <= 0 ||
-        dt > 10
+        dt<=0 ||
+        dt>10
     ){
-
         return gpsSpeed;
     }
 
 
-    const distance =
+    const distance=
         distanceMeters(
             previousGPS.lat,
             previousGPS.lon,
-
             lat,
             lon
         );
 
 
-    const speed =
-        distance /
-        dt *
-        3.6;
+    const speed=
+        distance/dt*3.6;
 
 
     if(
-        speed >
-        MAX_REASONABLE_SPEED
+        speed>180
     ){
-
         return gpsSpeed;
     }
 
@@ -2978,150 +2631,91 @@ function distanceMeters(
     lon2
 ){
 
-    const R =
-        6371000;
+    const R=6371000;
 
-    const rad =
-        Math.PI / 180;
+    const rad=Math.PI/180;
 
+    const dLat=
+        (lat2-lat1)*rad;
 
-    const dLat =
-        (
-            lat2 -
-            lat1
-        ) *
-        rad;
+    const dLon=
+        (lon2-lon1)*rad;
 
 
-    const dLon =
-        (
-            lon2 -
-            lon1
-        ) *
-        rad;
+    const a=
+        Math.sin(dLat/2)**2+
+        Math.cos(lat1*rad)*
+        Math.cos(lat2*rad)*
+        Math.sin(dLon/2)**2;
 
 
-    const a =
-        Math.sin(
-            dLat / 2
-        ) ** 2 +
-
-        Math.cos(
-            lat1 * rad
-        ) *
-
-        Math.cos(
-            lat2 * rad
-        ) *
-
-        Math.sin(
-            dLon / 2
-        ) ** 2;
-
-
-    return (
-        2 *
-        R *
-        Math.atan2(
-            Math.sqrt(a),
-            Math.sqrt(1-a)
-        )
+    return 2*R*Math.atan2(
+        Math.sqrt(a),
+        Math.sqrt(1-a)
     );
 }
 
 
 /* =====================================================
-   線分上の位置
+   線分投影
 ===================================================== */
 
 function projectPointToSegment(
     pLat,
     pLon,
-
     aLat,
     aLon,
-
     bLat,
     bLon
 ){
 
-    const latScale =
-        111320;
+    const latScale=111320;
 
-
-    const lonScale =
-        111320 *
+    const lonScale=
+        111320*
         Math.cos(
-            pLat *
-            Math.PI /
-            180
+            pLat*Math.PI/180
         );
 
 
-    const ax =
-        (
-            aLon -
-            pLon
-        ) *
+    const ax=
+        (aLon-pLon)*
         lonScale;
 
+    const ay=
+        (aLat-pLat)*
+        latScale;
 
-    const ay =
-        (
-            aLat -
-            pLat
-        ) *
+    const bx=
+        (bLon-pLon)*
+        lonScale;
+
+    const by=
+        (bLat-pLat)*
         latScale;
 
 
-    const bx =
-        (
-            bLon -
-            pLon
-        ) *
-        lonScale;
+    const dx=bx-ax;
+    const dy=by-ay;
 
 
-    const by =
-        (
-            bLat -
-            pLat
-        ) *
-        latScale;
+    const length2=
+        dx*dx+
+        dy*dy;
 
 
-    const dx =
-        bx -
-        ax;
+    let t=0;
 
 
-    const dy =
-        by -
-        ay;
+    if(length2>0){
 
-
-    const length2 =
-        dx * dx +
-        dy * dy;
-
-
-    let t = 0;
-
-
-    if(
-        length2 > 0
-    ){
-
-        t =
-            -(
-                ax * dx +
-                ay * dy
-            ) /
+        t=
+            -(ax*dx+ay*dy)/
             length2;
     }
 
 
-    t =
+    t=
         Math.max(
             0,
             Math.min(
@@ -3131,9 +2725,7 @@ function projectPointToSegment(
         );
 
 
-    return {
-        t:t
-    };
+    return {t};
 }
 
 
@@ -3141,27 +2733,18 @@ function projectPointToSegment(
    距離表示
 ===================================================== */
 
-function formatDistance(
-    meters
-){
+function formatDistance(m){
 
-    if(
-        meters < 1000
-    ){
+    if(m<1000){
 
-        return (
-            Math.round(
-                meters
-            ) +
+        return(
+            Math.round(m)+
             " m"
         );
     }
 
-
-    return (
-        (
-            meters / 1000
-        ).toFixed(1) +
+    return(
+        (m/1000).toFixed(1)+
         " km"
     );
 }
@@ -3171,43 +2754,35 @@ function formatDistance(
    GPSエラー
 ===================================================== */
 
-function handleGPSError(
-    error
-){
+function handleGPSError(error){
 
     setGPSStatus(
         "GPSエラー"
     );
 
 
-    let message =
+    let text=
         "GPSを取得できません";
 
 
-    if(
-        error.code === 1
-    ){
+    if(error.code===1){
 
-        message =
+        text=
             "位置情報の使用を許可してください";
 
-    }else if(
-        error.code === 2
-    ){
+    }else if(error.code===2){
 
-        message =
+        text=
             "現在位置を取得できません";
 
-    }else if(
-        error.code === 3
-    ){
+    }else if(error.code===3){
 
-        message =
+        text=
             "GPS取得がタイムアウトしました";
     }
 
 
-    showATS(message);
+    showATS(text);
 }
 
 
@@ -3215,15 +2790,13 @@ function handleGPSError(
    GPS状態
 ===================================================== */
 
-function setGPSStatus(
-    text
-){
+function setGPSStatus(text){
 
     document
         .getElementById(
             "gps-status"
         )
-        .textContent =
+        .textContent=
         text;
 }
 
@@ -3232,27 +2805,22 @@ function setGPSStatus(
    ATS
 ===================================================== */
 
-function showATS(
-    text
-){
+function showATS(text){
 
-    const ats =
+    const ats=
         document.getElementById(
             "ats"
         );
-
 
     document
         .getElementById(
             "ats-text"
         )
-        .textContent =
+        .textContent=
         text;
 
 
-    ats.classList.add(
-        "show"
-    );
+    ats.classList.add("show");
 
 
     clearTimeout(
@@ -3260,7 +2828,7 @@ function showATS(
     );
 
 
-    window.atsTimer =
+    window.atsTimer=
         setTimeout(
             ()=>{
                 ats.classList.remove(
@@ -3278,30 +2846,23 @@ function showATS(
 
 function arrive(){
 
-    if(
-        arrivalTriggered
-    ){
-
+    if(arrivalTriggered){
         return;
     }
 
 
-    arrivalTriggered = true;
-
-    driveStarted = false;
+    arrivalTriggered=true;
 
 
     if(
-        gpsWatchId !== null
+        gpsWatchId!==null
     ){
 
-        navigator
-            .geolocation
-            .clearWatch(
-                gpsWatchId
-            );
+        navigator.geolocation.clearWatch(
+            gpsWatchId
+        );
 
-        gpsWatchId = null;
+        gpsWatchId=null;
     }
 
 
@@ -3309,7 +2870,7 @@ function arrive(){
         .getElementById(
             "speed-number"
         )
-        .textContent =
+        .textContent=
         "0";
 
 
@@ -3317,7 +2878,7 @@ function arrive(){
         .getElementById(
             "arrival-name"
         )
-        .textContent =
+        .textContent=
         destination;
 
 
@@ -3341,77 +2902,60 @@ function arrive(){
 
 
 /* =====================================================
-   設定へ戻る
+   設定画面へ
 ===================================================== */
 
 function returnToSetup(){
 
     if(
-        gpsWatchId !== null
+        gpsWatchId!==null
     ){
 
-        navigator
-            .geolocation
-            .clearWatch(
-                gpsWatchId
-            );
+        navigator.geolocation.clearWatch(
+            gpsWatchId
+        );
 
-        gpsWatchId = null;
+        gpsWatchId=null;
     }
 
 
-    driveStarted = false;
+    trainType=null;
+    selectedRoute=null;
+    destination=null;
+    sonicStops=[];
 
-    arrivalTriggered = false;
+    currentStations=[];
+    currentStationIndex=0;
 
-    trainType = null;
+    gpsSpeed=0;
+    smoothedSpeed=0;
 
-    selectedRoute = null;
+    previousGPS=null;
 
-    destination = null;
-
-    sonicStops = [];
-
-    currentStations = [];
-
-    currentStationIndex = 0;
-
-    gpsSpeed = 0;
-
-    smoothedSpeed = 0;
-
-    previousGPS = null;
-
-    gpsPositionKnown = false;
-
-    slowingAtStation = false;
+    gpsPositionKnown=false;
+    stationArrivalDetected=false;
+    arrivalTriggered=false;
 
 
     document
         .getElementById(
             "arrival"
         )
-        .classList.add(
-            "hidden"
-        );
+        .classList.add("hidden");
 
 
     document
         .getElementById(
             "drive"
         )
-        .classList.add(
-            "hidden"
-        );
+        .classList.add("hidden");
 
 
     document
         .getElementById(
             "setup"
         )
-        .classList.remove(
-            "hidden"
-        );
+        .classList.remove("hidden");
 
 
     document
@@ -3419,8 +2963,7 @@ function returnToSetup(){
             ".train-button"
         )
         .forEach(
-            button =>
-            button.classList.remove(
+            b=>b.classList.remove(
                 "selected"
             )
         );
@@ -3431,8 +2974,7 @@ function returnToSetup(){
             ".route-button"
         )
         .forEach(
-            button =>
-            button.classList.remove(
+            b=>b.classList.remove(
                 "selected"
             )
         );
@@ -3442,36 +2984,26 @@ function returnToSetup(){
         .getElementById(
             "route-card"
         )
-        .classList.add(
-            "hidden"
-        );
+        .classList.add("hidden");
 
 
     document
         .getElementById(
             "destination-card"
         )
-        .classList.add(
-            "hidden"
-        );
+        .classList.add("hidden");
 
 
     document
         .getElementById(
             "sonic-stop-card"
         )
-        .classList.add(
-            "hidden"
-        );
+        .classList.add("hidden");
 
 
     updateSettingInfo();
 }
 
-
-/* =====================================================
-   初期化
-===================================================== */
 
 updateSettingInfo();
 
