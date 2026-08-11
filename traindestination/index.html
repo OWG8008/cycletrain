@@ -12,10 +12,10 @@
              viewport-fit=cover"
 >
 
-<meta name="theme-color" content="#050609">
+<meta name="theme-color" content="#050608">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-<title>特急ソニック｜列車情報</title>
+<title>列車情報</title>
 
 <style>
 
@@ -38,14 +38,14 @@ body {
 
     background:
         radial-gradient(
-            circle at 15% -10%,
-            rgba(255,255,255,.13),
+            circle at 10% -10%,
+            rgba(255,255,255,.14),
             transparent 32%
         ),
         radial-gradient(
-            circle at 100% 15%,
-            rgba(110,140,255,.08),
-            transparent 30%
+            circle at 100% 10%,
+            rgba(110,140,255,.09),
+            transparent 35%
         ),
         #050608;
 
@@ -68,22 +68,23 @@ body {
 
 
 /* =====================================================
-   Glass
+   リキッドグラス
 ===================================================== */
 
 .glass {
+
     position: relative;
 
     overflow: hidden;
 
     border:
         1px solid
-        rgba(255,255,255,.14);
+        rgba(255,255,255,.13);
 
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,.115),
+            rgba(255,255,255,.12),
             rgba(255,255,255,.055) 45%,
             rgba(255,255,255,.025)
         );
@@ -97,6 +98,7 @@ body {
         saturate(180%);
 
     box-shadow:
+
         inset 0 1px 0
         rgba(255,255,255,.17),
 
@@ -104,26 +106,27 @@ body {
         rgba(255,255,255,.025),
 
         0 18px 45px
-        rgba(0,0,0,.22);
+        rgba(0,0,0,.25);
 }
 
 .glass::before {
+
     content: "";
 
     position: absolute;
 
-    left: -50%;
+    left: -60%;
     top: -100%;
 
-    width: 180%;
+    width: 190%;
     height: 180%;
 
     background:
         linear-gradient(
             115deg,
-            transparent 43%,
+            transparent 44%,
             rgba(255,255,255,.035) 50%,
-            transparent 57%
+            transparent 56%
         );
 
     transform: rotate(-5deg);
@@ -142,7 +145,7 @@ body {
 
 
 /* =====================================================
-   セットアップ
+   選択画面
 ===================================================== */
 
 .setup {
@@ -156,19 +159,16 @@ body {
 
     display: flex;
 
-    align-items: center;
-
     justify-content: center;
+    align-items: center;
 }
 
 .setup-card {
 
     width: 100%;
-
     max-width: 430px;
 
-    padding:
-        30px 22px;
+    padding: 28px 22px;
 
     border-radius: 30px;
 }
@@ -185,7 +185,7 @@ body {
     color:
         rgba(255,255,255,.40);
 
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .setup-title {
@@ -215,6 +215,7 @@ body {
     margin-bottom: 8px;
 }
 
+.select-box,
 .number-input {
 
     position: relative;
@@ -237,20 +238,26 @@ body {
 
     color: white;
 
-    font-size: 26px;
+    font-size: 18px;
 
-    font-weight: 750;
+    font-weight: 650;
+
+    appearance: none;
+}
+
+.number-input {
+
+    margin-top: 10px;
+
+    font-size: 25px;
 
     text-align: center;
 }
 
-.number-input:focus {
+.number-input::placeholder {
 
-    border-color:
-        rgba(255,255,255,.4);
-
-    background:
-        rgba(255,255,255,.10);
+    color:
+        rgba(255,255,255,.32);
 }
 
 .start-button {
@@ -269,7 +276,7 @@ body {
     border-radius: 18px;
 
     background:
-        rgba(255,255,255,.86);
+        rgba(255,255,255,.88);
 
     color: #111;
 
@@ -325,7 +332,7 @@ body {
         )
         8px
         calc(
-            22px +
+            25px +
             env(safe-area-inset-bottom)
         )
         8px;
@@ -340,8 +347,7 @@ body {
 
     position: relative;
 
-    padding:
-        17px;
+    padding: 17px;
 
     border-radius: 25px;
 
@@ -399,7 +405,7 @@ body {
     font-weight: 700;
 
     color:
-        rgba(255,255,255,.7);
+        rgba(255,255,255,.72);
 }
 
 
@@ -437,7 +443,7 @@ body {
 
     display: flex;
 
-    align-items: center;
+    align-items: flex-start;
 
     justify-content: flex-start;
 
@@ -462,7 +468,7 @@ body {
 
     align-items: center;
 
-    justify-content: center;
+    justify-content: flex-start;
 
     min-height: 48px;
 
@@ -493,6 +499,8 @@ body {
     text-align: center;
 
     font-size: 18px;
+
+    line-height: 42px;
 
     color:
         rgba(255,255,255,.27);
@@ -618,7 +626,7 @@ body {
 
 
 /* =====================================================
-   Apple Music風進行バー
+   進行バー
 ===================================================== */
 
 .progress-wrapper {
@@ -760,7 +768,7 @@ body {
     }
 
     .board-station {
-        width: 44px;
+        width: 43px;
     }
 
     .board-arrow {
@@ -788,7 +796,7 @@ body {
 
 
 <!-- =====================================================
-     号数入力画面
+     列車選択
 ===================================================== -->
 
 <div
@@ -799,15 +807,40 @@ body {
     <div class="setup-card glass">
 
         <div class="setup-small">
-            LIMITED EXPRESS
+            TRAIN INFORMATION
         </div>
 
         <div class="setup-title">
-            ソニック
+            列車を選択
         </div>
 
+
         <div class="setup-label">
-            号数を入力
+            列車種別
+        </div>
+
+        <select
+            id="trainType"
+            class="select-box"
+            onchange="updateNumberOptions()"
+        >
+
+            <option value="sonic">
+                特急ソニック
+            </option>
+
+            <option value="yufuin">
+                特急ゆふいんの森
+            </option>
+
+        </select>
+
+
+        <div
+            class="setup-label"
+            style="margin-top:16px;"
+        >
+            号数
         </div>
 
         <input
@@ -815,10 +848,9 @@ body {
             class="number-input"
             type="number"
             inputmode="numeric"
-            min="1"
-            max="299"
             placeholder="入力"
         >
+
 
         <button
             class="start-button"
@@ -826,6 +858,7 @@ body {
         >
             運転情報を表示
         </button>
+
 
         <div
             id="setupError"
@@ -839,20 +872,22 @@ body {
 
 
 <!-- =====================================================
-     メイン画面
+     メイン
 ===================================================== -->
 
 <div
     id="mainScreen"
     class="app"
+    style="display:none;"
 >
 
 
-    <!-- ヘッダー -->
-
     <div class="header glass">
 
-        <div class="train-type">
+        <div
+            id="trainTypeText"
+            class="train-type"
+        >
             特急ソニック
         </div>
 
@@ -873,8 +908,6 @@ body {
     </div>
 
 
-    <!-- 次の4駅 -->
-
     <div class="next-stations glass">
 
         <div class="next-label">
@@ -888,8 +921,6 @@ body {
 
     </div>
 
-
-    <!-- 速度 -->
 
     <div class="speed-box glass">
 
@@ -914,8 +945,6 @@ body {
 
     </div>
 
-
-    <!-- 列車位置 -->
 
     <div class="position-section glass">
 
@@ -964,8 +993,6 @@ body {
     </div>
 
 
-    <!-- GPS -->
-
     <div class="gps-area">
 
         <div
@@ -995,6 +1022,8 @@ body {
 ===================================================== */
 
 const baseStations = {
+
+    /* ---------- ソニック ---------- */
 
     "大分": {
         lat: 33.2323,
@@ -1071,11 +1100,6 @@ const baseStations = {
         lon: 130.4831
     },
 
-    "香椎": {
-        lat: 33.6594,
-        lon: 130.4440
-    },
-
     "吉塚": {
         lat: 33.6075,
         lon: 130.4205
@@ -1086,45 +1110,47 @@ const baseStations = {
         lon: 130.4207
     },
 
-    "鶴崎": {
-        lat: 33.2450,
-        lon: 131.6860
+
+    /* ---------- ゆふいんの森 ---------- */
+
+    "鳥栖": {
+        lat: 33.3745,
+        lon: 130.5186
     },
 
-    "大在": {
-        lat: 33.2400,
-        lon: 131.7200
+    "久留米": {
+        lat: 33.3190,
+        lon: 130.5155
     },
 
-    "臼杵": {
-        lat: 33.1190,
-        lon: 131.8050
+    "日田": {
+        lat: 33.3217,
+        lon: 130.9405
     },
 
-    "津久見": {
-        lat: 33.0730,
-        lon: 131.8610
+    "天ケ瀬": {
+        lat: 33.2573,
+        lon: 131.0273
     },
 
-    "佐伯": {
-        lat: 32.9580,
-        lon: 131.8990
+    "豊後森": {
+        lat: 33.2792,
+        lon: 131.1530
+    },
+
+    "由布院": {
+        lat: 33.2649,
+        lon: 131.3553
     }
 
 };
 
 
 /* =====================================================
-   ソニック号別ルート
+   ソニック
 ===================================================== */
 
-const trainRoutes = {
-
-
-    /* ==============================================
-       ソニック4号
-       大分 → 博多
-    ============================================== */
+const sonicRoutes = {
 
     4: [
         "大分",
@@ -1146,12 +1172,6 @@ const trainRoutes = {
         "博多"
     ],
 
-
-    /* ==============================================
-       ソニック10号
-       大分 → 博多
-    ============================================== */
-
     10: [
         "大分",
         "別府",
@@ -1167,12 +1187,6 @@ const trainRoutes = {
         "博多"
     ],
 
-
-    /* ==============================================
-       ソニック41号
-       博多 → 佐伯
-    ============================================== */
-
     41: [
         "博多",
         "折尾",
@@ -1181,12 +1195,99 @@ const trainRoutes = {
         "行橋",
         "中津",
         "別府",
+        "大分"
+    ]
+
+};
+
+
+/* =====================================================
+   ゆふいんの森
+
+   JR九州 2026/3/14改正
+===================================================== */
+
+const yufuinRoutes = {
+
+    /* 博多 → 由布院 */
+
+    1: [
+        "博多",
+        "鳥栖",
+        "久留米",
+        "日田",
+        "天ケ瀬",
+        "豊後森",
+        "由布院"
+    ],
+
+
+    /* 由布院 → 博多 */
+
+    2: [
+        "由布院",
+        "豊後森",
+        "天ケ瀬",
+        "日田",
+        "久留米",
+        "鳥栖",
+        "博多"
+    ],
+
+
+    /* 博多 → 別府 */
+
+    3: [
+        "博多",
+        "鳥栖",
+        "久留米",
+        "日田",
+        "天ケ瀬",
+        "豊後森",
+        "由布院",
         "大分",
-        "鶴崎",
-        "大在",
-        "臼杵",
-        "津久見",
-        "佐伯"
+        "別府"
+    ],
+
+
+    /* 別府 → 博多 */
+
+    4: [
+        "別府",
+        "大分",
+        "由布院",
+        "豊後森",
+        "天ケ瀬",
+        "日田",
+        "久留米",
+        "鳥栖",
+        "博多"
+    ],
+
+
+    /* 博多 → 由布院 */
+
+    5: [
+        "博多",
+        "鳥栖",
+        "久留米",
+        "日田",
+        "天ケ瀬",
+        "豊後森",
+        "由布院"
+    ],
+
+
+    /* 由布院 → 博多 */
+
+    6: [
+        "由布院",
+        "豊後森",
+        "天ケ瀬",
+        "日田",
+        "久留米",
+        "鳥栖",
+        "博多"
     ]
 
 };
@@ -1206,22 +1307,38 @@ let watchId = null;
 
 
 /* =====================================================
-   号数開始
+   号数入力
 ===================================================== */
 
 function startTrain() {
 
-    const input =
+    const type =
         document.getElementById(
-            "trainNumberInput"
-        );
+            "trainType"
+        ).value;
 
     const number =
-        Number(input.value);
+        Number(
+            document.getElementById(
+                "trainNumberInput"
+            ).value
+        );
 
 
-    const route =
-        trainRoutes[number];
+    let route = null;
+
+
+    if (type === "sonic") {
+
+        route =
+            sonicRoutes[number];
+
+    } else {
+
+        route =
+            yufuinRoutes[number];
+
+    }
 
 
     if (!route) {
@@ -1229,14 +1346,17 @@ function startTrain() {
         document.getElementById(
             "setupError"
         ).textContent =
-            "4・10・41号を入力してください";
+            type === "sonic"
+            ? "ソニックは4・10・41号に対応しています"
+            : "ゆふいんの森は1〜6号に対応しています";
 
         return;
+
     }
 
 
     /*
-       駅データを作る
+       駅データ作成
     */
 
     stations =
@@ -1261,16 +1381,28 @@ function startTrain() {
         ].name;
 
 
+    /*
+       ヘッダー
+    */
+
     document.getElementById(
-        "trainNumber"
+        "trainTypeText"
     ).textContent =
-        number + "号";
+        type === "sonic"
+        ? "特急ソニック"
+        : "特急ゆふいんの森";
 
 
     document.getElementById(
         "destination"
     ).textContent =
         destination + "行き";
+
+
+    document.getElementById(
+        "trainNumber"
+    ).textContent =
+        number + "号";
 
 
     /*
@@ -1302,7 +1434,7 @@ function startTrain() {
 
 
 /* =====================================================
-   次の4駅を表示
+   次の4駅
 ===================================================== */
 
 function updateNextStations() {
@@ -1318,7 +1450,7 @@ function updateNextStations() {
 
     /*
        現在区間の次駅から
-       最大4駅表示
+       最大4駅
     */
 
     const startIndex =
@@ -1367,10 +1499,6 @@ function updateNextStations() {
             "board-name";
 
 
-        /*
-           駅名を縦表示
-        */
-
         [
             ...station.name
         ].forEach(
@@ -1402,8 +1530,7 @@ function updateNextStations() {
 
 
         /*
-           最後の駅には
-           ＞を付けない
+           最後だけ「＞」なし
         */
 
         if (
@@ -1496,7 +1623,7 @@ function getDistance(
 
 
 /* =====================================================
-   初期区間判定
+   初回区間判定
 ===================================================== */
 
 function findInitialSegment(
@@ -1515,11 +1642,6 @@ function findInitialSegment(
         i < stations.length - 1;
         i++
     ) {
-
-        /*
-           駅間の中間点を使って
-           現在区間を判定
-        */
 
         const midLat =
             (
@@ -1721,13 +1843,11 @@ function updateGPS(
     /*
        駅切り替え
 
-       ・駅から80m以内
+       80m以内
        または
-       ・500m以内まで来ていて
-         速度25km/h以下
+       500m以内＋25km/h以下
 
-       → 停車・減速してから
-         次駅へ切り替える
+       → 減速してから切り替え
     */
 
     if (
@@ -1840,7 +1960,7 @@ function updateDisplay(
 
 
     /*
-       現在区間
+       区間
     */
 
     document.getElementById(
@@ -1949,7 +2069,7 @@ function showArrival() {
 
 
     /*
-       次駅表示も終点だけ
+       次駅表示を終点だけにする
     */
 
     const board =
@@ -2083,7 +2203,7 @@ function setStatus(
 
 
 /* =====================================================
-   Enterキーでも開始
+   Enterキー
 ===================================================== */
 
 document
@@ -2104,6 +2224,23 @@ document
 
         }
     );
+
+
+/* =====================================================
+   列車種別変更時
+===================================================== */
+
+function updateNumberOptions() {
+
+    document.getElementById(
+        "trainNumberInput"
+    ).value = "";
+
+    document.getElementById(
+        "setupError"
+    ).textContent = "";
+
+}
 
 </script>
 
