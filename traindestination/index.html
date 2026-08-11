@@ -16,16 +16,19 @@
 html, body {
     margin: 0;
     padding: 0;
-    width: 100%;
     min-height: 100%;
-    background: #080a0f;
-    color: #fff;
+    background: #08090d;
+    color: white;
     font-family:
         -apple-system,
         BlinkMacSystemFont,
         "Helvetica Neue",
         "Noto Sans JP",
         sans-serif;
+}
+
+body {
+    overflow-x: hidden;
 }
 
 button {
@@ -36,85 +39,91 @@ button {
     display: none !important;
 }
 
-/* =========================
-   SETUP
-========================= */
+
+/* =========================================
+   設定画面
+========================================= */
 
 .setup {
     min-height: 100vh;
-    padding: 22px;
     max-width: 720px;
     margin: auto;
+    padding: 24px 18px 30px;
 }
 
 .title {
     font-size: 31px;
     font-weight: 900;
-    letter-spacing: -1px;
+    letter-spacing: -1.5px;
 }
 
 .subtitle {
-    color: #8e95a3;
-    font-size: 14px;
     margin-top: 5px;
-    margin-bottom: 22px;
+    margin-bottom: 24px;
+    color: #858b97;
+    font-size: 13px;
 }
 
 .card {
-    background: #151820;
-    border: 1px solid #252a34;
+    background: #15171d;
+    border: 1px solid #242730;
     border-radius: 23px;
-    padding: 20px;
-    margin-bottom: 15px;
+    padding: 19px;
+    margin-bottom: 14px;
 }
 
 .card-title {
     font-size: 17px;
-    font-weight: 800;
+    font-weight: 900;
     margin-bottom: 14px;
 }
 
-/* 列車種別 */
+
+/* 列車 */
 
 .train-grid {
     display: grid;
-    gap: 11px;
+    gap: 10px;
 }
 
 .train-btn {
+    width: 100%;
     border: 0;
     border-radius: 18px;
-    padding: 18px;
-    background: #222630;
-    color: #fff;
+    padding: 17px;
+    background: #23262f;
+    color: white;
     text-align: left;
-    transition: .18s;
+    transition: transform .15s ease,
+                background .2s ease;
 }
 
 .train-btn:active,
+.route-btn:active,
 .choice-btn:active,
-.route-btn:active {
+.start-btn:active {
     transform: scale(.97);
 }
 
 .train-btn.selected {
-    background: #315eea;
+    background: #315fea;
 }
 
 .train-name {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 900;
 }
 
 .train-description {
     margin-top: 5px;
     font-size: 12px;
-    color: #a6acb8;
+    color: #9298a4;
 }
 
 .train-btn.selected .train-description {
-    color: #e1e7ff;
+    color: #dfe6ff;
 }
+
 
 /* 路線 */
 
@@ -124,16 +133,19 @@ button {
 }
 
 .route-btn {
+    width: 100%;
     border: 0;
     border-radius: 17px;
-    padding: 17px;
-    background: #222630;
+    padding: 16px;
+    background: #23262f;
     color: white;
     text-align: left;
+    transition: transform .15s ease,
+                background .2s ease;
 }
 
 .route-btn.selected {
-    background: #315eea;
+    background: #315fea;
 }
 
 .route-name {
@@ -142,21 +154,22 @@ button {
 }
 
 .route-detail {
-    color: #9299a6;
-    font-size: 12px;
     margin-top: 4px;
+    color: #8e95a2;
+    font-size: 12px;
 }
 
 .route-btn.selected .route-detail {
-    color: #e1e7ff;
+    color: #dfe6ff;
 }
 
-/* 選択 */
+
+/* 行き先 */
 
 .question {
+    margin-bottom: 13px;
     font-size: 18px;
     font-weight: 900;
-    margin-bottom: 13px;
 }
 
 .choice-grid {
@@ -169,20 +182,24 @@ button {
     border: 0;
     border-radius: 15px;
     padding: 15px 8px;
-    background: #252a35;
+    background: #252832;
     color: white;
     font-weight: 800;
-    transition: .18s;
+    transition: transform .15s ease,
+                background .2s ease;
 }
 
 .choice-btn.selected {
-    background: #315eea;
+    background: #315fea;
 }
 
+
+/* 設定情報 */
+
 .selected-info {
-    line-height: 1.8;
-    color: #a0a6b2;
+    color: #949aa7;
     font-size: 14px;
+    line-height: 1.8;
 }
 
 .selected-info b {
@@ -201,32 +218,27 @@ button {
 }
 
 .start-btn:disabled {
-    background: #292e36;
-    color: #666d79;
+    background: #282c34;
+    color: #626874;
 }
 
-/* =========================
-   DRIVE
-========================= */
+
+/* =========================================
+   運転画面
+========================================= */
 
 .drive {
     min-height: 100vh;
     max-width: 900px;
     margin: auto;
-    padding: 13px;
+    padding: 14px;
 }
 
 .topbar {
-    height: 45px;
+    height: 43px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-}
-
-.service {
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
 .service-name {
@@ -235,227 +247,283 @@ button {
 }
 
 .service-destination {
-    font-size: 12px;
-    color: #969daa;
+    margin-top: 2px;
+    color: #8d94a1;
+    font-size: 11px;
 }
 
 .clock {
-    font-size: 12px;
-    color: #858c99;
+    color: #777e8b;
+    font-size: 11px;
 }
+
 
 /* 行先 */
 
 .destination-card {
-    background: #151820;
-    border-radius: 22px;
-    padding: 19px;
-    margin-bottom: 12px;
+    background: #15171d;
+    border-radius: 23px;
+    padding: 20px;
+    margin-bottom: 13px;
 }
 
 .destination-title {
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 900;
-    letter-spacing: -1px;
+    letter-spacing: -1.5px;
 }
 
 .route-text {
-    margin-top: 5px;
-    color: #9097a4;
-    font-size: 13px;
+    margin-top: 6px;
+    color: #878e9b;
+    font-size: 12px;
 }
 
-/* 駅 */
+
+/* =========================================
+   駅進行状況
+========================================= */
 
 .station-card {
-    background: #151820;
-    border-radius: 22px;
-    padding: 19px;
-    margin-bottom: 12px;
+    background: #15171d;
+    border-radius: 23px;
+    padding: 20px;
+    margin-bottom: 13px;
 }
 
-.station-header {
+.station-top {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     margin-bottom: 15px;
 }
 
-.station-header strong {
+.station-top-title {
     font-size: 15px;
+    font-weight: 900;
 }
 
-.station-header span {
-    font-size: 12px;
-    color: #838a97;
+.station-count {
+    color: #777e8b;
+    font-size: 11px;
 }
 
-.station-list {
-    display: flex;
-    flex-direction: column;
-}
 
-.station {
-    display: grid;
-    grid-template-columns: 32px 1fr;
-    min-height: 58px;
+/*
+    駅名
+*/
+
+.station-names {
     position: relative;
-}
-
-.station-dot {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #343a46;
-    margin-top: 2px;
-    border: 4px solid #151820;
-    position: relative;
-    z-index: 2;
-}
-
-.station-line {
-    position: absolute;
-    left: 7px;
-    top: 18px;
-    bottom: -4px;
-    width: 4px;
-    background: #363c47;
-}
-
-.station:last-child .station-line {
-    display: none;
-}
-
-.station.current .station-dot {
-    background: #3977ff;
-    box-shadow: 0 0 0 5px rgba(57,119,255,.15);
-}
-
-.station.passed .station-dot {
-    background: #29c76f;
+    height: 28px;
+    overflow: hidden;
 }
 
 .station-name {
-    font-size: 16px;
-    font-weight: 800;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+    color: #8c93a0;
+    font-size: 12px;
+    font-weight: 700;
+    transform: translateX(-50%);
+    transition:
+        left .8s cubic-bezier(.22,.61,.36,1),
+        color .3s ease,
+        transform .8s cubic-bezier(.22,.61,.36,1);
 }
 
-.station.current .station-name {
-    color: #4d83ff;
+.station-name.current {
+    color: white;
+    font-size: 13px;
 }
 
-.station-info {
-    color: #777f8d;
-    font-size: 11px;
-    margin-top: 3px;
+
+/*
+    Apple Music風
+    横長・角丸・直方体
+*/
+
+.progress-wrap {
+    position: relative;
+    width: 100%;
+    height: 22px;
+    border-radius: 999px;
+    background: #2b2e36;
+    overflow: hidden;
 }
 
-/* =========================
-   SPEED
-========================= */
 
-.speed-card {
-    background: #151820;
-    border-radius: 22px;
-    padding: 19px;
-    margin-bottom: 12px;
+/*
+    進んだ部分
+*/
+
+.progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: #ffffff;
+
+    transition:
+        width .9s cubic-bezier(.22,.61,.36,1);
 }
 
-.speed-row {
+
+/*
+    現在位置の丸
+*/
+
+.progress-dot {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+
+    width: 13px;
+    height: 13px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    transform:
+        translate(-50%, -50%);
+
+    box-shadow:
+        0 0 0 3px rgba(255,255,255,.10);
+
+    transition:
+        left .9s cubic-bezier(.22,.61,.36,1);
+}
+
+
+/*
+    駅マーカー
+*/
+
+.station-markers {
+    position: relative;
+    height: 17px;
+    margin-top: 4px;
+}
+
+.station-marker {
+    position: absolute;
+    top: 0;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: #676d79;
+
+    transform: translateX(-50%);
+
+    transition:
+        background .3s ease,
+        transform .3s ease;
+}
+
+.station-marker.current {
+    background: white;
+    transform:
+        translateX(-50%)
+        scale(1.5);
+}
+
+
+/* 駅間 */
+
+.segment-info {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    margin-top: 5px;
+
+    color: #666d79;
+    font-size: 10px;
+}
+
+
+/* =========================================
+   速度
+========================================= */
+
+.speed-card {
+    background: #15171d;
+    border-radius: 23px;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/*
+    円形速度メーター
+*/
+
+.speed-circle {
+    width: 190px;
+    height: 190px;
+
+    border-radius: 50%;
+
+    border: 2px solid #30343d;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
+    box-shadow:
+        inset 0 0 30px rgba(255,255,255,.025);
 }
 
 .speed-number {
-    font-size: 55px;
+    font-size: 58px;
     line-height: .9;
     font-weight: 900;
     letter-spacing: -3px;
 }
 
 .speed-unit {
-    color: #9299a5;
-    font-size: 14px;
-    margin-left: 5px;
+    margin-top: 9px;
+    color: #858c98;
+    font-size: 13px;
 }
 
-.limit {
-    text-align: right;
-    color: #8e95a1;
+.speed-label {
+    margin-top: 15px;
+    color: #858c98;
     font-size: 11px;
 }
 
-.limit strong {
-    display: block;
-    color: white;
-    font-size: 24px;
-    margin-top: 2px;
-}
 
-/* Apple Musicっぽい角丸メーター */
-
-.meter {
-    height: 17px;
-    width: 100%;
-    margin-top: 20px;
-    border-radius: 999px;
-    background: #292e38;
-    overflow: hidden;
-}
-
-.meter-fill {
-    width: 0%;
-    height: 100%;
-    border-radius: 999px;
-    background: #4b80ff;
-    transition: width .08s linear;
-}
-
-/* 操作 */
-
-.controls {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 9px;
-}
-
-.control {
-    border: 0;
-    border-radius: 17px;
-    padding: 16px 10px;
-    background: #222630;
-    color: white;
-    font-weight: 900;
-}
-
-.control:active {
-    transform: scale(.96);
-}
-
-.emergency {
-    background: #d93636;
-}
-
-.back {
-    background: #303541;
-}
-
-/* =========================
+/* =========================================
    ATS
-========================= */
+========================================= */
 
 .ats {
     position: fixed;
-    z-index: 100;
-    left: 13px;
-    right: 13px;
-    bottom: 13px;
 
-    background: rgba(25,28,36,.97);
-    border: 1px solid #3c424e;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+
+    z-index: 100;
+
+    padding: 13px 16px;
+
     border-radius: 18px;
 
-    padding: 13px 15px;
+    background: rgba(24,27,34,.97);
+    border: 1px solid #383d47;
 
     transform: translateY(140%);
     transition: transform .3s ease;
@@ -466,20 +534,21 @@ button {
 }
 
 .ats-label {
-    color: #ffcf45;
-    font-size: 11px;
+    color: #ffd34d;
+    font-size: 10px;
     font-weight: 900;
 }
 
 .ats-text {
     margin-top: 3px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 900;
 }
 
-/* =========================
-   ARRIVAL
-========================= */
+
+/* =========================================
+   到着
+========================================= */
 
 .arrival {
     position: fixed;
@@ -492,7 +561,7 @@ button {
 
     padding: 25px;
 
-    background: rgba(5,7,10,.97);
+    background: #08090d;
 }
 
 .arrival-box {
@@ -502,32 +571,38 @@ button {
 }
 
 .arrival-small {
-    color: #858c99;
+    color: #808793;
     font-size: 13px;
 }
 
 .arrival-title {
-    font-size: 43px;
-    font-weight: 900;
     margin: 10px 0;
+    font-size: 44px;
+    font-weight: 900;
 }
 
 .arrival-btn {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 22px;
+
     border: 0;
     border-radius: 18px;
+
     padding: 17px;
-    background: #315eea;
+
+    background: #315fea;
     color: white;
+
     font-weight: 900;
 }
 
-/* =========================
+
+/* =========================================
    PC
-========================= */
+========================================= */
 
 @media (min-width: 700px) {
+
     .train-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -535,15 +610,18 @@ button {
     .choice-grid {
         grid-template-columns: repeat(4, 1fr);
     }
+
 }
 </style>
 </head>
 
+
 <body>
 
-<!-- ==================================================
-     設定画面
-================================================== -->
+
+<!-- =========================================
+     設定
+========================================= -->
 
 <section id="setup" class="setup">
 
@@ -618,7 +696,7 @@ button {
     </div>
 
 
-    <!-- 路線 -->
+    <!-- 路線選択 -->
 
     <div
         id="routeCard"
@@ -702,7 +780,7 @@ button {
     </div>
 
 
-    <!-- 現在設定 -->
+    <!-- 設定確認 -->
 
     <div class="card">
 
@@ -732,17 +810,19 @@ button {
 </section>
 
 
-<!-- ==================================================
+
+<!-- =========================================
      運転画面
-================================================== -->
+========================================= -->
 
 <section
     id="drive"
     class="drive hidden">
 
+
     <div class="topbar">
 
-        <div class="service">
+        <div>
 
             <div
                 id="driveTrain"
@@ -758,6 +838,7 @@ button {
 
         </div>
 
+
         <div
             id="clock"
             class="clock">
@@ -765,6 +846,7 @@ button {
         </div>
 
     </div>
+
 
 
     <!-- 行先 -->
@@ -786,118 +868,104 @@ button {
     </div>
 
 
-    <!-- 駅一覧 -->
+
+    <!-- =====================================
+         駅進行状況
+    ====================================== -->
 
     <div class="station-card">
 
-        <div class="station-header">
+        <div class="station-top">
 
-            <strong>
-                駅
-            </strong>
+            <div class="station-top-title">
+                駅進行状況
+            </div>
 
-            <span id="stationCounter">
+            <div
+                id="stationCounter"
+                class="station-count">
                 0 / 0
+            </div>
+
+        </div>
+
+
+        <div
+            id="stationNames"
+            class="station-names">
+        </div>
+
+
+        <div class="progress-wrap">
+
+            <div
+                id="progressFill"
+                class="progress-fill">
+            </div>
+
+            <div
+                id="progressDot"
+                class="progress-dot">
+            </div>
+
+        </div>
+
+
+        <div
+            id="stationMarkers"
+            class="station-markers">
+        </div>
+
+
+        <div class="segment-info">
+
+            <span id="previousStation">
+                --
+            </span>
+
+            <span id="nextStation">
+                --
             </span>
 
         </div>
 
-        <div
-            id="stationList"
-            class="station-list">
-        </div>
-
     </div>
 
 
-    <!-- 速度 -->
+
+    <!-- =====================================
+         速度
+    ====================================== -->
 
     <div class="speed-card">
 
-        <div class="speed-row">
-
-            <div>
-
-                <span
-                    id="speed"
-                    class="speed-number">
-                    0
-                </span>
-
-                <span class="speed-unit">
-                    km/h
-                </span>
-
-            </div>
-
-
-            <div class="limit">
-
-                制限速度
-
-                <strong id="limit">
-                    80
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="meter">
+        <div class="speed-circle">
 
             <div
-                id="meter"
-                class="meter-fill">
+                id="speed"
+                class="speed-number">
+                0
+            </div>
+
+            <div class="speed-unit">
+                km/h
             </div>
 
         </div>
 
-    </div>
-
-
-    <!-- 操作 -->
-
-    <div class="controls">
-
-        <button
-            class="control"
-            onclick="accelerate()">
-            加速
-        </button>
-
-        <button
-            class="control"
-            onclick="brake()">
-            ブレーキ
-        </button>
-
-        <button
-            class="control"
-            onclick="toggleATS()">
-            ATS
-        </button>
-
-        <button
-            class="control emergency"
-            onclick="emergencyBrake()">
-            非常ブレーキ
-        </button>
-
-        <button
-            class="control back"
-            onclick="backToSetup()">
-            設定に戻る
-        </button>
+        <div class="speed-label">
+            現在速度
+        </div>
 
     </div>
 
 </section>
 
 
-<!-- ==================================================
+
+<!-- =========================================
      ATS
-================================================== -->
+========================================= -->
 
 <div
     id="ats"
@@ -916,9 +984,10 @@ button {
 </div>
 
 
-<!-- ==================================================
+
+<!-- =========================================
      到着
-================================================== -->
+========================================= -->
 
 <div
     id="arrival"
@@ -951,16 +1020,16 @@ button {
 </div>
 
 
+
 <script>
 
-/* ==================================================
-   路線データ
-================================================== */
+/* =========================================================
+   駅データ
+========================================================= */
 
 const routes = {
 
     "日豊本線": [
-
         "中津",
         "東中津",
         "今津",
@@ -1000,11 +1069,9 @@ const routes = {
         "狩生",
         "海崎",
         "佐伯"
-
     ],
 
     "久大本線": [
-
         "大分",
         "古国府",
         "南大分",
@@ -1029,11 +1096,9 @@ const routes = {
         "豊後中川",
         "豊後三芳",
         "日田"
-
     ],
 
     "豊肥本線": [
-
         "大分",
         "滝尾",
         "敷戸",
@@ -1052,15 +1117,13 @@ const routes = {
         "滝水",
         "波野",
         "宮地"
-
     ]
-
 };
 
 
-/* ==================================================
-   特急行き先
-================================================== */
+/* =========================================================
+   特急
+========================================================= */
 
 const expressDestinations = {
 
@@ -1079,43 +1142,35 @@ const expressDestinations = {
 };
 
 
-/* ==================================================
+/* =========================================================
    状態
-================================================== */
+========================================================= */
 
 let trainType = null;
-
 let selectedRoute = null;
-
 let destination = null;
 
+let currentStations = [];
 let currentStation = 0;
 
-let currentStations = [];
-
 let speed = 0;
-
 let targetSpeed = 0;
 
-let limitSpeed = 80;
-
 let driving = false;
-
 let atsEnabled = true;
 
-let clockStarted = false;
+let stationProgress = 0;
 
 
-/* ==================================================
-   列車種別選択
-================================================== */
+/* =========================================================
+   列車選択
+========================================================= */
 
 function selectTrain(type) {
 
     trainType = type;
 
     selectedRoute = null;
-
     destination = null;
 
 
@@ -1131,35 +1186,22 @@ function selectTrain(type) {
         });
 
 
-    const routeCard =
-        document.getElementById("routeCard");
+    document
+        .getElementById("routeCard")
+        .classList.add("hidden");
 
-    const destinationCard =
-        document.getElementById("destinationCard");
-
-
-    routeCard.classList.add("hidden");
-
-    destinationCard.classList.add("hidden");
+    document
+        .getElementById("destinationCard")
+        .classList.add("hidden");
 
 
     if (type === "普通") {
 
-        /*
-            普通は
-
-            路線選択
-            ↓
-            終着駅選択
-        */
-
-        routeCard.classList.remove("hidden");
+        document
+            .getElementById("routeCard")
+            .classList.remove("hidden");
 
     } else {
-
-        /*
-            特急は直接行き先選択
-        */
 
         showExpressDestinations();
 
@@ -1167,18 +1209,16 @@ function selectTrain(type) {
 
 
     updateSetupInfo();
-
 }
 
 
-/* ==================================================
-   普通：路線選択
-================================================== */
+/* =========================================================
+   路線選択
+========================================================= */
 
 function selectRoute(route) {
 
     selectedRoute = route;
-
     destination = null;
 
 
@@ -1197,13 +1237,12 @@ function selectRoute(route) {
     showLocalDestinations();
 
     updateSetupInfo();
-
 }
 
 
-/* ==================================================
-   普通：終着駅一覧
-================================================== */
+/* =========================================================
+   普通列車の終着駅
+========================================================= */
 
 function showLocalDestinations() {
 
@@ -1229,29 +1268,28 @@ function showLocalDestinations() {
     routes[selectedRoute].forEach(
         station => {
 
-            const btn =
+            const button =
                 document.createElement("button");
 
-            btn.className =
+            button.className =
                 "choice-btn";
 
-            btn.textContent =
+            button.textContent =
                 station;
 
-            btn.onclick = () =>
+            button.onclick = () =>
                 selectDestination(station);
 
-            choices.appendChild(btn);
+            choices.appendChild(button);
 
         }
     );
-
 }
 
 
-/* ==================================================
-   特急：行き先
-================================================== */
+/* =========================================================
+   特急の行き先
+========================================================= */
 
 function showExpressDestinations() {
 
@@ -1274,32 +1312,30 @@ function showExpressDestinations() {
     choices.innerHTML = "";
 
 
-    expressDestinations[trainType].forEach(
-        station => {
+    expressDestinations[trainType]
+        .forEach(station => {
 
-            const btn =
+            const button =
                 document.createElement("button");
 
-            btn.className =
+            button.className =
                 "choice-btn";
 
-            btn.textContent =
+            button.textContent =
                 station;
 
-            btn.onclick = () =>
+            button.onclick = () =>
                 selectDestination(station);
 
-            choices.appendChild(btn);
+            choices.appendChild(button);
 
-        }
-    );
-
+        });
 }
 
 
-/* ==================================================
-   終着駅選択
-================================================== */
+/* =========================================================
+   行き先選択
+========================================================= */
 
 function selectDestination(station) {
 
@@ -1308,24 +1344,23 @@ function selectDestination(station) {
 
     document
         .querySelectorAll(".choice-btn")
-        .forEach(btn => {
+        .forEach(button => {
 
-            btn.classList.toggle(
+            button.classList.toggle(
                 "selected",
-                btn.textContent === station
+                button.textContent === station
             );
 
         });
 
 
     updateSetupInfo();
-
 }
 
 
-/* ==================================================
-   設定表示
-================================================== */
+/* =========================================================
+   設定確認
+========================================================= */
 
 function updateSetupInfo() {
 
@@ -1344,7 +1379,6 @@ function updateSetupInfo() {
         start.disabled = true;
 
         return;
-
     }
 
 
@@ -1360,7 +1394,6 @@ function updateSetupInfo() {
             start.disabled = true;
 
             return;
-
         }
 
 
@@ -1376,7 +1409,6 @@ function updateSetupInfo() {
             start.disabled = true;
 
             return;
-
         }
 
 
@@ -1392,7 +1424,6 @@ function updateSetupInfo() {
         start.disabled = false;
 
         return;
-
     }
 
 
@@ -1407,7 +1438,6 @@ function updateSetupInfo() {
         start.disabled = true;
 
         return;
-
     }
 
 
@@ -1420,13 +1450,146 @@ function updateSetupInfo() {
         "</b>";
 
     start.disabled = false;
-
 }
 
 
-/* ==================================================
+/* =========================================================
+   普通列車ルート作成
+========================================================= */
+
+function createLocalRoute(
+    routeName,
+    destinationName
+) {
+
+    const route =
+        routes[routeName];
+
+    if (!route) return [];
+
+
+    const destinationIndex =
+        route.indexOf(destinationName);
+
+    if (destinationIndex < 0) {
+        return [];
+    }
+
+
+    return route.slice(
+        0,
+        destinationIndex + 1
+    );
+}
+
+
+/* =========================================================
+   特急ルート
+========================================================= */
+
+function createExpressRoute(
+    type,
+    destinationName
+) {
+
+    if (type === "特急ソニック") {
+
+        if (destinationName === "博多") {
+
+            return [
+                "大分",
+                "別府",
+                "杵築",
+                "中津",
+                "行橋",
+                "小倉",
+                "黒崎",
+                "折尾",
+                "博多"
+            ];
+        }
+
+
+        if (destinationName === "大分") {
+
+            return [
+                "博多",
+                "折尾",
+                "黒崎",
+                "小倉",
+                "行橋",
+                "中津",
+                "杵築",
+                "別府",
+                "大分"
+            ];
+        }
+
+
+        if (destinationName === "佐伯") {
+
+            return [
+                "博多",
+                "小倉",
+                "行橋",
+                "中津",
+                "杵築",
+                "別府",
+                "大分",
+                "臼杵",
+                "津久見",
+                "佐伯"
+            ];
+        }
+    }
+
+
+    if (type === "特急ゆふいんの森") {
+
+        if (destinationName === "博多") {
+
+            return [
+                "由布院",
+                "日田",
+                "久留米",
+                "鳥栖",
+                "博多"
+            ];
+        }
+
+
+        if (destinationName === "由布院") {
+
+            return [
+                "博多",
+                "鳥栖",
+                "久留米",
+                "日田",
+                "由布院"
+            ];
+        }
+
+
+        if (destinationName === "別府") {
+
+            return [
+                "博多",
+                "久留米",
+                "日田",
+                "由布院",
+                "別府"
+            ];
+        }
+    }
+
+
+    return [];
+}
+
+
+/* =========================================================
    運転開始
-================================================== */
+========================================================= */
 
 function startDrive() {
 
@@ -1434,18 +1597,6 @@ function startDrive() {
         return;
     }
 
-
-    /*
-        普通
-        → 選択した路線から駅を抽出
-
-        選択した駅を終着として、
-        路線の始点側から走る。
-
-        例：
-        大分 → 佐伯
-        中津 → 佐伯
-    */
 
     if (trainType === "普通") {
 
@@ -1457,34 +1608,27 @@ function startDrive() {
 
     } else {
 
-        /*
-            特急は簡易的な運行ルートを生成
-        */
-
         currentStations =
             createExpressRoute(
                 trainType,
                 destination
             );
-
     }
 
 
-    if (
-        !currentStations ||
-        currentStations.length < 2
-    ) {
+    if (currentStations.length < 2) {
 
         alert(
-            "この区間の運転ルートを作成できません。"
+            "運転ルートを作成できません。"
         );
 
         return;
-
     }
 
 
     currentStation = 0;
+
+    stationProgress = 0;
 
     speed = 0;
 
@@ -1526,175 +1670,19 @@ function startDrive() {
 
     updateRouteText();
 
-    renderStations();
+    createStationUI();
 
-    updateStation();
-
+    updateStationUI();
 
     showATS(
         "運転を開始します"
     );
-
 }
 
 
-/* ==================================================
-   普通列車ルート
-================================================== */
-
-function createLocalRoute(
-    routeName,
-    destinationName
-) {
-
-    const route =
-        routes[routeName];
-
-
-    if (!route) {
-        return [];
-    }
-
-
-    const destinationIndex =
-        route.indexOf(destinationName);
-
-
-    if (destinationIndex === -1) {
-        return [];
-    }
-
-
-    /*
-        路線の始点から
-        選択された終着駅まで
-    */
-
-    return route.slice(
-        0,
-        destinationIndex + 1
-    );
-
-}
-
-
-/* ==================================================
-   特急ルート
-================================================== */
-
-function createExpressRoute(
-    type,
-    destinationName
-) {
-
-    if (type === "特急ソニック") {
-
-        if (destinationName === "博多") {
-
-            return [
-                "大分",
-                "別府",
-                "杵築",
-                "中津",
-                "行橋",
-                "小倉",
-                "黒崎",
-                "折尾",
-                "博多"
-            ];
-
-        }
-
-
-        if (destinationName === "大分") {
-
-            return [
-                "博多",
-                "折尾",
-                "黒崎",
-                "小倉",
-                "行橋",
-                "中津",
-                "杵築",
-                "別府",
-                "大分"
-            ];
-
-        }
-
-
-        if (destinationName === "佐伯") {
-
-            return [
-                "博多",
-                "小倉",
-                "行橋",
-                "中津",
-                "杵築",
-                "別府",
-                "大分",
-                "臼杵",
-                "津久見",
-                "佐伯"
-            ];
-
-        }
-
-    }
-
-
-    if (
-        type === "特急ゆふいんの森"
-    ) {
-
-        if (destinationName === "博多") {
-
-            return [
-                "由布院",
-                "日田",
-                "久留米",
-                "鳥栖",
-                "博多"
-            ];
-
-        }
-
-
-        if (destinationName === "由布院") {
-
-            return [
-                "博多",
-                "鳥栖",
-                "久留米",
-                "日田",
-                "由布院"
-            ];
-
-        }
-
-
-        if (destinationName === "別府") {
-
-            return [
-                "博多",
-                "久留米",
-                "日田",
-                "由布院",
-                "別府"
-            ];
-
-        }
-
-    }
-
-
-    return [];
-}
-
-
-/* ==================================================
-   ルート表示
-================================================== */
+/* =========================================================
+   路線表示
+========================================================= */
 
 function updateRouteText() {
 
@@ -1710,10 +1698,9 @@ function updateRouteText() {
             " → " +
             destination;
 
-    }
-
-
-    if (trainType === "特急ソニック") {
+    } else if (
+        trainType === "特急ソニック"
+    ) {
 
         text =
             "日豊本線　" +
@@ -1721,19 +1708,13 @@ function updateRouteText() {
             " → " +
             destination;
 
-    }
-
-
-    if (
-        trainType === "特急ゆふいんの森"
-    ) {
+    } else {
 
         text =
             "久大本線　" +
             currentStations[0] +
             " → " +
             destination;
-
     }
 
 
@@ -1741,239 +1722,220 @@ function updateRouteText() {
         .getElementById("driveRoute")
         .textContent =
         text;
-
 }
 
 
-/* ==================================================
-   駅表示
-================================================== */
+/* =========================================================
+   駅UI作成
+========================================================= */
 
-function renderStations() {
+function createStationUI() {
 
-    const list =
-        document.getElementById("stationList");
+    const names =
+        document.getElementById(
+            "stationNames"
+        );
 
-    list.innerHTML = "";
+    const markers =
+        document.getElementById(
+            "stationMarkers"
+        );
+
+
+    names.innerHTML = "";
+
+    markers.innerHTML = "";
+
+
+    const count =
+        currentStations.length;
+
+
+    currentStations.forEach(
+        (station, index) => {
+
+            const position =
+                count <= 1
+                ? 0
+                : index / (count - 1) * 100;
+
+
+            /*
+                駅名
+            */
+
+            const name =
+                document.createElement("div");
+
+            name.className =
+                "station-name";
+
+            name.textContent =
+                station;
+
+            name.style.left =
+                position + "%";
+
+
+            if (index === 0) {
+
+                name.style.transform =
+                    "translateX(0)";
+
+            } else if (
+                index === count - 1
+            ) {
+
+                name.style.transform =
+                    "translateX(-100%)";
+
+            }
+
+
+            names.appendChild(name);
+
+
+            /*
+                駅マーカー
+            */
+
+            const marker =
+                document.createElement("div");
+
+            marker.className =
+                "station-marker";
+
+            marker.style.left =
+                position + "%";
+
+
+            markers.appendChild(marker);
+
+        }
+    );
+}
+
+
+/* =========================================================
+   駅UI更新
+========================================================= */
+
+function updateStationUI() {
+
+    const count =
+        currentStations.length;
 
 
     /*
-        現在駅を中心に
-        前後2駅だけ表示
+        全体に対する現在駅位置
     */
 
-    const start =
-        Math.max(
-            0,
-            currentStation - 2
+    const percentage =
+        count <= 1
+        ? 0
+        : currentStation /
+          (count - 1) *
+          100;
+
+
+    /*
+        Apple Music風進行バー
+    */
+
+    document
+        .getElementById("progressFill")
+        .style.width =
+        percentage + "%";
+
+
+    /*
+        現在位置の丸
+    */
+
+    document
+        .getElementById("progressDot")
+        .style.left =
+        percentage + "%";
+
+
+    /*
+        駅マーカー
+    */
+
+    document
+        .querySelectorAll(
+            ".station-marker"
+        )
+        .forEach(
+            (marker, index) => {
+
+                marker.classList.toggle(
+                    "current",
+                    index === currentStation
+                );
+
+            }
         );
 
 
-    const end =
-        Math.min(
-            currentStations.length,
-            currentStation + 3
+    /*
+        駅名
+    */
+
+    document
+        .querySelectorAll(
+            ".station-name"
+        )
+        .forEach(
+            (name, index) => {
+
+                name.classList.toggle(
+                    "current",
+                    index === currentStation
+                );
+
+            }
         );
 
 
-    for (
-        let i = start;
-        i < end;
-        i++
-    ) {
-
-        const station =
-            document.createElement("div");
-
-        station.className =
-            "station";
-
-
-        if (i === currentStation) {
-
-            station.classList.add(
-                "current"
-            );
-
-        }
-
-
-        if (i < currentStation) {
-
-            station.classList.add(
-                "passed"
-            );
-
-        }
-
-
-        station.innerHTML = `
-
-            <div>
-
-                <div class="station-dot"></div>
-
-                <div class="station-line"></div>
-
-            </div>
-
-            <div>
-
-                <div class="station-name">
-                    ${currentStations[i]}
-                </div>
-
-                <div class="station-info">
-
-                    ${
-                        i === currentStation
-                        ? "現在駅"
-                        : i < currentStation
-                        ? "通過済み"
-                        : "次駅"
-                    }
-
-                </div>
-
-            </div>
-
-        `;
-
-
-        list.appendChild(station);
-
-    }
-
+    /*
+        駅数
+    */
 
     document
         .getElementById("stationCounter")
         .textContent =
-        `${currentStation + 1} / ${currentStations.length}`;
-
-}
+        `${currentStation + 1} / ${count}`;
 
 
-/* ==================================================
-   駅更新
-================================================== */
+    /*
+        前駅・次駅
+    */
 
-function updateStation() {
-
-    renderStations();
-
-
-    if (
-        currentStation >=
-        currentStations.length - 1
-    ) {
-
-        arrive();
-
-        return;
-
-    }
-
-
-    limitSpeed =
-        getLimitSpeed(
-            currentStation
-        );
+    document
+        .getElementById("previousStation")
+        .textContent =
+        currentStation > 0
+        ? currentStations[
+            currentStation - 1
+          ]
+        : "始発駅";
 
 
     document
-        .getElementById("limit")
+        .getElementById("nextStation")
         .textContent =
-        limitSpeed;
-
-
-    if (atsEnabled) {
-
-        showATS(
-            currentStations[
-                currentStation + 1
-            ] + " 接近"
-        );
-
-    }
-
+        currentStation < count - 1
+        ? currentStations[
+            currentStation + 1
+          ]
+        : "終着駅";
 }
 
 
-/* ==================================================
-   制限速度
-================================================== */
-
-function getLimitSpeed(index) {
-
-    if (index % 7 === 0) {
-        return 60;
-    }
-
-    if (index % 5 === 0) {
-        return 70;
-    }
-
-    return 100;
-
-}
-
-
-/* ==================================================
-   加速
-================================================== */
-
-function accelerate() {
-
-    if (!driving) return;
-
-    targetSpeed += 10;
-
-    targetSpeed =
-        Math.min(
-            targetSpeed,
-            130
-        );
-
-}
-
-
-/* ==================================================
-   ブレーキ
-================================================== */
-
-function brake() {
-
-    if (!driving) return;
-
-    targetSpeed -= 20;
-
-    targetSpeed =
-        Math.max(
-            targetSpeed,
-            0
-        );
-
-}
-
-
-/* ==================================================
-   非常ブレーキ
-================================================== */
-
-function emergencyBrake() {
-
-    targetSpeed = 0;
-
-    showATS(
-        "非常ブレーキ"
-    );
-
-}
-
-
-/* ==================================================
+/* =========================================================
    ATS
-================================================== */
+========================================================= */
 
 function showATS(message) {
 
@@ -1985,6 +1947,7 @@ function showATS(message) {
     const ats =
         document.getElementById("ats");
 
+
     document
         .getElementById("atsText")
         .textContent =
@@ -1995,11 +1958,11 @@ function showATS(message) {
 
 
     clearTimeout(
-        window.atsTimeout
+        window.atsTimer
     );
 
 
-    window.atsTimeout =
+    window.atsTimer =
         setTimeout(() => {
 
             ats.classList.remove(
@@ -2007,43 +1970,189 @@ function showATS(message) {
             );
 
         }, 4000);
-
 }
 
 
-/* ==================================================
-   ATS ON/OFF
-================================================== */
+/* =========================================================
+   速度
+========================================================= */
 
-function toggleATS() {
+/*
+    実際の速度を直接操作するボタンは置かない。
 
-    atsEnabled =
-        !atsEnabled;
+    シミュレーションとして、
+    時間経過で速度が自然に変化する。
+*/
 
+function updateSpeed(delta) {
 
-    if (!atsEnabled) {
-
-        document
-            .getElementById("ats")
-            .classList.remove(
-                "show"
-            );
-
+    if (!driving) {
         return;
+    }
+
+
+    /*
+        駅間を走行している間は
+        ゆっくり加速
+    */
+
+    if (
+        currentStation <
+        currentStations.length - 1
+    ) {
+
+        targetSpeed = 80;
+
+    } else {
+
+        targetSpeed = 0;
 
     }
 
 
-    showATS(
-        "ATS ON"
-    );
+    /*
+        滑らかに目標速度へ近づく
+    */
 
+    const difference =
+        targetSpeed - speed;
+
+
+    speed +=
+        difference *
+        Math.min(
+            delta * 1.4,
+            1
+        );
+
+
+    /*
+        終着駅付近で減速
+    */
+
+    if (
+        currentStation >=
+        currentStations.length - 2
+    ) {
+
+        targetSpeed = 0;
+
+    }
+
+
+    document
+        .getElementById("speed")
+        .textContent =
+        Math.round(speed);
 }
 
 
-/* ==================================================
+/* =========================================================
+   駅間を滑らかに進める
+========================================================= */
+
+let stationProgressTimer = 0;
+
+
+function updateStationProgress(delta) {
+
+    if (!driving) {
+        return;
+    }
+
+
+    /*
+        速度に応じて駅間進行
+
+        80km/hなら速く
+        20km/hなら遅く
+    */
+
+    const movement =
+        speed / 80 *
+        delta *
+        0.055;
+
+
+    stationProgress += movement;
+
+
+    /*
+        駅に到着
+    */
+
+    if (stationProgress >= 1) {
+
+        stationProgress = 0;
+
+        currentStation++;
+
+
+        if (
+            currentStation >=
+            currentStations.length - 1
+        ) {
+
+            currentStation =
+                currentStations.length - 1;
+
+            updateStationUI();
+
+            arrive();
+
+            return;
+        }
+
+
+        updateStationUI();
+
+
+        showATS(
+            currentStations[
+                currentStation
+            ] +
+            " 到着"
+        );
+    }
+
+
+    /*
+        駅間の現在位置を
+        Apple Music風バーに反映
+    */
+
+    const totalSegments =
+        currentStations.length - 1;
+
+
+    const overallProgress =
+        (
+            currentStation +
+            stationProgress
+        ) /
+        totalSegments;
+
+
+    const percentage =
+        overallProgress * 100;
+
+
+    document
+        .getElementById("progressFill")
+        .style.width =
+        percentage + "%";
+
+
+    document
+        .getElementById("progressDot")
+        .style.left =
+        percentage + "%";
+}
+
+
+/* =========================================================
    到着
-================================================== */
+========================================================= */
 
 function arrive() {
 
@@ -2061,12 +2170,6 @@ function arrive() {
 
 
     document
-        .getElementById("meter")
-        .style.width =
-        "0%";
-
-
-    document
         .getElementById("arrivalStation")
         .textContent =
         destination;
@@ -2078,12 +2181,18 @@ function arrive() {
             "hidden"
         );
 
+
+    document
+        .getElementById("ats")
+        .classList.remove(
+            "show"
+        );
 }
 
 
-/* ==================================================
-   設定に戻る
-================================================== */
+/* =========================================================
+   設定画面へ
+========================================================= */
 
 function backToSetup() {
 
@@ -2093,6 +2202,8 @@ function backToSetup() {
 
     targetSpeed = 0;
 
+    stationProgress = 0;
+
 
     document
         .getElementById("arrival")
@@ -2100,11 +2211,13 @@ function backToSetup() {
             "hidden"
         );
 
+
     document
         .getElementById("drive")
         .classList.add(
             "hidden"
         );
+
 
     document
         .getElementById("setup")
@@ -2118,226 +2231,92 @@ function backToSetup() {
         .classList.remove(
             "show"
         );
-
 }
 
 
-/* ==================================================
+/* =========================================================
    時計
-================================================== */
+========================================================= */
 
-function startClock() {
+function updateClock() {
 
-    if (clockStarted) {
-        return;
-    }
-
-    clockStarted = true;
+    const now =
+        new Date();
 
 
-    function updateClock() {
-
-        const now =
-            new Date();
-
-
-        const h =
-            String(
-                now.getHours()
-            ).padStart(2, "0");
+    const h =
+        String(
+            now.getHours()
+        ).padStart(2, "0");
 
 
-        const m =
-            String(
-                now.getMinutes()
-            ).padStart(2, "0");
+    const m =
+        String(
+            now.getMinutes()
+        ).padStart(2, "0");
 
 
-        const s =
-            String(
-                now.getSeconds()
-            ).padStart(2, "0");
+    const s =
+        String(
+            now.getSeconds()
+        ).padStart(2, "0");
 
 
-        document
-            .getElementById("clock")
-            .textContent =
-            `${h}:${m}:${s}`;
-
-
-        requestAnimationFrame(
-            updateClock
-        );
-
-    }
-
-
-    updateClock();
-
+    document
+        .getElementById("clock")
+        .textContent =
+        `${h}:${m}:${s}`;
 }
 
 
-/* ==================================================
-   滑らかな速度メーター
-================================================== */
+/* =========================================================
+   メインループ
+========================================================= */
 
 let previousTime =
     performance.now();
 
 
-function animationLoop(time) {
+function mainLoop(time) {
 
     const delta =
         Math.min(
             (time - previousTime) / 1000,
-            .05
+            0.05
         );
+
 
     previousTime = time;
 
 
-    /*
-        滑らかに目標速度へ近づける
-    */
+    updateSpeed(delta);
 
-    const difference =
-        targetSpeed - speed;
-
-
-    speed +=
-        difference *
-        Math.min(
-            delta * 4,
-            1
-        );
-
-
-    /*
-        数値
-    */
-
-    const displaySpeed =
-        Math.round(speed);
-
-
-    document
-        .getElementById("speed")
-        .textContent =
-        displaySpeed;
-
-
-    /*
-        メーター
-
-        130km/h = 100%
-    */
-
-    const percentage =
-        Math.min(
-            speed / 130 * 100,
-            100
-        );
-
-
-    document
-        .getElementById("meter")
-        .style.width =
-        percentage + "%";
-
-
-    /*
-        制限速度を超えたらATS
-    */
-
-    if (
-        driving &&
-        atsEnabled &&
-        speed >
-        limitSpeed
-    ) {
-
-        showATS(
-            "制限速度超過"
-        );
-
-    }
+    updateStationProgress(delta);
 
 
     requestAnimationFrame(
-        animationLoop
+        mainLoop
     );
-
 }
 
 
-requestAnimationFrame(
-    animationLoop
+setInterval(
+    updateClock,
+    1000
 );
 
 
-/* ==================================================
-   デモ用：一定時間ごとに次駅へ進む
-
-   実際の距離システムに変更可能
-================================================== */
-
-let stationTimer =
-    null;
+updateClock();
 
 
-function startStationSimulation() {
-
-    clearInterval(
-        stationTimer
-    );
+requestAnimationFrame(
+    mainLoop
+);
 
 
-    stationTimer =
-        setInterval(() => {
-
-            if (!driving) {
-                return;
-            }
-
-
-            /*
-                速度が20km/h以上なら
-                次駅へ進む
-            */
-
-            if (
-                speed >= 20 &&
-                currentStation <
-                currentStations.length - 1
-            ) {
-
-                currentStation++;
-
-                updateStation();
-
-            }
-
-        }, 15000);
-
-}
-
-
-const originalStartDrive =
-    startDrive;
-
-
-startDrive = function() {
-
-    originalStartDrive();
-
-    startStationSimulation();
-
-};
-
-
-/* ==================================================
-   初期化
-================================================== */
+/* =========================================================
+   初期状態
+========================================================= */
 
 updateSetupInfo();
 
