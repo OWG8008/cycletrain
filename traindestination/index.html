@@ -2,39 +2,49 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+
 <meta name="viewport"
       content="width=device-width,
                initial-scale=1.0,
                maximum-scale=1.0,
                viewport-fit=cover">
+
 <title>JR九州 列車情報</title>
+
 <style>
-/* =====================================================
+
+/* =========================================================
    基本
-===================================================== */
+========================================================= */
+
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
 }
+
 html,
 body {
     margin: 0;
     padding: 0;
+
     width: 100%;
     min-height: 100%;
+
     background:
         radial-gradient(
-            circle at 20% 0%,
-            rgba(255,255,255,.12),
+            circle at 15% 0%,
+            rgba(255,255,255,.10),
             transparent 35%
         ),
         radial-gradient(
-            circle at 90% 80%,
-            rgba(255,255,255,.08),
-            transparent 38%
+            circle at 90% 90%,
+            rgba(255,255,255,.07),
+            transparent 40%
         ),
         #050505;
+
     color: #fff;
+
     font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -43,425 +53,628 @@ body {
         Arial,
         sans-serif;
 }
+
 body {
     overflow-x: hidden;
 }
-/* =====================================================
+
+
+/* =========================================================
    アプリ
-===================================================== */
+========================================================= */
+
 .app {
     width: 100%;
     max-width: 680px;
-    min-height: 100vh;
+
     margin: 0 auto;
+
+    min-height: 100vh;
+
     padding:
-        calc(16px + env(safe-area-inset-top))
-        14px
-        calc(24px + env(safe-area-inset-bottom))
-        14px;
+        calc(15px + env(safe-area-inset-top))
+        12px
+        calc(25px + env(safe-area-inset-bottom))
+        12px;
 }
-/* =====================================================
+
+
+/* =========================================================
    Liquid Glass
-===================================================== */
+========================================================= */
+
 .glass {
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,.15),
+            rgba(255,255,255,.145),
             rgba(255,255,255,.045)
         );
+
     border:
-        1px solid rgba(255,255,255,.13);
+        1px solid rgba(255,255,255,.12);
+
     box-shadow:
-        0 18px 50px rgba(0,0,0,.38),
-        inset 0 1px 1px rgba(255,255,255,.16);
+        0 18px 45px rgba(0,0,0,.38),
+        inset 0 1px 1px rgba(255,255,255,.13);
+
     backdrop-filter:
         blur(28px)
-        saturate(165%);
+        saturate(170%);
+
     -webkit-backdrop-filter:
         blur(28px)
-        saturate(165%);
+        saturate(170%);
 }
-/* =====================================================
+
+
+/* =========================================================
    選択画面
-===================================================== */
+========================================================= */
+
 #selectScreen {
-    min-height: calc(
-        100vh
-        - env(safe-area-inset-top)
-        - env(safe-area-inset-bottom)
-    );
+    min-height:
+        calc(
+            100vh
+            - env(safe-area-inset-top)
+            - env(safe-area-inset-bottom)
+        );
+
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
+
 .select-title {
     font-size: 34px;
     font-weight: 760;
     letter-spacing: -1.5px;
 }
+
 .select-sub {
-    margin-top: 5px;
+    margin-top: 4px;
+
     color:
-        rgba(255,255,255,.45);
-    font-size: 14px;
-}
-/* =====================================================
-   選択カード
-===================================================== */
-.select-card {
-    margin-top: 16px;
-    padding: 16px;
-    border-radius: 25px;
-}
-.select-label {
-    margin-bottom: 10px;
+        rgba(255,255,255,.42);
+
     font-size: 13px;
-    color:
-        rgba(255,255,255,.45);
 }
+
+.select-card {
+    margin-top: 12px;
+
+    padding: 15px;
+
+    border-radius: 24px;
+}
+
+.select-label {
+    margin-bottom: 9px;
+
+    font-size: 13px;
+
+    color:
+        rgba(255,255,255,.43);
+}
+
 .number-row {
     display: flex;
     gap: 8px;
 }
+
 .number-input {
     flex: 1;
+
     min-width: 0;
-    height: 53px;
-    padding: 0 15px;
+
+    height: 52px;
+
+    padding:
+        0 14px;
+
     border:
-        1px solid rgba(255,255,255,.1);
-    border-radius: 17px;
+        1px solid rgba(255,255,255,.10);
+
+    border-radius: 16px;
+
     outline: none;
+
     background:
-        rgba(255,255,255,.07);
+        rgba(255,255,255,.065);
+
     color: #fff;
-    font-size: 18px;
+
+    font-size: 17px;
     font-weight: 650;
-    -webkit-appearance: none;
 }
+
 .number-input::placeholder {
     color:
-        rgba(255,255,255,.28);
+        rgba(255,255,255,.27);
 }
+
 .number-button {
-    width: 88px;
+    width: 82px;
+
     border: 0;
-    border-radius: 17px;
+
+    border-radius: 16px;
+
     background:
         rgba(255,255,255,.94);
+
     color: #000;
+
     font-size: 15px;
     font-weight: 700;
 }
-/* =====================================================
-   普通列車ボタン
-===================================================== */
+
 .local-grid {
     display: grid;
+
     grid-template-columns:
         repeat(2, minmax(0,1fr));
+
     gap: 8px;
 }
+
 .local-button {
-    min-height: 57px;
+    min-height: 56px;
+
     border:
         1px solid rgba(255,255,255,.08);
-    border-radius: 17px;
+
+    border-radius: 16px;
+
     background:
-        rgba(255,255,255,.065);
+        rgba(255,255,255,.06);
+
     color: #fff;
-    font-size: 14px;
+
+    font-size: 13px;
     font-weight: 650;
 }
-.local-button:active,
-.number-button:active,
-.gps-button:active,
-.test-button:active,
-.back-button:active {
+
+button:active {
     transform: scale(.97);
 }
-/* =====================================================
+
+
+/* =========================================================
    列車画面
-===================================================== */
+========================================================= */
+
 #trainScreen {
     display: none;
 }
-/* =====================================================
+
+
+/* =========================================================
    ヘッダー
-===================================================== */
+========================================================= */
+
 .header-card {
-    padding: 18px 19px 20px;
-    border-radius: 27px;
-    overflow: hidden;
+    padding:
+        17px
+        18px
+        18px;
+
+    border-radius: 26px;
 }
+
 .train-name {
     font-size: 17px;
+
     color:
-        rgba(255,255,255,.56);
+        rgba(255,255,255,.55);
+
     font-weight: 600;
 }
+
 .destination {
     margin-top: 2px;
+
     font-size: 31px;
+
+    line-height: 1.05;
+
     font-weight: 760;
-    letter-spacing: -1.3px;
+
+    letter-spacing: -1.2px;
 }
+
 .train-number {
-    margin-top: 4px;
-    font-size: 15px;
+    margin-top: 5px;
+
+    font-size: 14px;
+
     color:
-        rgba(255,255,255,.42);
+        rgba(255,255,255,.38);
 }
-/* =====================================================
+
+
+/* =========================================================
    速度
-===================================================== */
+========================================================= */
+
 .speed-card {
-    margin-top: 10px;
-    padding: 18px;
-    border-radius: 27px;
+    margin-top: 9px;
+
+    padding: 17px;
+
+    border-radius: 26px;
 }
+
 .speed-label {
     font-size: 13px;
+
     color:
-        rgba(255,255,255,.4);
+        rgba(255,255,255,.40);
 }
+
 .speed-row {
     display: flex;
+
     align-items: baseline;
 }
+
 .speed {
-    font-size: 70px;
+    font-size: 68px;
+
     line-height: .95;
+
     font-weight: 760;
+
     letter-spacing: -5px;
+
     font-variant-numeric:
         tabular-nums;
 }
+
 .speed-unit {
     margin-left: 8px;
+
     font-size: 17px;
-    color:
-        rgba(255,255,255,.42);
-}
-/* =====================================================
-   駅カード
-===================================================== */
-.station-card {
-    margin-top: 10px;
-    padding: 18px;
-    border-radius: 27px;
-    overflow-x: hidden;
-}
-.station-title {
-    margin-bottom: 15px;
-    font-size: 13px;
-    color:
-        rgba(255,255,255,.4);
-}
-/* =====================================================
-   4駅 横並び・縦書き
-===================================================== */
-.station-route {
-    display: grid;
-    grid-template-columns:
-        repeat(4, 1fr);
-    column-gap: 8px;
-    width: 100%;
-    min-height: 150px;
-}
-/*
-   1駅分
-*/
-.station-column {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    min-width: 0;
-}
-/*
-   ＞
-*/
-.station-arrow {
-    height: 30px;
-    font-size: 24px;
-    line-height: 30px;
-    font-weight: 750;
-    color:
-        rgba(255,255,255,.72);
-}
-/*
-   駅名
-*/
-.station-vertical {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 28px;
-    font-size: 22px;
-    line-height: 1.08;
-    font-weight: 720;
-    letter-spacing: 0;
-    white-space: nowrap;
-}
-/*
-   駅名が長くても
-   横幅を壊さない
-*/
-.station-char {
-    display: block;
-    height: 24px;
-}
-/* =====================================================
-   メーター
-===================================================== */
-.progress-area {
-    margin-top: 13px;
-}
-.progress-background {
-    width: 100%;
-    height: 8px;
-    border-radius: 999px;
-    overflow: hidden;
-    background:
-        rgba(255,255,255,.1);
-}
-.progress-fill {
-    width: 0%;
-    height: 100%;
-    border-radius: 999px;
-    background:
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.52),
-            rgba(255,255,255,.97)
-        );
-    transition:
-        width .65s ease;
-}
-.distance-text {
-    margin-top: 10px;
-    font-size: 14px;
-    color:
-        rgba(255,255,255,.55);
-    text-align: left;
-}
-/* =====================================================
-   GPS
-===================================================== */
-.gps-card {
-    margin-top: 10px;
-    padding: 15px;
-    border-radius: 23px;
-}
-.gps-status {
-    font-size: 13px;
-    line-height: 1.5;
-    color:
-        rgba(255,255,255,.4);
-}
-.gps-button {
-    width: 100%;
-    margin-top: 10px;
-    padding: 14px;
-    border: 0;
-    border-radius: 17px;
-    background:
-        rgba(255,255,255,.94);
-    color: #000;
-    font-size: 15px;
-    font-weight: 700;
-}
-/* =====================================================
-   テストモード
-===================================================== */
-.test-panel {
-    display: none;
-    margin-top: 10px;
-    padding: 15px;
-    border-radius: 23px;
-}
-.test-title {
-    margin-bottom: 9px;
-    font-size: 13px;
+
     color:
         rgba(255,255,255,.43);
 }
+
+
+/* =========================================================
+   駅表示
+========================================================= */
+
+.station-card {
+    margin-top: 9px;
+
+    padding: 17px;
+
+    border-radius: 26px;
+
+    overflow: hidden;
+}
+
+.station-title {
+    margin-bottom: 13px;
+
+    font-size: 13px;
+
+    color:
+        rgba(255,255,255,.40);
+}
+
+
+/*
+    4駅を横並び
+*/
+
+.station-route {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0,1fr));
+
+    gap: 5px;
+
+    width: 100%;
+
+    min-height: 143px;
+}
+
+.station-column {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+}
+
+
+/*
+    ＞
+
+    駅が存在するときだけ表示。
+    だから3駅しか残っていない場合、
+    4つ目の ＞ は出ない。
+*/
+
+.station-arrow {
+    height: 28px;
+
+    font-size: 23px;
+
+    line-height: 28px;
+
+    font-weight: 750;
+
+    color:
+        rgba(255,255,255,.70);
+}
+
+
+/*
+    縦書き駅名
+*/
+
+.station-vertical {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    min-width: 30px;
+
+    font-size: 21px;
+
+    line-height: 1.08;
+
+    font-weight: 720;
+
+    white-space: nowrap;
+}
+
+.station-char {
+    display: block;
+
+    height: 23px;
+}
+
+
+/* =========================================================
+   進行メーター
+========================================================= */
+
+.progress-area {
+    margin-top: 12px;
+}
+
+.progress-background {
+    width: 100%;
+
+    height: 8px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.085);
+
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0%;
+
+    height: 100%;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.48),
+            rgba(255,255,255,.98)
+        );
+
+    transition:
+        width .65s ease;
+}
+
+.distance-text {
+    margin-top: 9px;
+
+    text-align: left;
+
+    font-size: 14px;
+
+    color:
+        rgba(255,255,255,.52);
+}
+
+
+/* =========================================================
+   GPS
+========================================================= */
+
+.gps-card {
+    margin-top: 9px;
+
+    padding: 14px;
+
+    border-radius: 22px;
+}
+
+.gps-status {
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    color:
+        rgba(255,255,255,.40);
+}
+
+.gps-button {
+    width: 100%;
+
+    margin-top: 9px;
+
+    padding: 14px;
+
+    border: 0;
+
+    border-radius: 16px;
+
+    background:
+        rgba(255,255,255,.94);
+
+    color: #000;
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   テストモード
+========================================================= */
+
+.test-panel {
+    display: none;
+
+    margin-top: 9px;
+
+    padding: 14px;
+
+    border-radius: 22px;
+}
+
+.test-title {
+    margin-bottom: 8px;
+
+    font-size: 12px;
+
+    color:
+        rgba(255,255,255,.42);
+}
+
 .test-buttons {
     display: grid;
+
     grid-template-columns:
         1fr 1fr;
+
     gap: 8px;
 }
+
 .test-button {
-    min-height: 49px;
+    min-height: 48px;
+
     border: 0;
-    border-radius: 16px;
+
+    border-radius: 15px;
+
     background:
-        rgba(255,255,255,.075);
+        rgba(255,255,255,.07);
+
     color: #fff;
-    font-size: 15px;
+
+    font-size: 14px;
+
     font-weight: 650;
 }
-/* =====================================================
-   戻る
-===================================================== */
+
 .back-button {
     width: 100%;
-    margin-top: 10px;
+
+    margin-top: 9px;
+
     padding: 13px;
+
     border: 0;
-    border-radius: 16px;
+
+    border-radius: 15px;
+
     background:
-        rgba(255,255,255,.055);
+        rgba(255,255,255,.045);
+
     color:
-        rgba(255,255,255,.55);
+        rgba(255,255,255,.48);
+
     font-size: 14px;
 }
-/* =====================================================
-   小さい画面
-===================================================== */
+
+
+/* =========================================================
+   小さいiPhone
+========================================================= */
+
 @media (max-width:380px) {
+
     .app {
-        padding-left: 11px;
-        padding-right: 11px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
+
     .station-route {
-        column-gap: 4px;
+        gap: 3px;
     }
+
     .station-vertical {
-        font-size: 20px;
+        font-size: 19px;
     }
+
     .station-char {
-        height: 22px;
+        height: 21px;
     }
+
     .station-arrow {
-        font-size: 22px;
+        font-size: 21px;
     }
+
     .speed {
-        font-size: 61px;
+        font-size: 60px;
     }
+
 }
+
 </style>
 </head>
+
+
 <body>
+
 <div class="app">
-<!-- ==================================================
+
+
+<!-- ======================================================
      列車選択
-================================================== -->
+====================================================== -->
+
 <section id="selectScreen">
+
     <div class="select-title">
         列車を選択
     </div>
+
     <div class="select-sub">
         JR九州 列車情報
     </div>
+
+
     <!-- ソニック -->
+
     <div class="select-card glass">
+
         <div class="select-label">
             特急ソニック
         </div>
+
         <div class="number-row">
+
             <input
                 id="sonicNumber"
                 class="number-input"
@@ -469,20 +682,29 @@ body {
                 inputmode="numeric"
                 placeholder="号数を入力"
             >
+
             <button
                 class="number-button"
                 onclick="startSonic()"
             >
                 決定
             </button>
+
         </div>
+
     </div>
-    <!-- ゆふ森 -->
+
+
+    <!-- ゆふいんの森 -->
+
     <div class="select-card glass">
+
         <div class="select-label">
             特急ゆふいんの森
         </div>
+
         <div class="number-row">
+
             <input
                 id="yufuNumber"
                 class="number-input"
@@ -490,221 +712,274 @@ body {
                 inputmode="numeric"
                 placeholder="号数を入力"
             >
+
             <button
                 class="number-button"
                 onclick="startYufuin()"
             >
                 決定
             </button>
+
         </div>
+
     </div>
+
+
     <!-- 普通 -->
+
     <div class="select-card glass">
+
         <div class="select-label">
             普通列車
         </div>
+
         <div class="local-grid">
+
             <button
                 class="local-button"
                 onclick="selectLocal('nippouDown')"
             >
                 中津 → 佐伯
             </button>
+
             <button
                 class="local-button"
                 onclick="selectLocal('nippouUp')"
             >
                 佐伯 → 中津
             </button>
+
             <button
                 class="local-button"
                 onclick="selectLocal('kyudaiDown')"
             >
                 大分 → 日田
             </button>
+
             <button
                 class="local-button"
                 onclick="selectLocal('kyudaiUp')"
             >
                 日田 → 大分
             </button>
+
             <button
                 class="local-button"
                 onclick="selectLocal('hohiDown')"
             >
                 大分 → 宮地
             </button>
+
             <button
                 class="local-button"
                 onclick="selectLocal('hohiUp')"
             >
                 宮地 → 大分
             </button>
+
         </div>
+
     </div>
+
 </section>
-<!-- ==================================================
+
+
+<!-- ======================================================
      列車画面
-================================================== -->
+====================================================== -->
+
 <section id="trainScreen">
+
+
     <div class="header-card glass">
+
         <div
             id="trainName"
             class="train-name"
         >
             特急ソニック
         </div>
+
         <div
             id="destination"
             class="destination"
         >
             博多行き
         </div>
+
         <div
             id="trainNumber"
             class="train-number"
         >
             10号
         </div>
+
     </div>
+
+
     <!-- 速度 -->
+
     <div class="speed-card glass">
+
         <div class="speed-label">
             速度
         </div>
+
         <div class="speed-row">
+
             <span
                 id="speed"
                 class="speed"
             >
                 --
             </span>
+
             <span class="speed-unit">
                 km/h
             </span>
+
         </div>
+
     </div>
+
+
     <!-- 駅 -->
+
     <div class="station-card glass">
+
         <div class="station-title">
             次の駅
         </div>
-        <!--
-            ここが今回の変更部分。
-            4駅を横に並べ、
-            駅名を1文字ずつ縦に表示。
-        -->
+
         <div
             id="stationRoute"
             class="station-route"
         ></div>
+
         <div class="progress-area">
+
             <div class="progress-background">
+
                 <div
                     id="progressFill"
                     class="progress-fill"
                 ></div>
+
             </div>
+
         </div>
+
         <div
             id="distanceText"
             class="distance-text"
         >
             GPS取得中...
         </div>
+
     </div>
+
+
     <!-- GPS -->
+
     <div class="gps-card glass">
+
         <div
             id="gpsStatus"
             class="gps-status"
         >
             GPSを待っています
         </div>
+
         <button
             class="gps-button"
             onclick="startGPS()"
         >
             GPSを開始
         </button>
+
     </div>
-    <!-- テスト -->
+
+
+    <!-- テストモード -->
+
     <div
         id="testPanel"
         class="test-panel glass"
     >
+
         <div class="test-title">
             TEST MODE
         </div>
+
         <div class="test-buttons">
+
             <button
                 class="test-button"
                 onclick="testPreviousStation()"
             >
                 ← 前の駅
             </button>
+
             <button
                 class="test-button"
                 onclick="testNextStation()"
             >
                 次の駅 →
             </button>
+
         </div>
+
     </div>
+
+
     <button
         class="back-button"
         onclick="backToSelect()"
     >
         列車選択に戻る
     </button>
+
 </section>
+
 </div>
+
+
 <script>
-/* =====================================================
+
+/* =========================================================
    駅座標
-===================================================== */
+========================================================= */
+
 const stationDB = {
-    /* 日豊本線 */
-    中津:{lat:33.5991,lon:131.1909},
-    東中津:{lat:33.6050,lon:131.2250},
-    今津:{lat:33.5755,lon:131.2740},
-    天津:{lat:33.5685,lon:131.3200},
-    豊前善光寺:{lat:33.5697,lon:131.4240},
-    豊前長洲:{lat:33.5540,lon:131.3900},
-    柳ヶ浦:{lat:33.5650,lon:131.3626},
-    豊前松江:{lat:33.6480,lon:131.1050},
-    三毛門:{lat:33.6200,lon:131.1500},
-    宇島:{lat:33.6120,lon:131.1300},
-    椎田:{lat:33.6700,lon:131.0550},
-    築城:{lat:33.6730,lon:131.0300},
-    新田原:{lat:33.6950,lon:130.9900},
-    行橋:{lat:33.7308,lon:130.9588},
-    杵築:{lat:33.4170,lon:131.6160},
-    大分:{lat:33.2330,lon:131.6060},
-    別府:{lat:33.2790,lon:131.5000},
-    牧:{lat:33.2330,lon:131.6280},
-    高城:{lat:33.2400,lon:131.6420},
-    鶴崎:{lat:33.2410,lon:131.6850},
-    大在:{lat:33.2380,lon:131.7200},
-    坂ノ市:{lat:33.2320,lon:131.7580},
-    幸崎:{lat:33.2250,lon:131.8000},
-    佐志生:{lat:33.2250,lon:131.8450},
-    下ノ江:{lat:33.2050,lon:131.8650},
-    熊崎:{lat:33.2150,lon:131.9000},
-    上臼杵:{lat:33.2140,lon:131.9200},
-    臼杵:{lat:33.1190,lon:131.8050},
-    津久見:{lat:33.0730,lon:131.8610},
-    日代:{lat:32.9990,lon:131.9210},
-    浅海井:{lat:32.9800,lon:131.9300},
-    狩生:{lat:32.9600,lon:131.9400},
-    海崎:{lat:32.9500,lon:131.9500},
-    佐伯:{lat:32.9580,lon:131.8990},
-    /* 鹿児島本線 */
-    博多:{lat:33.5900,lon:130.4210},
+
+    博多:{lat:33.5902,lon:130.4207},
+    吉塚:{lat:33.6072,lon:130.4236},
+    香椎:{lat:33.6605,lon:130.4448},
+    福間:{lat:33.7660,lon:130.4810},
+    東郷:{lat:33.8050,lon:130.5120},
+    赤間:{lat:33.8070,lon:130.5710},
     折尾:{lat:33.8640,lon:130.7120},
     黒崎:{lat:33.8660,lon:130.7660},
+    八幡:{lat:33.8580,lon:130.8060},
+    戸畑:{lat:33.8970,lon:130.8200},
     小倉:{lat:33.8860,lon:130.8820},
-    /* 久大本線 */
+    下曽根:{lat:33.8330,lon:130.9350},
+    行橋:{lat:33.7288,lon:130.9700},
+    宇島:{lat:33.6118,lon:131.1300},
+    中津:{lat:33.5991,lon:131.1909},
+    柳ヶ浦:{lat:33.5650,lon:131.3626},
+    宇佐:{lat:33.5310,lon:131.4280},
+    杵築:{lat:33.4170,lon:131.6160},
+    亀川:{lat:33.3260,lon:131.4880},
+    別府:{lat:33.2790,lon:131.5000},
+    大分:{lat:33.2330,lon:131.6060},
+    鶴崎:{lat:33.2410,lon:131.6850},
+    大在:{lat:33.2380,lon:131.7200},
+    幸崎:{lat:33.2250,lon:131.7580},
+    臼杵:{lat:33.1190,lon:131.8050},
+    津久見:{lat:33.0730,lon:131.8610},
+    佐伯:{lat:32.9580,lon:131.8990},
+
     南大分:{lat:33.2220,lon:131.5900},
     賀来:{lat:33.2120,lon:131.5530},
     豊後国分:{lat:33.2260,lon:131.5350},
@@ -726,7 +1001,7 @@ const stationDB = {
     天ケ瀬:{lat:33.2600,lon:131.0260},
     豊後三芳:{lat:33.3200,lon:130.9550},
     日田:{lat:33.3210,lon:130.9400},
-    /* 豊肥本線 */
+
     滝尾:{lat:33.2150,lon:131.6250},
     敷戸:{lat:33.1850,lon:131.6250},
     大分大学前:{lat:33.1710,lon:131.6270},
@@ -742,11 +1017,16 @@ const stationDB = {
     玉来:{lat:32.9600,lon:131.3450},
     豊後荻:{lat:32.9100,lon:131.2500},
     宮地:{lat:32.8840,lon:131.1200}
+
 };
-/* =====================================================
-   普通列車 日豊本線
-===================================================== */
+
+
+/* =========================================================
+   普通 日豊本線
+========================================================= */
+
 const nippouDown = [
+
     "中津",
     "東中津",
     "今津",
@@ -762,7 +1042,7 @@ const nippouDown = [
     "築城",
     "新田原",
     "行橋",
-    "杵築",
+    "南行橋",
     "別府",
     "大分",
     "牧",
@@ -782,13 +1062,19 @@ const nippouDown = [
     "狩生",
     "海崎",
     "佐伯"
+
 ];
+
 const nippouUp =
     [...nippouDown].reverse();
-/* =====================================================
+
+
+/* =========================================================
    久大本線 各駅停車
-===================================================== */
+========================================================= */
+
 const kyudaiDown = [
+
     "大分",
     "南大分",
     "賀来",
@@ -811,13 +1097,19 @@ const kyudaiDown = [
     "天ケ瀬",
     "豊後三芳",
     "日田"
+
 ];
+
 const kyudaiUp =
     [...kyudaiDown].reverse();
-/* =====================================================
+
+
+/* =========================================================
    豊肥本線 各駅停車
-===================================================== */
+========================================================= */
+
 const hohiDown = [
+
     "大分",
     "滝尾",
     "敷戸",
@@ -834,17 +1126,207 @@ const hohiDown = [
     "玉来",
     "豊後荻",
     "宮地"
+
 ];
+
 const hohiUp =
     [...hohiDown].reverse();
-/* =====================================================
+
+
+/* =========================================================
    ソニック
-===================================================== */
-const sonic = {};
+========================================================= */
+
 /*
-   博多 → 大分
+    2026年ダイヤの実在号数だけを登録。
+
+    偶数：大分・中津方面 → 博多
+    奇数：博多 → 大分・佐伯方面
+
+    「存在しない偶数・奇数号」を
+    勝手に生成しない。
 */
-const sonicHakataToOita = [
+
+const sonicNumbers = [
+
+    1,2,3,4,5,6,7,8,9,10,
+    11,12,13,14,15,16,17,18,19,20,
+    21,22,23,24,25,26,27,28,29,30,
+    31,32,33,34,35,36,37,38,39,40,
+    41,42,43,44,45,46,47,48,49,50,
+    51,52,53,54,55,56,57,58,59,60,
+
+    101,
+    102,
+    201,
+    202
+
+];
+
+
+/*
+    基本停車パターン
+
+    号数ごとに停車駅を変更できる構造にしている。
+*/
+
+const sonicRoutes = {};
+
+
+/* ---------------------------------------------------------
+   ソニック4号
+   大分 → 博多
+--------------------------------------------------------- */
+
+sonicRoutes[4] = {
+
+    destination: "博多",
+
+    route: [
+        "大分",
+        "別府",
+        "杵築",
+        "宇佐",
+        "柳ヶ浦",
+        "中津",
+        "宇島",
+        "行橋",
+        "下曽根",
+        "小倉",
+        "戸畑",
+        "黒崎",
+        "折尾",
+        "赤間",
+        "福間",
+        "吉塚",
+        "博多"
+    ]
+
+};
+
+
+/* ---------------------------------------------------------
+   ソニック10号
+--------------------------------------------------------- */
+
+sonicRoutes[10] = {
+
+    destination: "博多",
+
+    route: [
+        "大分",
+        "別府",
+        "杵築",
+        "宇佐",
+        "柳ヶ浦",
+        "中津",
+        "宇島",
+        "行橋",
+        "小倉",
+        "黒崎",
+        "折尾",
+        "博多"
+    ]
+
+};
+
+
+/* ---------------------------------------------------------
+   ソニック16号
+--------------------------------------------------------- */
+
+sonicRoutes[16] = {
+
+    destination: "博多",
+
+    route: [
+        "大分",
+        "別府",
+        "亀川",
+        "杵築",
+        "宇佐",
+        "柳ヶ浦",
+        "中津",
+        "宇島",
+        "行橋",
+        "小倉",
+        "戸畑",
+        "黒崎",
+        "折尾",
+        "赤間",
+        "香椎",
+        "博多"
+    ]
+
+};
+
+
+/* ---------------------------------------------------------
+   ソニック41号
+--------------------------------------------------------- */
+
+sonicRoutes[41] = {
+
+    destination: "佐伯",
+
+    route: [
+        "博多",
+        "折尾",
+        "黒崎",
+        "小倉",
+        "行橋",
+        "中津",
+        "別府",
+        "大分",
+        "鶴崎",
+        "大在",
+        "臼杵",
+        "津久見",
+        "佐伯"
+    ]
+
+};
+
+
+/* ---------------------------------------------------------
+   ソニック59号
+--------------------------------------------------------- */
+
+sonicRoutes[59] = {
+
+    destination: "大分",
+
+    route: [
+        "博多",
+        "福間",
+        "赤間",
+        "折尾",
+        "黒崎",
+        "戸畑",
+        "小倉",
+        "下曽根",
+        "行橋",
+        "宇島",
+        "中津",
+        "柳ヶ浦",
+        "宇佐",
+        "杵築",
+        "別府",
+        "大分"
+    ]
+
+};
+
+
+/*
+    その他の号数。
+
+    主要停車駅をベースにして表示。
+    個別パターンが登録されている号は
+    上の個別ルートを優先。
+*/
+
+const sonicMainDown = [
     "博多",
     "折尾",
     "黒崎",
@@ -855,10 +1337,8 @@ const sonicHakataToOita = [
     "別府",
     "大分"
 ];
-/*
-   大分 → 博多
-*/
-const sonicOitaToHakata = [
+
+const sonicMainUp = [
     "大分",
     "別府",
     "杵築",
@@ -869,74 +1349,117 @@ const sonicOitaToHakata = [
     "折尾",
     "博多"
 ];
+
+
 /*
-   1〜60号
+    佐伯行き
 */
-for (
-    let n = 1;
-    n <= 60;
-    n++
-) {
-    /*
-       41号は佐伯行き
-    */
-    if (
-        n === 41
-    ) {
-        sonic[n] = {
-            destination:
-                "佐伯",
-            route: [
-                "博多",
-                "折尾",
-                "黒崎",
-                "小倉",
-                "行橋",
-                "中津",
-                "杵築",
-                "別府",
-                "大分",
-                "鶴崎",
-                "大在",
-                "坂ノ市",
-                "幸崎",
-                "臼杵",
-                "津久見",
-                "佐伯"
-            ]
-        };
+
+sonicRoutes[41] = {
+    destination:"佐伯",
+    route:[
+        "博多",
+        "折尾",
+        "黒崎",
+        "小倉",
+        "行橋",
+        "中津",
+        "別府",
+        "大分",
+        "鶴崎",
+        "大在",
+        "臼杵",
+        "津久見",
+        "佐伯"
+    ]
+};
+
+
+/*
+    中津行き
+*/
+
+sonicRoutes[201] = {
+    destination:"中津",
+    route:[
+        "博多",
+        "折尾",
+        "黒崎",
+        "小倉",
+        "行橋",
+        "中津"
+    ]
+};
+
+sonicRoutes[202] = {
+    destination:"博多",
+    route:[
+        "中津",
+        "行橋",
+        "小倉",
+        "黒崎",
+        "折尾",
+        "博多"
+    ]
+};
+
+
+/*
+    その他の実在号数を生成。
+*/
+
+sonicNumbers.forEach(
+    number => {
+
+        if (
+            sonicRoutes[number]
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            number % 2 === 0
+        ) {
+
+            sonicRoutes[number] = {
+
+                destination:"博多",
+
+                route:[
+                    ...sonicMainUp
+                ]
+
+            };
+
+        }
+
+        else {
+
+            sonicRoutes[number] = {
+
+                destination:"大分",
+
+                route:[
+                    ...sonicMainDown
+                ]
+
+            };
+
+        }
+
     }
-    /*
-       奇数
-       博多方面から大分方面
-    */
-    else if (
-        n % 2 === 1
-    ) {
-        sonic[n] = {
-            destination:
-                "大分",
-            route:
-                [...sonicHakataToOita]
-        };
-    }
-    /*
-       偶数
-       大分方面から博多方面
-    */
-    else {
-        sonic[n] = {
-            destination:
-                "博多",
-            route:
-                [...sonicOitaToHakata]
-        };
-    }
-}
-/* =====================================================
+);
+
+
+/* =========================================================
    ゆふいんの森
-===================================================== */
+========================================================= */
+
 const yufuin = {
+
     1:{
         destination:"由布院",
         route:[
@@ -949,6 +1472,7 @@ const yufuin = {
             "由布院"
         ]
     },
+
     2:{
         destination:"博多",
         route:[
@@ -961,6 +1485,7 @@ const yufuin = {
             "博多"
         ]
     },
+
     3:{
         destination:"別府",
         route:[
@@ -975,6 +1500,7 @@ const yufuin = {
             "別府"
         ]
     },
+
     4:{
         destination:"博多",
         route:[
@@ -989,6 +1515,7 @@ const yufuin = {
             "博多"
         ]
     },
+
     5:{
         destination:"由布院",
         route:[
@@ -1001,6 +1528,7 @@ const yufuin = {
             "由布院"
         ]
     },
+
     6:{
         destination:"博多",
         route:[
@@ -1013,403 +1541,599 @@ const yufuin = {
             "博多"
         ]
     }
+
 };
-/* =====================================================
+
+
+/* =========================================================
    状態
-===================================================== */
+========================================================= */
+
 let currentRoute = [];
-let currentTrainName = "";
-let currentNumber = "";
-let currentDestination = "";
+
 let currentIndex = 0;
+
+let currentTrainName = "";
+
+let currentNumber = "";
+
+let currentDestination = "";
+
 let watchId = null;
+
 let lastSpeed = 0;
+
 let testMode = false;
+
 let arrived = false;
-/* =====================================================
+
+
+/* =========================================================
    ソニック開始
-===================================================== */
+========================================================= */
+
 function startSonic() {
+
     const number =
         Number(
             document.getElementById(
                 "sonicNumber"
             ).value
         );
+
+
     if (
-        !Number.isInteger(number) ||
-        !sonic[number]
+        !sonicRoutes[number]
     ) {
+
         alert(
-            "ソニックの号数を入力してください。\n1〜60号"
+            "存在するソニックの号数を入力してください。\n\n" +
+            "例：1、4、10、41、59、101、202"
         );
+
         return;
+
     }
+
+
+    const data =
+        sonicRoutes[number];
+
+
     selectRoute(
-        sonic[number].route,
+        data.route,
         "特急ソニック",
         number,
-        sonic[number].destination
+        data.destination
     );
+
 }
-/* =====================================================
+
+
+/* =========================================================
    ゆふ森開始
-===================================================== */
+========================================================= */
+
 function startYufuin() {
+
     const number =
         Number(
             document.getElementById(
                 "yufuNumber"
             ).value
         );
+
+
     if (
-        !Number.isInteger(number) ||
         !yufuin[number]
     ) {
+
         alert(
             "ゆふいんの森は1〜6号です。"
         );
+
         return;
+
     }
+
+
+    const data =
+        yufuin[number];
+
+
     selectRoute(
-        yufuin[number].route,
+        data.route,
         "特急ゆふいんの森",
         number,
-        yufuin[number].destination
+        data.destination
     );
+
 }
-/* =====================================================
-   普通列車選択
-===================================================== */
+
+
+/* =========================================================
+   普通列車
+========================================================= */
+
 function selectLocal(type) {
-    if (
-        type === "nippouDown"
-    ) {
-        selectRoute(
+
+    const data = {
+
+        nippouDown:[
             nippouDown,
-            "普通列車",
-            "",
             "佐伯"
-        );
-    }
-    else if (
-        type === "nippouUp"
-    ) {
-        selectRoute(
+        ],
+
+        nippouUp:[
             nippouUp,
-            "普通列車",
-            "",
             "中津"
-        );
-    }
-    else if (
-        type === "kyudaiDown"
-    ) {
-        selectRoute(
+        ],
+
+        kyudaiDown:[
             kyudaiDown,
-            "普通列車",
-            "",
             "日田"
-        );
-    }
-    else if (
-        type === "kyudaiUp"
-    ) {
-        selectRoute(
+        ],
+
+        kyudaiUp:[
             kyudaiUp,
-            "普通列車",
-            "",
             "大分"
-        );
-    }
-    else if (
-        type === "hohiDown"
-    ) {
-        selectRoute(
+        ],
+
+        hohiDown:[
             hohiDown,
-            "普通列車",
-            "",
             "宮地"
-        );
-    }
-    else if (
-        type === "hohiUp"
-    ) {
-        selectRoute(
+        ],
+
+        hohiUp:[
             hohiUp,
-            "普通列車",
-            "",
             "大分"
-        );
+        ]
+
+    }[type];
+
+
+    if (!data) {
+        return;
     }
+
+
+    selectRoute(
+        data[0],
+        "普通列車",
+        "",
+        data[1]
+    );
+
 }
-/* =====================================================
+
+
+/* =========================================================
    路線設定
-===================================================== */
+========================================================= */
+
 function selectRoute(
     route,
     trainName,
     number,
     destination
 ) {
+
     currentRoute =
-        route;
-    currentTrainName =
-        trainName;
-    currentNumber =
-        number;
-    currentDestination =
-        destination;
+        [...route];
+
     currentIndex =
         0;
+
+    currentTrainName =
+        trainName;
+
+    currentNumber =
+        number;
+
+    currentDestination =
+        destination;
+
     lastSpeed =
         0;
+
     arrived =
         false;
+
     testMode =
         false;
+
+
     document.getElementById(
         "selectScreen"
     ).style.display =
         "none";
+
+
     document.getElementById(
         "trainScreen"
     ).style.display =
         "block";
+
+
     document.getElementById(
         "trainName"
     ).textContent =
         trainName;
+
+
     document.getElementById(
         "destination"
     ).textContent =
         destination +
         "行き";
+
+
     document.getElementById(
         "trainNumber"
     ).textContent =
         number
             ? number + "号"
             : "";
+
+
     document.getElementById(
         "testPanel"
     ).style.display =
         "none";
+
+
     document.getElementById(
         "speed"
     ).textContent =
         "--";
+
+
     updateStationDisplay();
+
     startGPS();
+
 }
-/* =====================================================
+
+
+/* =========================================================
    4駅表示
-===================================================== */
+========================================================= */
+
 function updateStationDisplay() {
+
     const box =
         document.getElementById(
             "stationRoute"
         );
+
+
     box.innerHTML = "";
+
+
     /*
-       現在駅の次から4駅
+       現在駅の次から4駅。
+
+       例：
+
+       現在 博多
+
+       ＞ ＞ ＞ ＞
+       折 黒 小 行
+       尾 崎 倉 橋
     */
+
     const nextStations =
         currentRoute.slice(
             currentIndex + 1,
             currentIndex + 5
         );
-    /*
-       4列を作る
-    */
+
+
     for (
         let i = 0;
         i < 4;
         i++
     ) {
+
         const column =
             document.createElement(
                 "div"
             );
+
         column.className =
             "station-column";
+
+
         /*
-           駅が存在する場合だけ
-           ＞と駅名を表示
+           駅がある列だけ作る。
+
+           これで最後の方に
+           不自然な「＞」だけが
+           残らない。
         */
+
         if (
             nextStations[i]
         ) {
+
             const arrow =
                 document.createElement(
                     "div"
                 );
+
             arrow.className =
                 "station-arrow";
+
             arrow.textContent =
                 "＞";
+
+
             const vertical =
                 document.createElement(
                     "div"
                 );
+
             vertical.className =
                 "station-vertical";
-            /*
-               駅名を1文字ずつ分解
-            */
+
+
             [
                 ...nextStations[i]
             ].forEach(
                 char => {
+
                     const span =
                         document.createElement(
                             "span"
                         );
+
                     span.className =
                         "station-char";
+
                     span.textContent =
                         char;
+
                     vertical.appendChild(
                         span
                     );
+
                 }
             );
+
+
             column.appendChild(
                 arrow
             );
+
             column.appendChild(
                 vertical
             );
+
         }
+
+
         box.appendChild(
             column
         );
+
     }
+
+
+    /*
+       進行率をリセット
+    */
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+        "0%";
+
+
     /*
        終点
     */
+
     if (
         currentIndex >=
         currentRoute.length - 1
     ) {
+
         showArrival();
+
     }
+
 }
-/* =====================================================
+
+
+/* =========================================================
    GPS開始
-===================================================== */
+========================================================= */
+
 function startGPS() {
+
     if (
         testMode
     ) {
+
         return;
+
     }
+
+
     if (
         !navigator.geolocation
     ) {
+
         setGPSStatus(
             "この端末ではGPSを利用できません"
         );
+
         return;
+
     }
+
+
     if (
         watchId !== null
     ) {
+
         return;
+
     }
+
+
     setGPSStatus(
         "GPS取得中..."
     );
+
+
     watchId =
         navigator.geolocation.watchPosition(
+
             updateGPS,
+
             gpsError,
+
             {
-                enableHighAccuracy:
-                    true,
-                maximumAge:
-                    500,
-                timeout:
-                    10000
+
+                enableHighAccuracy:true,
+
+                maximumAge:500,
+
+                timeout:10000
+
             }
+
         );
+
 }
-/* =====================================================
+
+
+/* =========================================================
    GPS更新
-===================================================== */
-function updateGPS(
-    position
-) {
+========================================================= */
+
+function updateGPS(position) {
+
     if (
         testMode ||
         arrived
     ) {
+
         return;
+
     }
+
+
     const lat =
         position.coords.latitude;
+
     const lon =
         position.coords.longitude;
+
+
     let speed =
         position.coords.speed;
+
+
     if (
         speed !== null &&
         speed !== undefined &&
         !isNaN(speed)
     ) {
+
         speed =
             Math.max(
                 0,
                 speed * 3.6
             );
+
     }
+
     else {
-        speed = 0;
+
+        speed =
+            0;
+
     }
+
+
     /*
-       速度を少し平滑化
+       速度を少し滑らかに
     */
+
     speed =
         lastSpeed * .35 +
         speed * .65;
+
+
     lastSpeed =
         speed;
+
+
     document.getElementById(
         "speed"
     ).textContent =
         Math.round(speed);
-    /*
-       次駅
-    */
+
+
     const nextIndex =
         currentIndex + 1;
+
+
     if (
         nextIndex >=
         currentRoute.length
     ) {
+
         showArrival();
+
         return;
+
     }
+
+
+    const currentStation =
+        currentRoute[
+            currentIndex
+        ];
+
     const nextStation =
         currentRoute[
             nextIndex
         ];
+
+
+    const currentData =
+        stationDB[
+            currentStation
+        ];
+
     const nextData =
         stationDB[
             nextStation
         ];
+
+
     /*
-       座標がない場合でも
-       画面は動かす
+       座標がない駅は
+       GPS判定できないので
+       画面だけ維持。
     */
+
     if (
         !nextData
     ) {
+
         setGPSStatus(
             "GPS接続中"
         );
+
         return;
+
     }
+
+
     const distance =
         getDistance(
             lat,
@@ -1417,22 +2141,16 @@ function updateGPS(
             nextData.lat,
             nextData.lon
         );
-    /*
-       現在駅
-    */
-    const currentStation =
-        currentRoute[
-            currentIndex
-        ];
-    const currentData =
-        stationDB[
-            currentStation
-        ];
+
+
     let totalDistance =
         1000;
+
+
     if (
         currentData
     ) {
+
         totalDistance =
             getDistance(
                 currentData.lat,
@@ -1440,16 +2158,22 @@ function updateGPS(
                 nextData.lat,
                 nextData.lon
             );
+
     }
+
+
     /*
-       進行率
+       区間進行率
     */
+
     let progress =
         1 -
         (
             distance /
             totalDistance
         );
+
+
     progress =
         Math.max(
             0,
@@ -1458,25 +2182,34 @@ function updateGPS(
                 progress
             )
         );
+
+
     document.getElementById(
         "progressFill"
     ).style.width =
         (
             progress * 100
         ) + "%";
+
+
     /*
-       距離表示
+       距離
     */
+
     if (
         distance < 100
     ) {
+
         document.getElementById(
             "distanceText"
         ).textContent =
             nextStation +
             " まもなく";
+
     }
+
     else {
+
         document.getElementById(
             "distanceText"
         ).textContent =
@@ -1486,382 +2219,590 @@ function updateGPS(
                 distance / 1000
             ).toFixed(1) +
             " km";
+
     }
+
+
     /*
-       駅に近づいて、
-       速度が落ちたら次駅へ
+       駅切替
+
+       ただ近づいただけでは切り替えない。
+
        180m以内
        ＋
-       15km/h以下
+       速度15km/h以下
+
+       になってから次駅へ。
     */
+
     if (
         distance <= 180 &&
         speed <= 15
     ) {
+
         currentIndex++;
-        document.getElementById(
-            "progressFill"
-        ).style.width =
-            "0%";
+
         updateStationDisplay();
+
         return;
+
     }
+
+
     setGPSStatus(
         "GPS接続中"
     );
+
 }
-/* =====================================================
+
+
+/* =========================================================
    到着
-===================================================== */
+========================================================= */
+
 function showArrival() {
+
     arrived =
         true;
+
+
     document.getElementById(
         "speed"
     ).textContent =
         "0";
+
+
     document.getElementById(
         "progressFill"
     ).style.width =
         "100%";
+
+
     const finalStation =
         currentRoute[
             currentRoute.length - 1
         ];
+
+
     const box =
         document.getElementById(
             "stationRoute"
         );
+
+
     box.innerHTML = "";
+
+
     const column =
         document.createElement(
             "div"
         );
+
     column.className =
         "station-column";
+
+
     const vertical =
         document.createElement(
             "div"
         );
+
     vertical.className =
         "station-vertical";
+
+
     [
         ...finalStation
     ].forEach(
         char => {
+
             const span =
                 document.createElement(
                     "span"
                 );
+
             span.className =
                 "station-char";
+
             span.textContent =
                 char;
+
             vertical.appendChild(
                 span
             );
+
         }
     );
+
+
     column.appendChild(
         vertical
     );
+
     box.appendChild(
         column
     );
+
+
     document.getElementById(
         "distanceText"
     ).textContent =
         finalStation +
         " 到着";
+
+
     setGPSStatus(
         finalStation +
         "に到着しました"
     );
+
 }
-/* =====================================================
+
+
+/* =========================================================
    テストモード
-===================================================== */
+========================================================= */
+
 let tapCount = 0;
+
 let tapTimer = null;
+
+
 document.addEventListener(
     "touchend",
-    function() {
+    () => {
+
         tapCount++;
+
+
         clearTimeout(
             tapTimer
         );
+
+
         tapTimer =
             setTimeout(
                 () => {
+
                     tapCount = 0;
+
                 },
                 700
             );
+
+
         if (
             tapCount >= 3
         ) {
+
             tapCount = 0;
+
             toggleTestMode();
+
         }
+
     }
 );
-/* =====================================================
+
+
+/* =========================================================
    テストモード切替
-===================================================== */
+========================================================= */
+
 function toggleTestMode() {
+
     testMode =
         !testMode;
+
+
     const panel =
         document.getElementById(
             "testPanel"
         );
+
+
     if (
         testMode
     ) {
+
         if (
             watchId !== null
         ) {
+
             navigator.geolocation.clearWatch(
                 watchId
             );
-            watchId = null;
+
+            watchId =
+                null;
+
         }
+
+
         panel.style.display =
             "block";
+
+
         setGPSStatus(
             "テストモード"
         );
+
+
         randomMeter();
+
     }
+
     else {
+
         panel.style.display =
             "none";
+
+
         setGPSStatus(
-            "GPSを待っています"
+            "GPS取得中..."
         );
+
+
         startGPS();
+
     }
+
 }
-/* =====================================================
+
+
+/* =========================================================
    テストメーター
-===================================================== */
+========================================================= */
+
 function randomMeter() {
+
     if (
         currentIndex >=
         currentRoute.length - 1
     ) {
+
         return;
+
     }
+
+
     const value =
         Math.floor(
-            Math.random() * 71
-        ) + 20;
+            Math.random() * 81
+        ) + 10;
+
+
     document.getElementById(
         "progressFill"
     ).style.width =
         value + "%";
+
+
     const next =
         currentRoute[
             currentIndex + 1
         ];
+
+
     document.getElementById(
         "distanceText"
     ).textContent =
         "テスト走行中 → " +
         next;
+
 }
-/* =====================================================
+
+
+/* =========================================================
    テスト：次の駅
-===================================================== */
+========================================================= */
+
 function testNextStation() {
+
     if (
         !testMode
     ) {
+
         return;
+
     }
+
+
     if (
         currentIndex <
         currentRoute.length - 1
     ) {
+
         currentIndex++;
+
+
         if (
             currentIndex >=
             currentRoute.length - 1
         ) {
+
             showArrival();
+
         }
+
         else {
+
             updateStationDisplay();
+
             randomMeter();
+
         }
+
     }
+
 }
-/* =====================================================
+
+
+/* =========================================================
    テスト：前の駅
-===================================================== */
+========================================================= */
+
 function testPreviousStation() {
+
     if (
         !testMode
     ) {
+
         return;
+
     }
+
+
     if (
         currentIndex > 0
     ) {
+
         currentIndex--;
+
         arrived =
             false;
+
         updateStationDisplay();
+
         randomMeter();
+
     }
+
 }
-/* =====================================================
+
+
+/* =========================================================
    距離計算
-===================================================== */
+========================================================= */
+
 function getDistance(
     lat1,
     lon1,
     lat2,
     lon2
 ) {
+
     const R =
         6371000;
+
     const rad =
         Math.PI / 180;
+
+
     const dLat =
         (
             lat2 -
             lat1
         ) * rad;
+
+
     const dLon =
         (
             lon2 -
             lon1
         ) * rad;
+
+
     const a =
         Math.sin(
             dLat / 2
         ) ** 2 +
+
         Math.cos(
             lat1 * rad
         ) *
+
         Math.cos(
             lat2 * rad
         ) *
+
         Math.sin(
             dLon / 2
         ) ** 2;
+
+
     const c =
         2 *
         Math.atan2(
             Math.sqrt(a),
             Math.sqrt(1 - a)
         );
+
+
     return R * c;
+
 }
-/* =====================================================
+
+
+/* =========================================================
    GPSエラー
-===================================================== */
-function gpsError(
-    error
-) {
+========================================================= */
+
+function gpsError(error) {
+
     let message =
         "GPSを取得できません";
+
+
     if (
         error.code === 1
     ) {
+
         message =
             "位置情報の使用を許可してください";
+
     }
+
     else if (
         error.code === 2
     ) {
+
         message =
             "現在地を取得できません";
+
     }
+
     else if (
         error.code === 3
     ) {
+
         message =
             "GPS取得がタイムアウトしました";
+
     }
+
+
     setGPSStatus(
         message
     );
+
 }
-/* =====================================================
+
+
+/* =========================================================
    GPSステータス
-===================================================== */
-function setGPSStatus(
-    text
-) {
-    const el =
-        document.getElementById(
-            "gpsStatus"
-        );
-    if (
-        el
-    ) {
-        el.textContent =
-            text;
-    }
+========================================================= */
+
+function setGPSStatus(text) {
+
+    document.getElementById(
+        "gpsStatus"
+    ).textContent =
+        text;
+
 }
-/* =====================================================
-   戻る
-===================================================== */
+
+
+/* =========================================================
+   列車選択へ戻る
+========================================================= */
+
 function backToSelect() {
+
     if (
         watchId !== null
     ) {
+
         navigator.geolocation.clearWatch(
             watchId
         );
-        watchId = null;
+
+        watchId =
+            null;
+
     }
+
+
+    currentRoute =
+        [];
+
     currentIndex =
         0;
+
     lastSpeed =
         0;
+
     arrived =
         false;
+
     testMode =
         false;
+
+
     document.getElementById(
         "trainScreen"
     ).style.display =
         "none";
+
+
     document.getElementById(
         "selectScreen"
     ).style.display =
         "flex";
+
 }
-/* =====================================================
+
+
+/* =========================================================
    Enterキー
-===================================================== */
+========================================================= */
+
 document.getElementById(
     "sonicNumber"
 ).addEventListener(
     "keydown",
     event => {
+
         if (
             event.key === "Enter"
         ) {
+
             startSonic();
+
         }
+
     }
 );
+
+
 document.getElementById(
     "yufuNumber"
 ).addEventListener(
     "keydown",
     event => {
+
         if (
             event.key === "Enter"
         ) {
+
             startYufuin();
+
         }
+
     }
 );
+
 </script>
+
 </body>
 </html>
